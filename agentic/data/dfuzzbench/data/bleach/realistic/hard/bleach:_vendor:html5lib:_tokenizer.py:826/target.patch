@@ -1,0 +1,13 @@
+diff --git a/bleach/_vendor/html5lib/_tokenizer.py b/bleach/_vendor/html5lib/_tokenizer.py
+index 4748a19..69c8db6 100644
+--- a/bleach/_vendor/html5lib/_tokenizer.py
++++ b/bleach/_vendor/html5lib/_tokenizer.py
+@@ -823,6 +823,8 @@ class HTMLTokenizer(object):
+                                     "eof-in-script-in-script"})
+             self.state = self.dataState
+         else:
++            print("HIT TARGET") # target
++            exit(0)
+             self.tokenQueue.append({"type": tokenTypes["Characters"], "data": data})
+             self.state = self.scriptDataDoubleEscapedState
+         return True

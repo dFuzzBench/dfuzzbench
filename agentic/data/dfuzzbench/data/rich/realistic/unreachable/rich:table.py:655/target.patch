@@ -1,0 +1,13 @@
+diff --git a/rich/table.py b/rich/table.py
+index 942175dc..e4138659 100644
+--- a/rich/table.py
++++ b/rich/table.py
+@@ -652,6 +652,8 @@ class Table(JupyterMixin):
+ 
+             if not pad_edge:
+                 if first_column:
++                    print("HIT TARGET") # target
++                    exit(0)
+                     left = 0
+                 if last_column:
+                     right = 0

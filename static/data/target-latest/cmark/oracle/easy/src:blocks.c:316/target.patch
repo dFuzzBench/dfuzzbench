@@ -1,0 +1,19 @@
+diff --git a/src/blocks.c b/src/blocks.c
+index 292e563..0607456 100644
+--- a/src/blocks.c
++++ b/src/blocks.c
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <stdlib.h>
+ /**
+  * Block parsing implementation.
+  *
+@@ -313,6 +315,8 @@ static cmark_node *finalize(cmark_parser *parser, cmark_node *b) {
+       if (pos == 0) {
+         b->as.code.info = NULL;
+       } else {
++        fprintf(stderr, "HIT TARGET\n");  // target
++        exit(0);
+         cmark_strbuf tmp = CMARK_BUF_INIT(parser->mem);
+         houdini_unescape_html_f(&tmp, node_content->ptr, pos);
+         cmark_strbuf_trim(&tmp);

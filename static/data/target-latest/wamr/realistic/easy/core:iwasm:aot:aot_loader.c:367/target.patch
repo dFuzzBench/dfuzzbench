@@ -1,0 +1,23 @@
+diff --git a/core/iwasm/aot/aot_loader.c b/core/iwasm/aot/aot_loader.c
+index dd26bbee..c350356c 100644
+--- a/core/iwasm/aot/aot_loader.c
++++ b/core/iwasm/aot/aot_loader.c
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <stdlib.h>
+ /*
+  * Copyright (C) 2019 Intel Corporation. All rights reserved.
+  * SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+@@ -363,8 +365,11 @@ load_string(uint8 **p_buf, const uint8 *buf_end, AOTModule *module,
+         /* The string is always terminated with '\0', use it directly.
+          * In this case, the file buffer can be referred to after loading.
+          */
+-        if (p[str_len - 1] != '\0')
++        if (p[str_len - 1] != '\0') {
++            fprintf(stderr, "HIT TARGET\n");  // target
++            exit(0);            
+             goto fail;
++        }
+ 
+         str = (char *)p;
+     }

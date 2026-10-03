@@ -1,0 +1,13 @@
+diff --git a/html5lib/_tokenizer.py b/html5lib/_tokenizer.py
+index 4748a19..d352328 100644
+--- a/html5lib/_tokenizer.py
++++ b/html5lib/_tokenizer.py
+@@ -64,6 +64,8 @@ class HTMLTokenizer(object):
+         # instead of True and the loop will terminate.
+         while self.state():
+             while self.stream.errors:
++                print("HIT TARGET") # target
++                exit(0)
+                 yield {"type": tokenTypes["ParseError"], "data": self.stream.errors.pop(0)}
+             while self.tokenQueue:
+                 yield self.tokenQueue.popleft()

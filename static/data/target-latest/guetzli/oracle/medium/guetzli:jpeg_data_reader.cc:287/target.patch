@@ -1,0 +1,19 @@
+diff --git a/guetzli/jpeg_data_reader.cc b/guetzli/jpeg_data_reader.cc
+index 513e1a2..17d23ae 100644
+--- a/guetzli/jpeg_data_reader.cc
++++ b/guetzli/jpeg_data_reader.cc
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <cstdlib>
+ /*
+  * Copyright 2016 Google Inc.
+  *
+@@ -284,6 +286,8 @@ bool ProcessDHT(const uint8_t* data, const size_t len,
+     for (int i = 1; i <= kJpegHuffmanMaxBitLength; ++i) {
+       int count = ReadUint8(data, pos);
+       if (count != 0) {
++        fprintf(stderr, "HIT TARGET\n");  // target
++        exit(0);
+         max_depth = i;
+       }
+       huff.counts[i] = count;

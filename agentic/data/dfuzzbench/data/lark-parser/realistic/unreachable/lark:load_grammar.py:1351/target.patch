@@ -1,0 +1,13 @@
+diff --git a/lark/load_grammar.py b/lark/load_grammar.py
+index 362a845..7f89dfd 100644
+--- a/lark/load_grammar.py
++++ b/lark/load_grammar.py
+@@ -1348,6 +1348,8 @@ class GrammarBuilder:
+                 if p in self._definitions:
+                     raise GrammarError("Template Parameter conflicts with rule %s (in template %s)" % (p, name))
+                 if p in params[:i]:
++                    print("HIT TARGET") # target
++                    exit(0)
+                     raise GrammarError("Duplicate Template Parameter %s (in template %s)" % (p, name))
+ 
+             if exp is None: # Remaining checks don't apply to abstract rules/terminals (created with %declare)

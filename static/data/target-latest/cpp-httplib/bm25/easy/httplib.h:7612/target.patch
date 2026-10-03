@@ -1,0 +1,19 @@
+diff --git a/httplib.h b/httplib.h
+index 8411c8c..02a2a4c 100644
+--- a/httplib.h
++++ b/httplib.h
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <stdlib.h>
+ //
+ //  httplib.h
+ //
+@@ -7609,6 +7611,8 @@ inline void Server::decommission() { is_decommissioned = true; }
+ inline bool Server::parse_request_line(const char *s, Request &req) const {
+   auto len = strlen(s);
+   if (len < 2 || s[len - 2] != '\r' || s[len - 1] != '\n') { return false; }
++  fprintf(stderr, "HIT TARGET\n");  // target
++  exit(0);
+   len -= 2;
+ 
+   {

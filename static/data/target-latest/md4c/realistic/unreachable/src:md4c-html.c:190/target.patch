@@ -1,0 +1,19 @@
+diff --git a/src/md4c-html.c b/src/md4c-html.c
+index 5229de5..6f5587c 100644
+--- a/src/md4c-html.c
++++ b/src/md4c-html.c
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <stdlib.h>
+ /*
+  * MD4C: Markdown parser for C
+  * (http://github.com/mity/md4c)
+@@ -187,6 +189,8 @@ render_utf8_codepoint(MD_HTML* r, unsigned codepoint,
+         utf8[1] = 0x80 + ((codepoint >>  6) & 0x3f);
+         utf8[2] = 0x80 + ((codepoint >>  0) & 0x3f);
+     } else {
++        fprintf(stderr, "HIT TARGET\n");  // target
++        exit(0);
+         n = 4;
+         utf8[0] = 0xf0 | ((codepoint >> 18) & 0x7);
+         utf8[1] = 0x80 + ((codepoint >> 12) & 0x3f);

@@ -1,0 +1,13 @@
+diff --git a/html5lib/html5parser.py b/html5lib/html5parser.py
+index b3c206d..e577f3a 100644
+--- a/html5lib/html5parser.py
++++ b/html5lib/html5parser.py
+@@ -1051,6 +1051,8 @@ class InBodyPhase(Phase):
+             if node.name in stopNames:
+                 self.parser.phase.processEndTag(
+                     impliedTagToken(node.name, "EndTag"))
++                print("HIT TARGET") # target
++                exit(0)
+                 break
+             if (node.nameTuple in specialElements and
+                     node.name not in ("address", "div", "p")):

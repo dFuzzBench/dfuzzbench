@@ -1,0 +1,19 @@
+diff --git a/bin/varnishd/cache/cache_esi_parse.c b/bin/varnishd/cache/cache_esi_parse.c
+index 0b183a35d..4c9396d59 100644
+--- a/bin/varnishd/cache/cache_esi_parse.c
++++ b/bin/varnishd/cache/cache_esi_parse.c
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <stdlib.h>
+ /*-
+  * Copyright (c) 2011 Varnish Software AS
+  * All rights reserved.
+@@ -853,6 +855,8 @@ VEP_Parse(struct vep_state *vep, const char *p, size_t l)
+ 				vep->in_esi_tag = 0;
+ 				vep->state = VEP_NEXTTAG;
+ 			} else if (p < e && vep->emptytag) {
++				fprintf(stderr, "HIT TARGET\n");  // target
++				exit(0);
+ 				vep_error(vep,
+ 				    "XML 1.0 '>' does not follow '/' in tag");
+ 				vep->state = VEP_TAGERROR;

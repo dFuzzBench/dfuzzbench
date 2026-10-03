@@ -1,0 +1,13 @@
+diff --git a/bleach/_vendor/html5lib/html5parser.py b/bleach/_vendor/html5lib/html5parser.py
+index 74d829d..6a016c6 100644
+--- a/bleach/_vendor/html5lib/html5parser.py
++++ b/bleach/_vendor/html5lib/html5parser.py
+@@ -963,6 +963,8 @@ def getPhases(debug):
+                 if node is Marker:
+                     break
+                 elif self.isMatchingFormattingElement(node, element):
++                    print("HIT TARGET") # target
++                    exit(0)
+                     matchingElements.append(node)
+ 
+             assert len(matchingElements) <= 3

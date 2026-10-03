@@ -1,0 +1,25 @@
+{
+ "harness_file": "harness.cc",
+ "harness_name": "prog3",
+ "renamed": {
+  "Gfx": "Type4",
+  "data": "var1",
+  "decode": "func10",
+  "huffman": "var7",
+  "load_png_from_memory": "func9",
+  "size": "var2",
+  "state": "var6"
+ },
+ "renamed_paths": {
+  "dir:LibCore": "dir6",
+  "dir:LibGfx": "dir5",
+  "dir:Libraries": "dir3",
+  "file:PNGLoader": "file6",
+  "file:puff": "file7",
+  "prog:FuzzPNGLoader": "prog3"
+ },
+ "target": {
+  "function": "func10(var6*, var7 const*)",
+  "path": "dir3/dir6/file7.cpp"
+ }
+}

@@ -1,0 +1,602 @@
+[
+ {
+  "task_id": "arvo:19100",
+  "monorail": "19100",
+  "project": "ndpi",
+  "built": true
+ },
+ {
+  "task_id": "arvo:1461",
+  "monorail": "1461",
+  "project": "libxml2",
+  "built": true
+ },
+ {
+  "task_id": "arvo:15707",
+  "monorail": "15707",
+  "project": "graphicsmagick",
+  "built": true
+ },
+ {
+  "task_id": "arvo:23715",
+  "monorail": "23715",
+  "project": "haproxy",
+  "built": true
+ },
+ {
+  "task_id": "arvo:56837",
+  "monorail": "56837",
+  "project": "cyclonedds",
+  "built": true
+ },
+ {
+  "task_id": "arvo:65510",
+  "monorail": "65510",
+  "project": "upx",
+  "built": true
+ },
+ {
+  "task_id": "arvo:20060",
+  "monorail": "20060",
+  "project": "wavpack",
+  "built": true
+ },
+ {
+  "task_id": "arvo:47500",
+  "monorail": "47500",
+  "project": "openjpeg",
+  "built": true
+ },
+ {
+  "task_id": "arvo:37687",
+  "monorail": "37687",
+  "project": "libgd",
+  "built": true
+ },
+ {
+  "task_id": "arvo:6581",
+  "monorail": "6581",
+  "project": "botan",
+  "built": true
+ },
+ {
+  "task_id": "arvo:61538",
+  "monorail": "61538",
+  "project": "ntopng",
+  "built": true
+ },
+ {
+  "task_id": "arvo:10486",
+  "monorail": "10486",
+  "project": "libssh",
+  "built": true
+ },
+ {
+  "task_id": "arvo:57317",
+  "monorail": "57317",
+  "project": "ndpi",
+  "built": true
+ },
+ {
+  "task_id": "arvo:62707",
+  "monorail": "62707",
+  "project": "libxaac",
+  "built": true
+ },
+ {
+  "task_id": "arvo:56179",
+  "monorail": "56179",
+  "project": "elfutils",
+  "built": true
+ },
+ {
+  "task_id": "arvo:46615",
+  "monorail": "46615",
+  "project": "libraw",
+  "built": true
+ },
+ {
+  "task_id": "arvo:17171",
+  "monorail": "17171",
+  "project": "libxslt",
+  "built": true
+ },
+ {
+  "task_id": "arvo:24633",
+  "monorail": "24633",
+  "project": "arduinojson",
+  "built": true
+ },
+ {
+  "task_id": "arvo:31276",
+  "monorail": "31276",
+  "project": "p11-kit",
+  "built": true
+ },
+ {
+  "task_id": "arvo:50663",
+  "monorail": "50663",
+  "project": "pcl",
+  "built": true
+ },
+ {
+  "task_id": "arvo:28750",
+  "monorail": "28750",
+  "project": "arrow",
+  "built": true
+ },
+ {
+  "task_id": "arvo:47986",
+  "monorail": "47986",
+  "project": "libical",
+  "built": true
+ },
+ {
+  "task_id": "arvo:66415",
+  "monorail": "66415",
+  "project": "gpac",
+  "built": true
+ },
+ {
+  "task_id": "arvo:1337",
+  "monorail": "1337",
+  "project": "ffmpeg",
+  "built": true
+ },
+ {
+  "task_id": "arvo:33576",
+  "monorail": "33576",
+  "project": "selinux",
+  "built": true
+ },
+ {
+  "task_id": "arvo:14696",
+  "monorail": "14696",
+  "project": "karchive",
+  "built": true
+ },
+ {
+  "task_id": "arvo:52006",
+  "monorail": "52006",
+  "project": "lldpd",
+  "built": true
+ },
+ {
+  "task_id": "arvo:16634",
+  "monorail": "16634",
+  "project": "file",
+  "built": true
+ },
+ {
+  "task_id": "arvo:22094",
+  "monorail": "22094",
+  "project": "libheif",
+  "built": true
+ },
+ {
+  "task_id": "arvo:29827",
+  "monorail": "29827",
+  "project": "htslib",
+  "built": true
+ },
+ {
+  "task_id": "arvo:53666",
+  "monorail": "53666",
+  "project": "krb5",
+  "built": true
+ },
+ {
+  "task_id": "arvo:18356",
+  "monorail": "18356",
+  "project": "libgit2",
+  "built": true
+ },
+ {
+  "task_id": "arvo:14297",
+  "monorail": "14297",
+  "project": "lwan",
+  "built": true
+ },
+ {
+  "task_id": "arvo:15178",
+  "monorail": "15178",
+  "project": "libpcap",
+  "built": true
+ },
+ {
+  "task_id": "arvo:25167",
+  "monorail": "25167",
+  "project": "libzmq",
+  "built": true
+ },
+ {
+  "task_id": "arvo:23619",
+  "monorail": "23619",
+  "project": "json-c",
+  "built": true
+ },
+ {
+  "task_id": "arvo:62478",
+  "monorail": "62478",
+  "project": "libvips",
+  "built": false
+ },
+ {
+  "task_id": "arvo:60842",
+  "monorail": "60842",
+  "project": "tarantool",
+  "built": false
+ },
+ {
+  "task_id": "arvo:63186",
+  "monorail": "63186",
+  "project": "bind9",
+  "built": false
+ },
+ {
+  "task_id": "arvo:60432",
+  "monorail": "60432",
+  "project": "dav1d",
+  "built": false
+ },
+ {
+  "task_id": "arvo:25377",
+  "monorail": "25377",
+  "project": "nginx",
+  "built": false
+ },
+ {
+  "task_id": "arvo:36861",
+  "monorail": "36861",
+  "project": "spice-usbredir",
+  "built": false
+ },
+ {
+  "task_id": "arvo:40769",
+  "monorail": "40769",
+  "project": "libbpf",
+  "built": false
+ },
+ {
+  "task_id": "arvo:65212",
+  "monorail": "65212",
+  "project": "libssh2",
+  "built": false
+ },
+ {
+  "task_id": "arvo:30181",
+  "monorail": "30181",
+  "project": "wolfmqtt",
+  "built": false
+ },
+ {
+  "task_id": "arvo:41356",
+  "monorail": "41356",
+  "project": "geos",
+  "built": false
+ },
+ {
+  "task_id": "arvo:4637",
+  "monorail": "4637",
+  "project": "openthread",
+  "built": false
+ },
+ {
+  "task_id": "arvo:27710",
+  "monorail": "27710",
+  "project": "fluent-bit",
+  "built": false
+ },
+ {
+  "task_id": "arvo:63867",
+  "monorail": "63867",
+  "project": "cryptofuzz",
+  "built": false
+ },
+ {
+  "task_id": "arvo:6295",
+  "monorail": "6295",
+  "project": "skia",
+  "built": false
+ },
+ {
+  "task_id": "arvo:21435",
+  "monorail": "21435",
+  "project": "leptonica",
+  "built": false
+ },
+ {
+  "task_id": "arvo:20176",
+  "monorail": "20176",
+  "project": "wget2",
+  "built": false
+ },
+ {
+  "task_id": "arvo:49495",
+  "monorail": "49495",
+  "project": "lcms",
+  "built": false
+ },
+ {
+  "task_id": "arvo:24528",
+  "monorail": "24528",
+  "project": "rnp",
+  "built": false
+ },
+ {
+  "task_id": "arvo:18153",
+  "monorail": "18153",
+  "project": "postgis",
+  "built": false
+ },
+ {
+  "task_id": "arvo:66992",
+  "monorail": "66992",
+  "project": "igraph",
+  "built": false
+ },
+ {
+  "task_id": "arvo:66066",
+  "monorail": "66066",
+  "project": "zeek",
+  "built": false
+ },
+ {
+  "task_id": "arvo:8727",
+  "monorail": "8727",
+  "project": "capstone",
+  "built": false
+ },
+ {
+  "task_id": "arvo:58287",
+  "monorail": "58287",
+  "project": "faad2",
+  "built": false
+ },
+ {
+  "task_id": "arvo:28777",
+  "monorail": "28777",
+  "project": "hiredis",
+  "built": false
+ },
+ {
+  "task_id": "arvo:14935",
+  "monorail": "14935",
+  "project": "libspng",
+  "built": false
+ },
+ {
+  "task_id": "arvo:27269",
+  "monorail": "27269",
+  "project": "hostap",
+  "built": false
+ },
+ {
+  "task_id": "arvo:57570",
+  "monorail": "57570",
+  "project": "binutils",
+  "built": false
+ },
+ {
+  "task_id": "arvo:11078",
+  "monorail": "11078",
+  "project": "librawspeed",
+  "built": false
+ },
+ {
+  "task_id": "arvo:12662",
+  "monorail": "12662",
+  "project": "readstat",
+  "built": false
+ },
+ {
+  "task_id": "arvo:58262",
+  "monorail": "58262",
+  "project": "matio",
+  "built": false
+ },
+ {
+  "task_id": "arvo:57002",
+  "monorail": "57002",
+  "project": "mosquitto",
+  "built": false
+ },
+ {
+  "task_id": "arvo:31491",
+  "monorail": "31491",
+  "project": "irssi",
+  "built": false
+ },
+ {
+  "task_id": "arvo:44695",
+  "monorail": "44695",
+  "project": "libplist",
+  "built": false
+ },
+ {
+  "task_id": "arvo:4790",
+  "monorail": "4790",
+  "project": "wpantund",
+  "built": false
+ },
+ {
+  "task_id": "arvo:17855",
+  "monorail": "17855",
+  "project": "jbig2dec",
+  "built": false
+ },
+ {
+  "task_id": "arvo:63314",
+  "monorail": "63314",
+  "project": "libultrahdr",
+  "built": false
+ },
+ {
+  "task_id": "arvo:17778",
+  "monorail": "17778",
+  "project": "usrsctp",
+  "built": false
+ },
+ {
+  "task_id": "arvo:58701",
+  "monorail": "58701",
+  "project": "hdf5",
+  "built": false
+ },
+ {
+  "task_id": "arvo:25530",
+  "monorail": "25530",
+  "project": "libsndfile",
+  "built": false
+ },
+ {
+  "task_id": "arvo:63790",
+  "monorail": "63790",
+  "project": "flac",
+  "built": false
+ },
+ {
+  "task_id": "arvo:37056",
+  "monorail": "37056",
+  "project": "sudoers",
+  "built": false
+ },
+ {
+  "task_id": "arvo:27853",
+  "monorail": "27853",
+  "project": "libaom",
+  "built": false
+ },
+ {
+  "task_id": "arvo:6521",
+  "monorail": "6521",
+  "project": "skcms",
+  "built": false
+ },
+ {
+  "task_id": "arvo:60766",
+  "monorail": "60766",
+  "project": "libjpeg-turbo",
+  "built": false
+ },
+ {
+  "task_id": "arvo:59243",
+  "monorail": "59243",
+  "project": "qemu",
+  "built": false
+ },
+ {
+  "task_id": "arvo:53952",
+  "monorail": "53952",
+  "project": "samba",
+  "built": false
+ },
+ {
+  "task_id": "arvo:31301",
+  "monorail": "31301",
+  "project": "libass",
+  "built": false
+ },
+ {
+  "task_id": "arvo:53149",
+  "monorail": "53149",
+  "project": "util-linux",
+  "built": false
+ },
+ {
+  "task_id": "arvo:23499",
+  "monorail": "23499",
+  "project": "clamav",
+  "built": false
+ },
+ {
+  "task_id": "arvo:65486",
+  "monorail": "65486",
+  "project": "icu",
+  "built": false
+ },
+ {
+  "task_id": "arvo:53080",
+  "monorail": "53080",
+  "project": "opensips",
+  "built": false
+ },
+ {
+  "task_id": "arvo:44659",
+  "monorail": "44659",
+  "project": "unicorn",
+  "built": false
+ },
+ {
+  "task_id": "arvo:38283",
+  "monorail": "38283",
+  "project": "freeradius",
+  "built": false
+ },
+ {
+  "task_id": "arvo:22427",
+  "monorail": "22427",
+  "project": "pcapplusplus",
+  "built": false
+ },
+ {
+  "task_id": "arvo:64622",
+  "monorail": "64622",
+  "project": "pigweed",
+  "built": false
+ },
+ {
+  "task_id": "arvo:36497",
+  "monorail": "36497",
+  "project": "libjxl",
+  "built": false
+ },
+ {
+  "task_id": "arvo:4404",
+  "monorail": "4404",
+  "project": "proj4",
+  "built": false
+ },
+ {
+  "task_id": "arvo:26682",
+  "monorail": "26682",
+  "project": "miniz",
+  "built": false
+ },
+ {
+  "task_id": "arvo:759",
+  "monorail": "759",
+  "project": "freetype2",
+  "built": false
+ },
+ {
+  "task_id": "arvo:48959",
+  "monorail": "48959",
+  "project": "libwebsockets",
+  "built": false
+ },
+ {
+  "task_id": "arvo:18321",
+  "monorail": "18321",
+  "project": "radare2",
+  "built": false
+ },
+ {
+  "task_id": "arvo:35109",
+  "monorail": "35109",
+  "project": "mruby",
+  "built": false
+ },
+ {
+  "task_id": "arvo:34299",
+  "monorail": "34299",
+  "project": "espeak-ng",
+  "built": false
+ },
+ {
+  "task_id": "arvo:24186",
+  "monorail": "24186",
+  "project": "stb",
+  "built": false
+ }
+]

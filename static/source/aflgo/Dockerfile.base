@@ -1,0 +1,80 @@
+FROM ubuntu:20.04
+
+ENV DEBIAN_FRONTEND=noninteractive
+ENV TZ=UTC
+
+# Core build tools
+RUN apt-get update && apt-get install -y \
+    build-essential make cmake automake autoconf libtool pkg-config \
+    git wget curl ca-certificates \
+    python3 python3-dev python3-pip python3-setuptools \
+    gawk lsb-release software-properties-common \
+    binutils-dev libunwind-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# LLVM 11 (required by AFLGo)
+RUN wget https://apt.llvm.org/llvm.sh && chmod +x llvm.sh && ./llvm.sh 11 && rm llvm.sh
+RUN apt-get update && apt-get install -y \
+    llvm-11-dev llvm-11-tools clang-11 \
+    libclang-11-dev lld-11 \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set LLVM 11 as default
+RUN update-alternatives --install /usr/bin/clang clang /usr/bin/clang-11 100 && \
+    update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-11 100 && \
+    update-alternatives --install /usr/bin/llvm-config llvm-config /usr/bin/llvm-config-11 100 && \
+    update-alternatives --install /usr/bin/llvm-ar llvm-ar /usr/bin/llvm-ar-11 100 && \
+    update-alternatives --install /usr/bin/llvm-as llvm-as /usr/bin/llvm-as-11 100 && \
+    update-alternatives --install /usr/bin/llvm-link llvm-link /usr/bin/llvm-link-11 100 && \
+    update-alternatives --install /usr/bin/llvm-dis llvm-dis /usr/bin/llvm-dis-11 100 && \
+    update-alternatives --install /usr/bin/opt opt /usr/bin/opt-11 100 && \
+    update-alternatives --install /usr/bin/llvm-ranlib llvm-ranlib /usr/bin/llvm-ranlib-11 100 && \
+    update-alternatives --install /usr/bin/ld.lld ld.lld /usr/bin/ld.lld-11 100
+
+# Gold linker (required for LTO in AFLGo stage 1)
+RUN apt-get update && apt-get install -y binutils-gold && rm -rf /var/lib/apt/lists/*
+
+# Python deps for AFLGo distance calculator
+RUN pip3 install 'networkx<3.2' 'pydot<3' pydotplus
+
+# Boost (for distance calculator)
+RUN apt-get update && apt-get install -y libboost-all-dev && rm -rf /var/lib/apt/lists/*
+
+# Build AFLGo at a pinned upstream commit
+ARG AFLGO_COMMIT=fa125da5d70621daf7141c6279877c97708c8c1f
+RUN git clone https://github.com/aflgo/aflgo.git /aflgo && git -C /aflgo checkout "$AFLGO_COMMIT"
+WORKDIR /aflgo
+
+ENV CXX=clang++
+ENV CC=clang
+ENV LLVM_CONFIG=llvm-config
+
+# Build AFL core
+RUN cd afl-2.57b && make clean all
+
+# Build LLVM instrumentation pass
+RUN cd instrument && make clean all
+
+# Build distance calculator
+RUN cd distance/distance_calculator && cmake ./ && cmake --build ./
+
+ENV AFLGO=/aflgo
+ENV PATH="/aflgo/afl-2.57b:/aflgo/instrument:/aflgo/distance:${PATH}"
+
+# Common project dependencies (shared across most projects)
+RUN apt-get update && apt-get install -y \
+    zlib1g-dev libssl-dev libcurl4-openssl-dev \
+    libedit-dev libpcre2-dev libncurses-dev \
+    python3-docutils python3-sphinx \
+    graphviz \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy AFL driver
+COPY afl_driver.c /aflgo/afl_driver.c
+
+# Copy the generic fuzz target runner script (aflgo_baseline.py also copies the
+# current one into every container at run time)
+COPY reachability/fuzz_target.sh /aflgo/fuzz_target.sh
+RUN chmod +x /aflgo/fuzz_target.sh
+
+WORKDIR /src

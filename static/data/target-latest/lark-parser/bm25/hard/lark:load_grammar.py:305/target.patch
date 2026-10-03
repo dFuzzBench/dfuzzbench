@@ -1,0 +1,13 @@
+diff --git a/lark/load_grammar.py b/lark/load_grammar.py
+index 362a845..b2f4a99 100644
+--- a/lark/load_grammar.py
++++ b/lark/load_grammar.py
+@@ -302,6 +302,8 @@ class EBNF_to_BNF(Transformer_InPlace):
+         """
+         key = (a, b, target, atom, "opt")
+         try:
++            print("HIT TARGET") # target
++            exit(0)
+             return self.rules_cache[key]
+         except KeyError:
+             new_name = self._name_rule('repeat_a%d_b%d_opt' % (a, b))

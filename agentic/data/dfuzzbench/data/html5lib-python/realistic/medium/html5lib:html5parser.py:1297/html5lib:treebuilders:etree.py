@@ -1,0 +1,135 @@
+from __future__ import absolute_import, division, unicode_literals
+# pylint:disable=protected-access
+
+from six import text_type
+
+import re
+
+from copy import copy
+
+from . import base
+from .. import _ihatexml
+from .. import constants
+from ..constants import namespaces
+from .._utils import moduleFactoryFactory
+
+tag_regexp = re.compile("{([^}]*)}(.*)")
+
+
+def getETreeBuilder(ElementTreeImplementation, fullTree=False):
+    ElementTree = ElementTreeImplementation
+    ElementTreeCommentType = ElementTree.Comment("asd").tag
+
+    class Element(base.Node):
+        def __init__(self, name, namespace=None):
+            self._name = name
+            self._namespace = namespace
+            self._element = ElementTree.Element(self._getETreeTag(name,
+                                                                  namespace))
+            if namespace is None:
+                self.nameTuple = namespaces["html"], self._name
+            else:
+                self.nameTuple = self._namespace, self._name
+            self.parent = None
+            self._childNodes = []
+            self._flags = []
+
+        def _getETreeTag(self, name, namespace):
+            if namespace is None:
+                etree_tag = name
+            else:
+                etree_tag = "{%s}%s" % (namespace, name)
+            return etree_tag
+
+        def _setName(self, name):
+            self._name = name
+            self._element.tag = self._getETreeTag(self._name, self._namespace)
+
+        def _getName(self):
+            return self._name
+
+        name = property(_getName, _setName)
+
+        def _setNamespace(self, namespace):
+            self._namespace = namespace
+            self._element.tag = self._getETreeTag(self._name, self._namespace)
+
+        def _getNamespace(self):
+            return self._namespace
+
+        namespace = property(_getNamespace, _setNamespace)
+
+        def _getAttributes(self):
+            return self._element.attrib
+
+        def _setAttributes(self, attributes):
+            el_attrib = self._element.attrib
+            el_attrib.clear()
+            if attributes:
+                # calling .items _always_ allocates, and the above truthy check is cheaper than the
+                # allocation on average
+                for key, value in attributes.items():
+                    if isinstance(key, tuple):
+                        name = "{%s}%s" % (key[2], key[1])
+                    else:
+                        name = key
+                    el_attrib[name] = value
+
+        attributes = property(_getAttributes, _setAttributes)
+
+        def _getChildNodes(self):
+            return self._childNodes
+
+        def _setChildNodes(self, value):
+            del self._element[:]
+            self._childNodes = []
+            for element in value:
+                self.insertChild(element)
+
+        childNodes = property(_getChildNodes, _setChildNodes)
+
+        def hasContent(self):
+            """Return true if the node has children or text"""
+            return bool(self._element.text or len(self._element))
+
+        def appendChild(self, node):
+            self._childNodes.append(node)
+            self._element.append(node._element)
+            node.parent = self
+
+        def insertBefore(self, node, refNode):
+            index = list(self._element).index(refNode._element)
+            self._element.insert(index, node._element)
+            node.parent = self
+
+        def removeChild(self, node):
+            self._childNodes.remove(node)
+            self._element.remove(node._element)
+            node.parent = None
+
+        def insertText(self, data, insertBefore=None):
+            if not len(self._element):
+                if not self._element.text:
+                    self._element.text = ""
+                self._element.text += data
+            elif insertBefore is None:
+                # Insert the text as the tail of the last child element
+                if not self._element[-1].tail:
+                    self._element[-1].tail = ""
+                self._element[-1].tail += data
+            else:
+                # Insert the text before the specified node
+                children = list(self._element)
+                index = children.index(insertBefore._element)
+                if index > 0:
+                    if not self._element[index - 1].tail:
+                        self._element[index - 1].tail = ""
+                    self._element[index - 1].tail += data
+                else:
+                    if not self._element.text:
+                        self._element.text = ""
+                    self._element.text += data
+
+        def cloneNode(self):
+            element = type(self)(self.name, self.namespace)
+            if

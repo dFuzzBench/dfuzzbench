@@ -1,0 +1,19 @@
+diff --git a/guetzli/jpeg_data_reader.cc b/guetzli/jpeg_data_reader.cc
+index 513e1a2..bfe0dea 100644
+--- a/guetzli/jpeg_data_reader.cc
++++ b/guetzli/jpeg_data_reader.cc
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <cstdlib>
+ /*
+  * Copyright 2016 Google Inc.
+  *
+@@ -1019,6 +1021,8 @@ bool ReadJpeg(const uint8_t* data, const size_t len, JpegReadMode mode,
+         }
+         break;
+       case 0xfe:
++        fprintf(stderr, "HIT TARGET\n");  // target
++        exit(0);
+         if (mode != JPEG_READ_TABLES) {
+           ok = ProcessCOM(data, len, &pos, jpg);
+         }

@@ -1,0 +1,13 @@
+diff --git a/rich/markdown.py b/rich/markdown.py
+index 26c58d15..05bbf277 100644
+--- a/rich/markdown.py
++++ b/rich/markdown.py
+@@ -349,6 +349,8 @@ class ListElement(MarkdownElement):
+     ) -> RenderResult:
+         if self.list_type == "bullet_list_open":
+             for item in self.items:
++                print("HIT TARGET") # target
++                exit(0)
+                 yield from item.render_bullet(console, options)
+         else:
+             number = 1 if self.list_start is None else self.list_start

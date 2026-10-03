@@ -1,0 +1,19 @@
+diff --git a/src/libbpf.c b/src/libbpf.c
+index 07d5de8..a837ac9 100644
+--- a/src/libbpf.c
++++ b/src/libbpf.c
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <stdlib.h>
+ // SPDX-License-Identifier: (LGPL-2.1 OR BSD-2-Clause)
+ 
+ /*
+@@ -824,6 +826,8 @@ bpf_object__init_prog(struct bpf_object *obj, struct bpf_program *prog,
+ 	 * autoload set to false.
+ 	 */
+ 	if (sec_name[0] == '?') {
++		fprintf(stderr, "HIT TARGET\n");  // target
++		exit(0);
+ 		prog->autoload = false;
+ 		/* from now on forget there was ? in section name */
+ 		sec_name++;

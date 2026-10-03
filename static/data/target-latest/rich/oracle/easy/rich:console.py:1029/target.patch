@@ -1,0 +1,13 @@
+diff --git a/rich/console.py b/rich/console.py
+index 6725e405..d91b0266 100644
+--- a/rich/console.py
++++ b/rich/console.py
+@@ -1026,6 +1026,8 @@ class Console:
+             except (AttributeError, ValueError, OSError):  # Probably not a terminal
+                 pass
+             else:
++                print("HIT TARGET") # target
++                exit(0)
+                 break
+ 
+         columns = self._environ.get("COLUMNS")

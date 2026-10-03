@@ -1,0 +1,19 @@
+diff --git a/bin/varnishd/cache/cache_esi_parse.c b/bin/varnishd/cache/cache_esi_parse.c
+index 5145b016c..af83c9e44 100644
+--- a/bin/varnishd/cache/cache_esi_parse.c
++++ b/bin/varnishd/cache/cache_esi_parse.c
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <stdlib.h>
+ /*-
+  * Copyright (c) 2011 Varnish Software AS
+  * All rights reserved.
+@@ -679,6 +681,8 @@ VEP_Parse(struct vep_state *vep, const char *p, size_t l)
+ 				);
+ 				vep->state = VEP_NOTXML;
+ 			} else if (p < e) {
++				fprintf(stderr, "HIT TARGET\n");  // target
++				exit(0);
+ 				VSLb(vep->vc->wrk->vsl, SLT_ESI_xmlerror,
+ 				    "No ESI processing, "
+ 				    "first char not '<'."

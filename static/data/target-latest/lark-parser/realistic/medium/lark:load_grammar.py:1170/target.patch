@@ -1,0 +1,13 @@
+diff --git a/lark/load_grammar.py b/lark/load_grammar.py
+index 362a845..cc790bf 100644
+--- a/lark/load_grammar.py
++++ b/lark/load_grammar.py
+@@ -1167,6 +1167,8 @@ class GrammarBuilder:
+                 if t2.data=='expansion' and len(t2.children) == 1:
+                     item ,= t2.children
+                     if item.data == 'value':
++                        print("HIT TARGET") # target
++                        exit(0)
+                         item ,= item.children
+                         if isinstance(item, Terminal):
+                             # Keep terminal name, no need to create a new definition

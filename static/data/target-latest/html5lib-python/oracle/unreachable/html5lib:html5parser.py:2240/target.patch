@@ -1,0 +1,13 @@
+diff --git a/html5lib/html5parser.py b/html5lib/html5parser.py
+index b3c206d..123c8d8 100644
+--- a/html5lib/html5parser.py
++++ b/html5lib/html5parser.py
+@@ -2237,6 +2237,8 @@ class InCellPhase(Phase):
+                 while True:
+                     node = self.tree.openElements.pop()
+                     if node.name == token["name"]:
++                        print("HIT TARGET") # target
++                        exit(0)
+                         break
+             else:
+                 self.tree.openElements.pop()

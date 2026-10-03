@@ -1,0 +1,19 @@
+diff --git a/src/blocks.c b/src/blocks.c
+index 292e563..682df0e 100644
+--- a/src/blocks.c
++++ b/src/blocks.c
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <stdlib.h>
+ /**
+  * Block parsing implementation.
+  *
+@@ -300,6 +302,8 @@ static cmark_node *finalize(cmark_parser *parser, cmark_node *b) {
+ 
+   case CMARK_NODE_CODE_BLOCK:
+     if (!b->as.code.fenced) { // indented code
++      fprintf(stderr, "HIT TARGET\n");  // target
++      exit(0);
+       remove_trailing_blank_lines(node_content);
+       cmark_strbuf_putc(node_content, '\n');
+     } else {

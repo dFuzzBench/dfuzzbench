@@ -1,0 +1,13 @@
+diff --git a/lark/load_grammar.py b/lark/load_grammar.py
+index 362a845..7704449 100644
+--- a/lark/load_grammar.py
++++ b/lark/load_grammar.py
+@@ -655,6 +655,8 @@ class TerminalTreeToPattern(Transformer_NonRecursive):
+         return PatternRE('(?:%s)%s' % (inner.to_regexp(), op), inner.flags)
+ 
+     def maybe(self, expr):
++        print("HIT TARGET") # target
++        exit(0)
+         return self.expr(expr + ['?'])
+ 
+     def alias(self, t):

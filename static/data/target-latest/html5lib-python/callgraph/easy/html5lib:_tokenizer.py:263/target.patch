@@ -1,0 +1,13 @@
+diff --git a/html5lib/_tokenizer.py b/html5lib/_tokenizer.py
+index 4748a19..99c93f0 100644
+--- a/html5lib/_tokenizer.py
++++ b/html5lib/_tokenizer.py
+@@ -260,6 +260,8 @@ class HTMLTokenizer(object):
+         elif data == "<":
+             self.state = self.tagOpenState
+         elif data == "\u0000":
++            print("HIT TARGET") # target
++            exit(0)
+             self.tokenQueue.append({"type": tokenTypes["ParseError"],
+                                     "data": "invalid-codepoint"})
+             self.tokenQueue.append({"type": tokenTypes["Characters"],

@@ -1,0 +1,13 @@
+diff --git a/html5lib/html5parser.py b/html5lib/html5parser.py
+index b3c206d..2cb66ca 100644
+--- a/html5lib/html5parser.py
++++ b/html5lib/html5parser.py
+@@ -1346,6 +1346,8 @@ class InBodyPhase(Phase):
+         else:
+             self.tree.generateImpliedEndTags()
+             if self.tree.openElements[-1] != node:
++                print("HIT TARGET") # target
++                exit(0)
+                 self.parser.parseError("end-tag-too-early-ignored",
+                                        {"name": "form"})
+             self.tree.openElements.remove(node)

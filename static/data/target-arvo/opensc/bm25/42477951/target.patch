@@ -1,0 +1,18 @@
+diff --git a/src/libopensc/pkcs15.c b/src/libopensc/pkcs15.c
+index 4386a51e7..e764bff35 100644
+--- a/src/libopensc/pkcs15.c
++++ b/src/libopensc/pkcs15.c
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <stdlib.h>
+ /*
+  * pkcs15.c: PKCS #15 general functions
+  *
+@@ -1879,6 +1881,7 @@ sc_pkcs15_free_object(struct sc_pkcs15_object *obj)
+ {
+ 	if (!obj)
+ 		return;
++	fprintf(stderr, "HIT TARGET\n");  // target
+ 	switch (obj->type & SC_PKCS15_TYPE_CLASS_MASK) {
+ 	case SC_PKCS15_TYPE_PRKEY:
+ 		sc_pkcs15_free_prkey_info((sc_pkcs15_prkey_info_t *)obj->data);

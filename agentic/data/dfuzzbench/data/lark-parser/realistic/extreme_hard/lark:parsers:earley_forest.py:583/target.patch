@@ -1,0 +1,13 @@
+diff --git a/lark/parsers/earley_forest.py b/lark/parsers/earley_forest.py
+index c60f3a6..b1b6bfc 100644
+--- a/lark/parsers/earley_forest.py
++++ b/lark/parsers/earley_forest.py
+@@ -580,6 +580,8 @@ class ForestToParseTree(ForestTransformer):
+         return self._call_ambig_func(node, data)
+ 
+     def transform_intermediate_node(self, node, data):
++        print("HIT TARGET") # target
++        exit(0)
+         if id(node) not in self._successful_visits:
+             return Discard
+         r = self._check_cycle(node)

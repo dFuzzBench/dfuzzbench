@@ -1,0 +1,13 @@
+diff --git a/fsspec/implementations/http.py b/fsspec/implementations/http.py
+index 4580764..c7d1cb7 100644
+--- a/fsspec/implementations/http.py
++++ b/fsspec/implementations/http.py
+@@ -134,6 +134,8 @@ class HTTPFileSystem(AsyncFileSystem):
+         if self._session is None:
+             self._session = await self.get_client(loop=self.loop, **self.client_kwargs)
+             if not self.asynchronous:
++                print("HIT TARGET") # target
++                exit(0)
+                 weakref.finalize(self, self.close_session, self.loop, self._session)
+         return self._session
+ 

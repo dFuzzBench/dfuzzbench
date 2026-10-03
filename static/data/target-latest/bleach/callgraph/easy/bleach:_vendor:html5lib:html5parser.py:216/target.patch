@@ -1,0 +1,13 @@
+diff --git a/bleach/_vendor/html5lib/html5parser.py b/bleach/_vendor/html5lib/html5parser.py
+index 74d829d..09fcd01 100644
+--- a/bleach/_vendor/html5lib/html5parser.py
++++ b/bleach/_vendor/html5lib/html5parser.py
+@@ -213,6 +213,8 @@ class HTMLParser(object):
+                 type = new_token["type"]
+ 
+                 if type == ParseErrorToken:
++                    print("HIT TARGET") # target
++                    exit(0)
+                     self.parseError(new_token["data"], new_token.get("datavars", {}))
+                     new_token = None
+                 else:

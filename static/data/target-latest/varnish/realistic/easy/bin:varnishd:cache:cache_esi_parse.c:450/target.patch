@@ -1,0 +1,23 @@
+diff --git a/bin/varnishd/cache/cache_esi_parse.c b/bin/varnishd/cache/cache_esi_parse.c
+index 0b183a35d..58e94a249 100644
+--- a/bin/varnishd/cache/cache_esi_parse.c
++++ b/bin/varnishd/cache/cache_esi_parse.c
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <stdlib.h>
+ /*-
+  * Copyright (c) 2011 Varnish Software AS
+  * All rights reserved.
+@@ -446,8 +448,11 @@ include_attr_src(struct vep_state *vep)
+ 		return;
+ 	}
+ 	for (p = VSB_data(vep->attr_vsb); *p != '\0'; p++)
+-		if (vct_islws(*p))
++		if (vct_islws(*p)) {
++			fprintf(stderr, "HIT TARGET\n");  // target
++			exit(0);
+ 			break;
++		}
+ 	if (*p != '\0') {
+ 		vep_error(vep,
+ 		    "ESI 1.0 <esi:include> "

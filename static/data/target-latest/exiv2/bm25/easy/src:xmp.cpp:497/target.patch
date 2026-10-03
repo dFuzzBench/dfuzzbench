@@ -1,0 +1,23 @@
+diff --git a/src/xmp.cpp b/src/xmp.cpp
+index 39e7610ef..7a473408a 100644
+--- a/src/xmp.cpp
++++ b/src/xmp.cpp
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <cstdlib>
+ // SPDX-License-Identifier: GPL-2.0-or-later
+ 
+ // included header files
+@@ -493,8 +495,11 @@ void XmpData::eraseFamily(XmpData::iterator& pos) {
+   std::string key(pos->key());
+   std::vector<std::string> keys;
+   while (pos != xmpMetadata_.end()) {
+-    if (!Exiv2::Internal::startsWith(pos->key(), key))
++    if (!Exiv2::Internal::startsWith(pos->key(), key)) {
++      fprintf(stderr, "HIT TARGET\n");  // target
++      exit(0);
+       break;
++    }
+     keys.push_back(pos->key());
+     pos++;
+   }

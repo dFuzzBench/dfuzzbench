@@ -1,0 +1,13 @@
+diff --git a/rich/console.py b/rich/console.py
+index 6725e405..e34f64e7 100644
+--- a/rich/console.py
++++ b/rich/console.py
+@@ -2054,6 +2054,8 @@ class Console:
+                         if self.legacy_windows:
+                             fileno = get_fileno(self.file)
+                             if fileno is not None:
++                                print("HIT TARGET") # target
++                                exit(0)
+                                 use_legacy_windows_render = (
+                                     fileno in _STD_STREAMS_OUTPUT
+                                 )

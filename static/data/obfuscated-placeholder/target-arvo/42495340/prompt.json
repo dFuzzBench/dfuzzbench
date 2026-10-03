@@ -1,0 +1,39 @@
+{
+ "harness_file": "harness.cc",
+ "harness_name": "prog1",
+ "renamed": {
+  "Assimp": "Type1",
+  "Importer": "Type2",
+  "ReadFileFromMemory": "func3",
+  "TXmlParser": "Type21",
+  "aiAttachLogStream": "func2",
+  "aiDefaultLogStream_STDOUT": "var5",
+  "aiDetachLogStream": "func4",
+  "aiGetPredefinedLogStream": "func1",
+  "aiLogStream": "var3",
+  "aiProcessPreset_TargetRealtime_Quality": "var9",
+  "aiScene": "var7",
+  "clear": "func18",
+  "data": "var1",
+  "dataSize": "var2",
+  "importer": "var6",
+  "pugi": "var18",
+  "sc": "var8",
+  "stream": "var4",
+  "xml_node": "var19"
+ },
+ "renamed_paths": {
+  "dir:assimp": "dir1",
+  "dir:include": "dir9",
+  "file:Importer": "file2",
+  "file:XmlParser": "file17",
+  "file:cimport": "file1",
+  "file:postprocess": "file4",
+  "file:scene": "file3",
+  "prog:assimp_fuzzer": "prog1"
+ },
+ "target": {
+  "function": "Type1::Type21<var18::var19>::func18()",
+  "path": "dir9/dir1/file17.h"
+ }
+}

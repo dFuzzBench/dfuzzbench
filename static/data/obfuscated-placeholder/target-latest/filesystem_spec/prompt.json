@@ -1,0 +1,112 @@
+{
+ "harness_file": "harness.py",
+ "harness_name": "prog1.py",
+ "input_example": "This program requires one input string. If your generated input is as follows:\n```\ninput\\ninput\n```\nWe will replace the `var8` variable with that string 'input\\ninput' in the `TestOneInput()` function and the fuzzer will then run the `var9.func2()` and `var9.func3()` functions on that input.",
+ "project": "project1",
+ "renamed": {
+  "AbstractFileSystem": "Type4",
+  "ClientError": "Type2",
+  "FSTimeoutError": "Type1",
+  "HTTPFileSystem": "Type3",
+  "_Cached": "var16",
+  "__call__": "func9",
+  "aiohttp": "module2",
+  "client_exceptions": "var5",
+  "close_session": "func7",
+  "data": "var6",
+  "e": "var14",
+  "exceptions": "var3",
+  "fdp": "var7",
+  "filesystem": "func1",
+  "filesystem_spec": "project1",
+  "fsspec": "module1",
+  "get_lock": "func4",
+  "h": "var9",
+  "http": "var2",
+  "http_f": "var15",
+  "implementations": "var1",
+  "makedirs": "func10",
+  "method": "var12",
+  "mirror_sync_methods": "func6",
+  "open": "func3",
+  "path": "var8",
+  "put_file": "func2",
+  "requests": "var4",
+  "set_session": "func8",
+  "sync": "func5",
+  "timeout": "var13",
+  "tmp_path": "var11",
+  "use_listings_cache": "var10"
+ },
+ "renamed_paths": {
+  "dir:fsspec": "dir1",
+  "dir:implementations": "dir2",
+  "file:asyn": "file2",
+  "file:http": "file3",
+  "file:spec": "file4",
+  "file:the_file": "file1",
+  "prog:fuzzer": "prog1"
+ },
+ "targets": {
+  "easy": {
+   "fsspec:asyn.py:34": {
+    "function": "func4",
+    "path": "dir1/file2.py"
+   },
+   "fsspec:asyn.py:92": {
+    "function": "func5",
+    "path": "dir1/file2.py"
+   },
+   "fsspec:asyn.py:930": {
+    "function": "func6",
+    "path": "dir1/file2.py"
+   },
+   "fsspec:asyn.py:940": {
+    "function": "func6",
+    "path": "dir1/file2.py"
+   },
+   "fsspec:implementations:http.py:124": {
+    "function": "Type3::func7",
+    "path": "dir1/dir2/file3.py"
+   },
+   "fsspec:implementations:http.py:137": {
+    "function": "Type3::func8",
+    "path": "dir1/dir2/file3.py"
+   },
+   "fsspec:spec.py:77": {
+    "function": "var16::func9",
+    "path": "dir1/file4.py"
+   },
+   "fsspec:spec.py:86": {
+    "function": "var16::func9",
+    "path": "dir1/file4.py"
+   }
+  },
+  "hard": {
+   "fsspec:asyn.py:101": {
+    "function": "func5",
+    "path": "dir1/file2.py"
+   },
+   "fsspec:implementations:http.py:127": {
+    "function": "Type3::func7",
+    "path": "dir1/dir2/file3.py"
+   },
+   "fsspec:implementations:http.py:131": {
+    "function": "Type3::func7",
+    "path": "dir1/dir2/file3.py"
+   }
+  },
+  "medium": {
+   "fsspec:asyn.py:96": {
+    "function": "func5",
+    "path": "dir1/file2.py"
+   }
+  },
+  "unreachable": {
+   "fsspec:spec.py:307": {
+    "function": "Type4::func10",
+    "path": "dir1/file4.py"
+   }
+  }
+ }
+}

@@ -1,0 +1,13 @@
+diff --git a/bleach/html5lib_shim.py b/bleach/html5lib_shim.py
+index ca1cc8c..f64ade2 100644
+--- a/bleach/html5lib_shim.py
++++ b/bleach/html5lib_shim.py
+@@ -541,6 +541,8 @@ def convert_entity(value):
+ 
+         if value[1] in ("x", "X"):
+             # hex-encoded code point
++            print("HIT TARGET") # target
++            exit(0)
+             int_as_string, base = value[2:], 16
+         else:
+             # decimal code point

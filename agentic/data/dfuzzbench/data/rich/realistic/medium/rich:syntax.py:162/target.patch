@@ -1,0 +1,13 @@
+diff --git a/rich/syntax.py b/rich/syntax.py
+index cff8fd23..8ff9fedf 100644
+--- a/rich/syntax.py
++++ b/rich/syntax.py
+@@ -159,6 +159,8 @@ class PygmentsSyntaxTheme(SyntaxTheme):
+             except KeyError:
+                 style = Style.null()
+             else:
++                print("HIT TARGET") # target
++                exit(0)
+                 color = pygments_style["color"]
+                 bgcolor = pygments_style["bgcolor"]
+                 style = Style(

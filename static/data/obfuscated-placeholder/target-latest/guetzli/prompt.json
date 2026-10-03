@@ -1,0 +1,123 @@
+{
+ "harness_file": "harness.cc",
+ "harness_name": "prog1.cc",
+ "input_example": "This program requires one input string. If your generated input is as follows:\n```\ninput\\ninput\n```\nWe will assign the value of `var1` to that input string 'input\\ninput' and assgin the value of `var2` to the length of that input string at the beginning of the `LLVMFuzzerTestOneInput()` function and the fuzzer will then run the function on that input.",
+ "project": "project1",
+ "renamed": {
+  "JPEGData": "Type1",
+  "JPEG_READ_HEADER": "CONST1",
+  "Params": "Type2",
+  "Process": "func3",
+  "ProcessDHT": "func6",
+  "ProcessDQT": "func10",
+  "ProcessDRI": "func7",
+  "ProcessRestart": "func9",
+  "ProcessSOF": "func4",
+  "ProcessSOS": "func5",
+  "ReadJpeg": "func2",
+  "RefineDCTBlock": "func8",
+  "data": "var1",
+  "guetzli": "project1",
+  "height": "var6",
+  "jpeg_data": "func1",
+  "jpeg_out": "var8",
+  "jpg_header": "var3",
+  "kMaxPixels": "var4",
+  "params": "var7",
+  "size": "var2",
+  "width": "var5"
+ },
+ "renamed_paths": {
+  "dir:guetzli": "dir1",
+  "file:jpeg_data": "file1",
+  "file:jpeg_data_reader": "file2",
+  "file:processor": "file3",
+  "prog:fuzzer": "prog1"
+ },
+ "targets": {
+  "easy": {
+   "guetzli:jpeg_data_reader.cc:1022": {
+    "function": "func2",
+    "path": "dir1/file2.cc"
+   },
+   "guetzli:jpeg_data_reader.cc:1036": {
+    "function": "func2",
+    "path": "dir1/file2.cc"
+   },
+   "guetzli:jpeg_data_reader.cc:1065": {
+    "function": "func2",
+    "path": "dir1/file2.cc"
+   },
+   "guetzli:jpeg_data_reader.cc:163": {
+    "function": "func4",
+    "path": "dir1/file2.cc"
+   },
+   "guetzli:jpeg_data_reader.cc:243": {
+    "function": "func5",
+    "path": "dir1/file2.cc"
+   },
+   "guetzli:jpeg_data_reader.cc:338": {
+    "function": "func6",
+    "path": "dir1/file2.cc"
+   },
+   "guetzli:jpeg_data_reader.cc:386": {
+    "function": "func7",
+    "path": "dir1/file2.cc"
+   },
+   "guetzli:jpeg_data_reader.cc:649": {
+    "function": "func8",
+    "path": "dir1/file2.cc"
+   },
+   "guetzli:jpeg_data_reader.cc:743": {
+    "function": "func9",
+    "path": "dir1/file2.cc"
+   },
+   "guetzli:jpeg_data_reader.cc:939": {
+    "function": "func2",
+    "path": "dir1/file2.cc"
+   }
+  },
+  "extreme_hard": {
+   "guetzli:jpeg_data_reader.cc:185": {
+    "function": "func5",
+    "path": "dir1/file2.cc"
+   }
+  },
+  "medium": {
+   "guetzli:jpeg_data_reader.cc:198": {
+    "function": "func5",
+    "path": "dir1/file2.cc"
+   },
+   "guetzli:jpeg_data_reader.cc:231": {
+    "function": "func5",
+    "path": "dir1/file2.cc"
+   },
+   "guetzli:jpeg_data_reader.cc:287": {
+    "function": "func6",
+    "path": "dir1/file2.cc"
+   }
+  },
+  "unreachable": {
+   "guetzli:jpeg_data_reader.cc:320": {
+    "function": "func6",
+    "path": "dir1/file2.cc"
+   },
+   "guetzli:jpeg_data_reader.cc:351": {
+    "function": "func10",
+    "path": "dir1/file2.cc"
+   },
+   "guetzli:jpeg_data_reader.cc:655": {
+    "function": "func8",
+    "path": "dir1/file2.cc"
+   },
+   "guetzli:jpeg_data_reader.cc:700": {
+    "function": "func8",
+    "path": "dir1/file2.cc"
+   },
+   "guetzli:jpeg_data_reader.cc:956": {
+    "function": "func2",
+    "path": "dir1/file2.cc"
+   }
+  }
+ }
+}

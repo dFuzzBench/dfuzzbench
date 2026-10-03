@@ -1,0 +1,13 @@
+diff --git a/fsspec/asyn.py b/fsspec/asyn.py
+index a040efc..e8d124b 100644
+--- a/fsspec/asyn.py
++++ b/fsspec/asyn.py
+@@ -937,6 +937,8 @@ def mirror_sync_methods(obj):
+                 mth = sync_wrapper(getattr(obj, method), obj=obj)
+                 setattr(obj, smethod, mth)
+                 if not mth.__doc__:
++                    print("HIT TARGET") # target
++                    exit(0)
+                     mth.__doc__ = getattr(
+                         getattr(AbstractFileSystem, smethod, None), "__doc__", ""
+                     )

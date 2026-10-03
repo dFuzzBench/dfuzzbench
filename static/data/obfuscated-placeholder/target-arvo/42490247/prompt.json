@@ -1,0 +1,22 @@
+{
+ "harness_file": "harness.cc",
+ "harness_name": "prog5",
+ "renamed": {
+  "GIFLoadingContext": "Type6",
+  "Gfx": "Type4",
+  "data": "var1",
+  "decode_frame": "func14",
+  "load_gif_from_memory": "func13",
+  "size": "var2"
+ },
+ "renamed_paths": {
+  "dir:LibGfx": "dir5",
+  "dir:Libraries": "dir3",
+  "file:GIFLoader": "file9",
+  "prog:FuzzGIFLoader": "prog5"
+ },
+ "target": {
+  "function": "Type4::func14(Type4::Type6&, unsigned long)",
+  "path": "dir3/dir5/file9.cpp"
+ }
+}

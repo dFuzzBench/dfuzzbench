@@ -1,0 +1,13 @@
+diff --git a/lark/lark.py b/lark/lark.py
+index 0bec71b..7b7eaeb 100644
+--- a/lark/lark.py
++++ b/lark/lark.py
+@@ -373,6 +373,8 @@ class Lark(Serialize):
+             elif self.options.parser == 'cyk':
+                 self.options.lexer = 'basic'
+             else:
++                print("HIT TARGET") # target
++                exit(0)
+                 assert False, self.options.parser
+         lexer = self.options.lexer
+         if isinstance(lexer, type):

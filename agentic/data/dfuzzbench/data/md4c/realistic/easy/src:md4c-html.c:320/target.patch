@@ -1,0 +1,22 @@
+diff --git a/src/md4c-html.c b/src/md4c-html.c
+index 5229de5..2a2986c 100644
+--- a/src/md4c-html.c
++++ b/src/md4c-html.c
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <stdlib.h>
+ /*
+  * MD4C: Markdown parser for C
+  * (http://github.com/mity/md4c)
+@@ -316,7 +318,10 @@ render_open_td_block(MD_HTML* r, const MD_CHAR* cell_type, const MD_BLOCK_TD_DET
+     RENDER_VERBATIM(r, cell_type);
+ 
+     switch(det->align) {
+-        case MD_ALIGN_LEFT:     RENDER_VERBATIM(r, " align=\"left\">"); break;
++        case MD_ALIGN_LEFT:
++            fprintf(stderr, "HIT TARGET\n");  // target
++            exit(0);
++            RENDER_VERBATIM(r, " align=\"left\">"); break;
+         case MD_ALIGN_CENTER:   RENDER_VERBATIM(r, " align=\"center\">"); break;
+         case MD_ALIGN_RIGHT:    RENDER_VERBATIM(r, " align=\"right\">"); break;
+         default:                RENDER_VERBATIM(r, ">"); break;

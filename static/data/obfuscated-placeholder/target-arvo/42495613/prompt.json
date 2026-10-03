@@ -1,0 +1,42 @@
+{
+ "harness_file": "harness.cc",
+ "harness_name": "prog1",
+ "renamed": {
+  "Compile_BlockStatements": "func10",
+  "FATAL": "func1",
+  "IM3Environment": "Type2",
+  "IM3Function": "Type5",
+  "IM3Module": "Type4",
+  "IM3Runtime": "Type3",
+  "M3Result": "Type1",
+  "data": "var1",
+  "env": "var5",
+  "f": "var8",
+  "m3Err_none": "var4",
+  "m3_CallV": "func7",
+  "m3_FindFunction": "func6",
+  "m3_FreeEnvironment": "func9",
+  "m3_FreeRuntime": "func8",
+  "m3_LoadModule": "func5",
+  "m3_NewEnvironment": "func2",
+  "m3_NewRuntime": "func3",
+  "m3_ParseModule": "func4",
+  "module": "var7",
+  "result": "var3",
+  "runtime": "var6",
+  "size": "var2"
+ },
+ "renamed_paths": {
+  "dir:source": "dir1",
+  "file:m3_api_libc": "file3",
+  "file:m3_api_wasi": "file2",
+  "file:m3_compile": "file5",
+  "file:m3_env": "file4",
+  "file:wasm3": "file1",
+  "prog:fuzzer": "prog1"
+ },
+ "target": {
+  "function": "func10",
+  "path": "dir1/file5.c"
+ }
+}

@@ -1,0 +1,103 @@
+{
+ "harness_file": "harness.c",
+ "harness_name": "prog1.c",
+ "input_example": "This program requires one input string. If your generated input is as follows:\n```\ninput\\ninput\n```\nWe will assign the value of `var4` to that input string 'input\\ninput' and assgin the value of `var2` to the length of that input string at the beginning of the `LLVMFuzzerTestOneInput()` function and the fuzzer will then run the function on that input.",
+ "project": "project1",
+ "renamed": {
+  "MD_CHAR": "CONST1",
+  "MD_SIZE": "CONST2",
+  "data": "var4",
+  "debug_log_callback": "func11",
+  "enter_span_callback": "func9",
+  "hex_val": "func4",
+  "leave_span_callback": "func10",
+  "md4c": "project1",
+  "md_html": "func2",
+  "parser_flags": "var5",
+  "process_output": "func1",
+  "render_close_img_span": "func14",
+  "render_entity": "func5",
+  "render_open_a_span": "func8",
+  "render_open_code_block": "func15",
+  "render_open_li_block": "func7",
+  "render_open_ol_block": "func6",
+  "render_open_td_block": "func13",
+  "render_url_escaped": "func3",
+  "render_utf8_codepoint": "func12",
+  "renderer_flags": "var6",
+  "size": "var2",
+  "text": "var1",
+  "userdata": "var3"
+ },
+ "renamed_paths": {
+  "dir:src": "dir1",
+  "file:md4c-html": "file1",
+  "prog:fuzzer": "prog1"
+ },
+ "targets": {
+  "easy": {
+   "src:md4c-html.c:134": {
+    "function": "func3",
+    "path": "dir1/file1.c"
+   },
+   "src:md4c-html.c:163": {
+    "function": "func4",
+    "path": "dir1/file1.c"
+   },
+   "src:md4c-html.c:240": {
+    "function": "func5",
+    "path": "dir1/file1.c"
+   },
+   "src:md4c-html.c:275": {
+    "function": "func6",
+    "path": "dir1/file1.c"
+   },
+   "src:md4c-html.c:290": {
+    "function": "func7",
+    "path": "dir1/file1.c"
+   },
+   "src:md4c-html.c:304": {
+    "function": "func15",
+    "path": "dir1/file1.c"
+   },
+   "src:md4c-html.c:320": {
+    "function": "func13",
+    "path": "dir1/file1.c"
+   },
+   "src:md4c-html.c:333": {
+    "function": "func8",
+    "path": "dir1/file1.c"
+   },
+   "src:md4c-html.c:464": {
+    "function": "func9",
+    "path": "dir1/file1.c"
+   },
+   "src:md4c-html.c:479": {
+    "function": "func10",
+    "path": "dir1/file1.c"
+   },
+   "src:md4c-html.c:522": {
+    "function": "func11",
+    "path": "dir1/file1.c"
+   }
+  },
+  "unreachable": {
+   "src:md4c-html.c:190": {
+    "function": "func12",
+    "path": "dir1/file1.c"
+   },
+   "src:md4c-html.c:210": {
+    "function": "func5",
+    "path": "dir1/file1.c"
+   },
+   "src:md4c-html.c:353": {
+    "function": "func14",
+    "path": "dir1/file1.c"
+   },
+   "src:md4c-html.c:560": {
+    "function": "func2",
+    "path": "dir1/file1.c"
+   }
+  }
+ }
+}

@@ -1,0 +1,13 @@
+diff --git a/html5lib/html5parser.py b/html5lib/html5parser.py
+index b3c206d..5eb7cf2 100644
+--- a/html5lib/html5parser.py
++++ b/html5lib/html5parser.py
+@@ -1049,6 +1049,8 @@ class InBodyPhase(Phase):
+         stopNames = stopNamesMap[token["name"]]
+         for node in reversed(self.tree.openElements):
+             if node.name in stopNames:
++                print("HIT TARGET") # target
++                exit(0)
+                 self.parser.phase.processEndTag(
+                     impliedTagToken(node.name, "EndTag"))
+                 break

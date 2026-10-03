@@ -1,0 +1,19 @@
+diff --git a/httplib.h b/httplib.h
+index 8411c8c..c609c3e 100644
+--- a/httplib.h
++++ b/httplib.h
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <stdlib.h>
+ //
+ //  httplib.h
+ //
+@@ -2708,6 +2710,8 @@ inline bool is_field_content(const std::string &s) {
+       auto c = s[i++];
+       if (c == ' ' || c == '\t' || is_field_vchar(c)) {
+       } else {
++        fprintf(stderr, "HIT TARGET\n");  // target
++        exit(0);
+         return false;
+       }
+     }

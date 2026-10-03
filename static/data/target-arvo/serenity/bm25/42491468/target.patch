@@ -1,0 +1,18 @@
+diff --git a/Libraries/LibTTF/Font.cpp b/Libraries/LibTTF/Font.cpp
+index 69b3d1ee07..41cd456639 100644
+--- a/Libraries/LibTTF/Font.cpp
++++ b/Libraries/LibTTF/Font.cpp
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <cstdlib>
+ /*
+  * Copyright (c) 2020, Srimanta Barua <srimanta.barua1@gmail.com>
+  * All rights reserved.
+@@ -45,6 +47,7 @@ u32 tag_from_str(const char* str);
+ 
+ u16 be_u16(const u8* ptr)
+ {
++    fprintf(stderr, "HIT TARGET\n");  // target
+     return (((u16)ptr[0]) << 8) | ((u16)ptr[1]);
+ }
+ 

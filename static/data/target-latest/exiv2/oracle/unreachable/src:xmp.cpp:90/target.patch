@@ -1,0 +1,19 @@
+diff --git a/src/xmp.cpp b/src/xmp.cpp
+index 39e7610ef..c52568159 100644
+--- a/src/xmp.cpp
++++ b/src/xmp.cpp
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <cstdlib>
+ // SPDX-License-Identifier: GPL-2.0-or-later
+ 
+ // included header files
+@@ -87,6 +89,8 @@ class XMLValidator {
+ #endif
+     // If this is the first error, then save it.
+     if (!haserror_) {
++      fprintf(stderr, "HIT TARGET\n");  // target
++      exit(0);
+       haserror_ = true;
+       errmsg_ = msg;
+       errlinenum_ = errlinenum;

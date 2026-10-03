@@ -1,0 +1,19 @@
+diff --git a/src/blocks.c b/src/blocks.c
+index 292e563..7c9febd 100644
+--- a/src/blocks.c
++++ b/src/blocks.c
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <stdlib.h>
+ /**
+  * Block parsing implementation.
+  *
+@@ -185,6 +187,8 @@ static void add_line(cmark_chunk *ch, cmark_parser *parser) {
+   if (parser->partially_consumed_tab) {
+     parser->offset += 1; // skip over tab
+     // add space characters:
++    fprintf(stderr, "HIT TARGET\n");  // target
++    exit(0);
+     chars_to_tab = TAB_STOP - (parser->column % TAB_STOP);
+     for (i = 0; i < chars_to_tab; i++) {
+       cmark_strbuf_putc(&parser->content, ' ');

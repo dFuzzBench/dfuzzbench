@@ -1,0 +1,18 @@
+diff --git a/src/libopensc/apdu.c b/src/libopensc/apdu.c
+index e73aea606..61db1cadf 100644
+--- a/src/libopensc/apdu.c
++++ b/src/libopensc/apdu.c
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <stdlib.h>
+ /*
+  * apdu.c: basic APDU handling functions
+  *
+@@ -478,6 +480,7 @@ sc_get_response(struct sc_card *card, struct sc_apdu *apdu, size_t olen)
+ 		if (buflen < le)
+ 			le = buflen;
+ 
++		fprintf(stderr, "HIT TARGET\n");  // target
+ 		memcpy(buf, resp, le);
+ 		buf    += le;
+ 		buflen -= le;

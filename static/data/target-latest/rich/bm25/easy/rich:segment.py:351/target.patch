@@ -1,0 +1,13 @@
+diff --git a/rich/segment.py b/rich/segment.py
+index edcb52dd..29db2cc7 100644
+--- a/rich/segment.py
++++ b/rich/segment.py
+@@ -348,6 +348,8 @@ class Segment(NamedTuple):
+             if pad:
+                 new_line = line + [cls(" " * (length - line_length), style)]
+             else:
++                print("HIT TARGET") # target
++                exit(0)
+                 new_line = line[:]
+         elif line_length > length:
+             new_line = []

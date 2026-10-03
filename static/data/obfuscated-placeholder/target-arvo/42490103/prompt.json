@@ -1,0 +1,28 @@
+{
+ "harness_file": "harness.cc",
+ "harness_name": "prog2",
+ "renamed": {
+  "AK": "CONST1",
+  "Parser": "func5",
+  "Shell": "Type3",
+  "StringView": "func1",
+  "data": "var1",
+  "parse": "func7",
+  "parse_glob": "func8",
+  "parser": "func6",
+  "size": "var2",
+  "source": "var5"
+ },
+ "renamed_paths": {
+  "dir:AK": "dir1",
+  "dir:Shell": "dir4",
+  "file:Parser": "file5",
+  "file:Shell": "file4",
+  "file:StringView": "file1",
+  "prog:FuzzShell": "prog2"
+ },
+ "target": {
+  "function": "Type3::func5::func8()",
+  "path": "dir4/file5.cpp"
+ }
+}

@@ -1,0 +1,18 @@
+diff --git a/codec/decoder/core/src/decoder.cpp b/codec/decoder/core/src/decoder.cpp
+index d69492cd..f67d2747 100644
+--- a/codec/decoder/core/src/decoder.cpp
++++ b/codec/decoder/core/src/decoder.cpp
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <cstdlib>
+ /*!
+  * \copy
+  *     Copyright (c)  2009-2013, Cisco Systems
+@@ -214,6 +216,7 @@ static int32_t DecreasePicBuff (PWelsDecoderContext pCtx, PPicBuff* ppPicBuf, co
+     for (int32_t listIdx = LIST_0; listIdx < LIST_A; ++listIdx) {
+       for (int32_t j = 0; j < MAX_DPB_COUNT; j++) {
+         if (pPicNewBuf->ppPic[i]->pRefPic[listIdx][j] != NULL) {
++          fprintf(stderr, "HIT TARGET\n");  // target
+           unsigned long long uiTimeStamp = pPicNewBuf->ppPic[i]->pRefPic[listIdx][j]->uiTimeStamp;
+           bool foundThePic = false;
+           for (int32_t k = 0; k < kiNewSize; k++) {

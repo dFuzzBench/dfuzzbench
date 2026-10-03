@@ -1,0 +1,37 @@
+base:
+    # Smoke test: the Python config (config_dfuzzbench_gemini_py.yaml) on one target,
+    # with a cheaper model and a few steps.
+    output_path: "exps/dfuzzbench"
+    benchmark: "dfuzzbench"
+    problems: [
+        "bleach::bleach:_vendor:html5lib:_tokenizer.py:1434",
+    ]
+    env_kwargs: {
+        "dir_tree_depth": 1,
+        "run_timeout": 60,
+        "dataset_id": "data/dfuzzbench/dataset",  # local directory, built by data/dfuzzbench/build_dataset.py --out-dir data/dfuzzbench/dataset
+        "provide_call_paths": False,
+        "auto_eval_on_rewrite": False,
+        "show_current_breakpoints": False,
+        "show_directory_tree": True,
+        "persistent_breakpoints": True,
+        "auto_list": True,
+    }
+    terminal: {
+        type: "docker",
+    }
+
+    # LLM configs (an entry of llm.yaml)
+    llm_name: "gemini-3.5-flash"
+
+    # Agent configs
+    random_seed: 42
+    max_steps: 8
+    max_propose_steps: 15
+    max_rewrite_steps: 50
+    memory_size: 15
+    save_patch: True
+    reset_prompt_history_after_rewrite: True
+
+reach_agent:
+    tools: ["pdb", "view", "listdir", "propose", "plan", "callpath", "grep", "context"]

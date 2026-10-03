@@ -1,0 +1,23 @@
+{
+ "harness_file": "harness.cc",
+ "harness_name": "prog4",
+ "renamed": {
+  "BMPLoadingContext": "Type15",
+  "Gfx": "Type4",
+  "data": "var1",
+  "decode_bmp_color_table": "func26",
+  "load_bmp_from_memory": "func11",
+  "size": "var2"
+ },
+ "renamed_paths": {
+  "dir:LibGfx": "dir5",
+  "dir:Libraries": "dir3",
+  "dir:Userland": "dir11",
+  "file:BMPLoader": "file8",
+  "prog:FuzzBMPLoader": "prog4"
+ },
+ "target": {
+  "function": "Type4::func26(Type4::Type15&)",
+  "path": "dir11/dir3/dir5/file8.cpp"
+ }
+}

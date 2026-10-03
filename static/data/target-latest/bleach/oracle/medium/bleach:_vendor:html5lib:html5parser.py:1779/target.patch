@@ -1,0 +1,13 @@
+diff --git a/bleach/_vendor/html5lib/html5parser.py b/bleach/_vendor/html5lib/html5parser.py
+index 74d829d..5e7f9bb 100644
+--- a/bleach/_vendor/html5lib/html5parser.py
++++ b/bleach/_vendor/html5lib/html5parser.py
+@@ -1777,6 +1777,8 @@ def getPhases(debug):
+                 # XXX associate with form
+                 self.tree.openElements.pop()
+             else:
++                print("HIT TARGET") # target
++                exit(0)
+                 self.startTagOther(token)
+ 
+         def startTagForm(self, token):

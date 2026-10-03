@@ -1,0 +1,123 @@
+{
+ "harness_file": "harness.c",
+ "harness_name": "prog1.c",
+ "input_example": "This program requires one input string. If your generated input is as follows:\n```\ninput\\ninput\n```\nWe will assign the value of `var1` to that input string 'input\\ninput' and assgin the value of `var2` to the length of that input string at the beginning of the `LLVMFuzzerTestOneInput()` function and the fuzzer will then run the function on that input.",
+ "project": "project1",
+ "renamed": {
+  "CMARK_OPT_HARDBREAKS": "CONST2",
+  "CMARK_OPT_NOBREAKS": "CONST4",
+  "CMARK_OPT_NORMALIZE": "CONST5",
+  "CMARK_OPT_SMART": "CONST7",
+  "CMARK_OPT_SOURCEPOS": "CONST1",
+  "CMARK_OPT_UNSAFE": "CONST3",
+  "CMARK_OPT_VALIDATE_UTF8": "CONST6",
+  "S_parser_feed": "func21",
+  "add_line": "func15",
+  "block_max": "var11",
+  "block_size": "var14",
+  "cmark": "project1",
+  "cmark_markdown_to_html": "func7",
+  "cmark_node": "var8",
+  "cmark_node_free": "func13",
+  "cmark_parse_document": "func1",
+  "cmark_parse_file": "func2",
+  "cmark_parser": "var12",
+  "cmark_parser_feed": "func4",
+  "cmark_parser_finish": "func5",
+  "cmark_parser_free": "func6",
+  "cmark_parser_new": "func3",
+  "cmark_render_commonmark": "func8",
+  "cmark_render_html": "func9",
+  "cmark_render_latex": "func10",
+  "cmark_render_man": "func11",
+  "cmark_render_xml": "func12",
+  "data": "var1",
+  "doc": "var9",
+  "file": "var10",
+  "finalize": "func17",
+  "finalize_document": "func18",
+  "fuzz_config": "var5",
+  "is_blank": "func14",
+  "markdown": "var6",
+  "markdown_size": "var7",
+  "open_new_blocks": "func19",
+  "options": "var3",
+  "parse_list_marker": "func20",
+  "parser": "var13",
+  "remove_trailing_blank_lines": "func16",
+  "size": "var2",
+  "width": "var4"
+ },
+ "renamed_paths": {
+  "dir:src": "dir1",
+  "file:blocks": "file2",
+  "file:cmark": "file1",
+  "prog:fuzzer": "prog1"
+ },
+ "targets": {
+  "easy": {
+   "src:blocks.c:1035": {
+    "function": "func19",
+    "path": "dir1/file2.c"
+   },
+   "src:blocks.c:144": {
+    "function": "func14",
+    "path": "dir1/file2.c"
+   },
+   "src:blocks.c:151": {
+    "function": "func14",
+    "path": "dir1/file2.c"
+   },
+   "src:blocks.c:188": {
+    "function": "func15",
+    "path": "dir1/file2.c"
+   },
+   "src:blocks.c:217": {
+    "function": "func16",
+    "path": "dir1/file2.c"
+   },
+   "src:blocks.c:277": {
+    "function": "func17",
+    "path": "dir1/file2.c"
+   },
+   "src:blocks.c:316": {
+    "function": "func17",
+    "path": "dir1/file2.c"
+   },
+   "src:blocks.c:326": {
+    "function": "func17",
+    "path": "dir1/file2.c"
+   },
+   "src:blocks.c:531": {
+    "function": "func18",
+    "path": "dir1/file2.c"
+   },
+   "src:blocks.c:644": {
+    "function": "func4",
+    "path": "dir1/file2.c"
+   }
+  },
+  "unreachable": {
+   "src:blocks.c:228": {
+    "function": "func16",
+    "path": "dir1/file2.c"
+   },
+   "src:blocks.c:303": {
+    "function": "func17",
+    "path": "dir1/file2.c"
+   },
+   "src:blocks.c:488": {
+    "function": "func20",
+    "path": "dir1/file2.c"
+   },
+   "src:blocks.c:590": {
+    "function": "func21",
+    "path": "dir1/file2.c"
+   },
+   "src:blocks.c:593": {
+    "function": "func21",
+    "path": "dir1/file2.c"
+   }
+  }
+ }
+}

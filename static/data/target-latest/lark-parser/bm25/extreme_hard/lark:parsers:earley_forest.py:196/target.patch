@@ -1,0 +1,13 @@
+diff --git a/lark/parsers/earley_forest.py b/lark/parsers/earley_forest.py
+index c60f3a6..0b0b763 100644
+--- a/lark/parsers/earley_forest.py
++++ b/lark/parsers/earley_forest.py
+@@ -193,6 +193,8 @@ class TokenNode(ForestNode):
+     def __eq__(self, other):
+         if not isinstance(other, TokenNode):
+             return False
++        print("HIT TARGET") # target
++        exit(0)
+         return self is other or (self.token == other.token)
+ 
+     def __hash__(self):

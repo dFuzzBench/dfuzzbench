@@ -1,0 +1,30 @@
+{
+ "harness_file": "harness.cc",
+ "harness_name": "prog1",
+ "renamed": {
+  "AK": "CONST1",
+  "Lexer": "func4",
+  "PosixExtended": "Type2",
+  "Regex": "Type1",
+  "StringView": "func1",
+  "back": "func3",
+  "data": "var1",
+  "pattern": "var3",
+  "re": "func2",
+  "regex": "var4",
+  "size": "var2"
+ },
+ "renamed_paths": {
+  "dir:AK": "dir1",
+  "dir:LibRegex": "dir2",
+  "dir:Libraries": "dir3",
+  "file:Regex": "file2",
+  "file:RegexLexer": "file3",
+  "file:StringView": "file1",
+  "prog:FuzzRegexPosixExtended": "prog1"
+ },
+ "target": {
+  "function": "var4::func4::func3(unsigned long)",
+  "path": "dir3/dir2/file3.cpp"
+ }
+}

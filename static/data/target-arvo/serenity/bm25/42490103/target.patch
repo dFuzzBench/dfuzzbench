@@ -1,0 +1,18 @@
+diff --git a/Shell/Parser.cpp b/Shell/Parser.cpp
+index d7d173cb98..66b2703571 100644
+--- a/Shell/Parser.cpp
++++ b/Shell/Parser.cpp
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <cstdlib>
+ /*
+  * Copyright (c) 2020, the SerenityOS developers.
+  * All rights reserved.
+@@ -1377,6 +1379,7 @@ RefPtr<AST::Node> Parser::parse_glob()
+         auto glob_after = parse_glob();
+         if (glob_after) {
+             if (glob_after->is_glob()) {
++                fprintf(stderr, "HIT TARGET\n");  // target
+                 auto glob = static_cast<AST::BarewordLiteral*>(glob_after.ptr());
+                 textbuilder.append(glob->text());
+             } else if (glob_after->is_bareword()) {

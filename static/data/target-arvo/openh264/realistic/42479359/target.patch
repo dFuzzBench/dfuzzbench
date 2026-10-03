@@ -1,0 +1,18 @@
+diff --git a/codec/decoder/core/src/manage_dec_ref.cpp b/codec/decoder/core/src/manage_dec_ref.cpp
+index d808281b..3f04bbe3 100644
+--- a/codec/decoder/core/src/manage_dec_ref.cpp
++++ b/codec/decoder/core/src/manage_dec_ref.cpp
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <cstdlib>
+ /*!
+  * \copy
+  *     Copyright (c)  2008-2013, Cisco Systems
+@@ -86,6 +88,7 @@ static void SetUnRef (PPicture pRef) {
+         pRef->pRefPic[LIST_0][i] = NULL;
+       }
+       if (pRef->pRefPic[LIST_1][i] != NULL) {
++        fprintf(stderr, "HIT TARGET\n");  // target
+         pRef->pRefPic[LIST_1][i]->bAvailableFlag = true;
+         pRef->pRefPic[LIST_1][i] = NULL;
+       }

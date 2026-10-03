@@ -1,0 +1,23 @@
+diff --git a/bin/varnishd/cache/cache_esi_parse.c b/bin/varnishd/cache/cache_esi_parse.c
+index 0b183a35d..f071d56df 100644
+--- a/bin/varnishd/cache/cache_esi_parse.c
++++ b/bin/varnishd/cache/cache_esi_parse.c
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <stdlib.h>
+ /*-
+  * Copyright (c) 2011 Varnish Software AS
+  * All rights reserved.
+@@ -405,8 +407,11 @@ vep_do_comment(struct vep_state *vep, enum dowhat what)
+ {
+ 	Debug("DO_COMMENT(%d)\n", what);
+ 	assert(what == DO_TAG);
+-	if (!vep->emptytag)
++	if (!vep->emptytag) {
++		fprintf(stderr, "HIT TARGET\n");  // target
++		exit(0);
+ 		vep_error(vep, "ESI 1.0 <esi:comment> needs final '/'");
++	}
+ }
+ 
+ /*---------------------------------------------------------------------

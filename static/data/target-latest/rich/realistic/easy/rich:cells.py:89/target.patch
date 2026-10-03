@@ -1,0 +1,13 @@
+diff --git a/rich/cells.py b/rich/cells.py
+index a8546227..b92129e4 100644
+--- a/rich/cells.py
++++ b/rich/cells.py
+@@ -86,6 +86,8 @@ def get_character_cell_size(character: str) -> int:
+         elif codepoint > end:
+             lower_bound = index + 1
+         else:
++            print("HIT TARGET") # target
++            exit(0)
+             return 0 if width == -1 else width
+         if upper_bound < lower_bound:
+             break

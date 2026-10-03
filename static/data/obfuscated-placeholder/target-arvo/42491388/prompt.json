@@ -1,0 +1,50 @@
+{
+ "harness_file": "harness.cc",
+ "harness_name": "prog6",
+ "renamed": {
+  "AK": "CONST1",
+  "Cell": "Type11",
+  "GlobalObject": "Type8",
+  "HashTable": "Type10",
+  "Heap": "Type9",
+  "Interpreter": "Type7",
+  "JS": "CONST2",
+  "Lexer": "func4",
+  "Parser": "func5",
+  "StringView": "func1",
+  "Traits": "Type12",
+  "VM": "CONST3",
+  "create": "func17",
+  "data": "var1",
+  "gather_conservative_roots": "func20",
+  "global_object": "func19",
+  "has_errors": "func16",
+  "interpreter": "var12",
+  "js": "var8",
+  "lexer": "var9",
+  "parse_program": "func15",
+  "parser": "func6",
+  "program": "var10",
+  "run": "func18",
+  "size": "var2",
+  "vm": "var11"
+ },
+ "renamed_paths": {
+  "dir:AK": "dir1",
+  "dir:Heap": "dir9",
+  "dir:LibJS": "dir7",
+  "dir:Libraries": "dir3",
+  "dir:Runtime": "dir8",
+  "file:GlobalObject": "file12",
+  "file:Heap": "file13",
+  "file:Interpreter": "file10",
+  "file:Lexer": "file11",
+  "file:Parser": "file5",
+  "file:StringView": "file1",
+  "prog:FuzzJs": "prog6"
+ },
+ "target": {
+  "function": "CONST2::Type9::func20(CONST1::Type10<CONST2::Type11*, CONST1::Type12<CONST2::Type11*> >&)",
+  "path": "dir3/dir7/dir9/file13.cpp"
+ }
+}

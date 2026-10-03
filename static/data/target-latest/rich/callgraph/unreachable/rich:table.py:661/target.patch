@@ -1,0 +1,13 @@
+diff --git a/rich/table.py b/rich/table.py
+index 942175dc..415aae52 100644
+--- a/rich/table.py
++++ b/rich/table.py
+@@ -658,6 +658,8 @@ class Table(JupyterMixin):
+                 if first_row:
+                     top = 0
+                 if last_row:
++                    print("HIT TARGET") # target
++                    exit(0)
+                     bottom = 0
+             _padding = (top, right, bottom, left)
+             _padding_cache[(first_row, last_row)] = _padding

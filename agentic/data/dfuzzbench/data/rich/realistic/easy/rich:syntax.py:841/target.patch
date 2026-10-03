@@ -1,0 +1,13 @@
+diff --git a/rich/syntax.py b/rich/syntax.py
+index cff8fd23..3bc50781 100644
+--- a/rich/syntax.py
++++ b/rich/syntax.py
+@@ -838,6 +838,8 @@ def _get_code_index_for_syntax_position(
+ 
+     line_number, column_index = position
+     if line_number > lines_count or len(newlines_offsets) < (line_number + 1):
++        print("HIT TARGET") # target
++        exit(0)
+         return None  # `line_number` is out of range
+     line_index = line_number - 1
+     line_length = newlines_offsets[line_index + 1] - newlines_offsets[line_index] - 1

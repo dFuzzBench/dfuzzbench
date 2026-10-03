@@ -1,0 +1,13 @@
+diff --git a/lark/load_grammar.py b/lark/load_grammar.py
+index 362a845..0d14c7f 100644
+--- a/lark/load_grammar.py
++++ b/lark/load_grammar.py
+@@ -777,6 +777,8 @@ class Grammar:
+             duplicates = classify(compiled_rules, lambda x: x)
+             for dups in duplicates.values():
+                 if len(dups) > 1:
++                    print("HIT TARGET") # target
++                    exit(0)
+                     if dups[0].expansion:
+                         raise GrammarError("Rules defined twice: %s\n\n(Might happen due to colliding expansion of optionals: [] or ?)"
+                                            % ''.join('\n  * %s' % i for i in dups))

@@ -1,0 +1,18 @@
+diff --git a/source/m3_env.c b/source/m3_env.c
+index c44eff3..cc9d65c 100644
+--- a/source/m3_env.c
++++ b/source/m3_env.c
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <stdlib.h>
+ //
+ //  m3_env.c
+ //
+@@ -58,6 +60,7 @@ void  Environment_Release  (IM3Environment i_environment)
+ {
+     IM3FuncType ftype = i_environment->funcTypes;
+ 
++    fprintf(stderr, "HIT TARGET\n");  // target
+     while (ftype)
+     {
+         IM3FuncType next = ftype->next;

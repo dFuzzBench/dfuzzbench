@@ -1,0 +1,13 @@
+# Python 3.10+. Docker is used through its CLI.
+
+# Evaluation (llm_fuzz_integration.py, evaluation_*.py) and the experiment drivers in source/exp_*/
+openai                # GPT models; Qwen through vLLM's OpenAI-compatible server
+google-generativeai   # Gemini (imported only when a Gemini model is called); also misc/count_token.py
+google-genai          # exp_gemini/sweep.py --include-thoughts
+httpx
+numpy                 # exp_gemini/poc_overlap.py
+
+# Benchmark construction only (retrieve_context/, fuzzing_coverage/)
+bm25s
+tiktoken
+beautifulsoup4

@@ -1,0 +1,13 @@
+diff --git a/lark/load_grammar.py b/lark/load_grammar.py
+index 362a845..6307b48 100644
+--- a/lark/load_grammar.py
++++ b/lark/load_grammar.py
+@@ -1277,6 +1277,8 @@ class GrammarBuilder:
+                         name = mangle(symbol.name)
+                     self._define(name, is_term, None)
+             elif stmt.data == 'import':
++                print("HIT TARGET") # target
++                exit(0)
+                 pass
+             else:
+                 assert False, stmt

@@ -1,0 +1,13 @@
+diff --git a/lark/load_grammar.py b/lark/load_grammar.py
+index 362a845..fb66464 100644
+--- a/lark/load_grammar.py
++++ b/lark/load_grammar.py
+@@ -803,6 +803,8 @@ class Grammar:
+ 
+         # Filter out unused terminals
+         if terminals_to_keep != '*':
++            print("HIT TARGET") # target
++            exit(0)
+             used_terms = {t.name for r in compiled_rules
+                                  for t in r.expansion
+                                  if isinstance(t, Terminal)}

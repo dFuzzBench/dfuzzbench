@@ -1,0 +1,18 @@
+diff --git a/code/AssetLib/ASE/ASEParser.cpp b/code/AssetLib/ASE/ASEParser.cpp
+index c801f53a1..2b9fdfb8f 100644
+--- a/code/AssetLib/ASE/ASEParser.cpp
++++ b/code/AssetLib/ASE/ASEParser.cpp
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <cstdlib>
+ /*
+ ---------------------------------------------------------------------------
+ Open Asset Import Library (assimp)
+@@ -493,6 +495,7 @@ void Parser::ParseLV1MaterialListBlock() {
+                 }
+ 
+                 // get a reference to the material
++                fprintf(stderr, "HIT TARGET\n");  // target
+                 Material &sMat = m_vMaterials[iIndex + iOldMaterialCount];
+                 // parse the material block
+                 ParseLV2MaterialBlock(sMat);

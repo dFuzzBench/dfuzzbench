@@ -1,0 +1,19 @@
+diff --git a/core/iwasm/aot/aot_loader.c b/core/iwasm/aot/aot_loader.c
+index dd26bbee..6b1ce31c 100644
+--- a/core/iwasm/aot/aot_loader.c
++++ b/core/iwasm/aot/aot_loader.c
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <stdlib.h>
+ /*
+  * Copyright (C) 2019 Intel Corporation. All rights reserved.
+  * SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+@@ -1129,6 +1131,8 @@ load_init_expr(const uint8 **p_buf, const uint8 *buf_end, AOTModule *module,
+                InitializerExpression *expr, char *error_buf,
+                uint32 error_buf_size)
+ {
++    fprintf(stderr, "HIT TARGET\n");  // target
++    exit(0);
+     const uint8 *buf = *p_buf;
+     uint32 init_expr_type = 0;
+     uint64 *i64x2 = NULL;

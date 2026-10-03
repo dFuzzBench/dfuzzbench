@@ -1,0 +1,13 @@
+diff --git a/html5lib/html5parser.py b/html5lib/html5parser.py
+index b3c206d..7a06043 100644
+--- a/html5lib/html5parser.py
++++ b/html5lib/html5parser.py
+@@ -1901,6 +1901,8 @@ class InCaptionPhase(Phase):
+             # AT this code is quite similar to endTagTable in "InTable"
+             self.tree.generateImpliedEndTags()
+             if self.tree.openElements[-1].name != "caption":
++                print("HIT TARGET") # target
++                exit(0)
+                 self.parser.parseError("expected-one-end-tag-but-got-another",
+                                        {"gotName": "caption",
+                                         "expectedName": self.tree.openElements[-1].name})

@@ -1,0 +1,13 @@
+diff --git a/html5lib/html5parser.py b/html5lib/html5parser.py
+index b3c206d..e221baa 100644
+--- a/html5lib/html5parser.py
++++ b/html5lib/html5parser.py
+@@ -487,6 +487,8 @@ class InitialPhase(Phase):
+ 
+         if (name != "html" or publicId is not None or
+                 systemId is not None and systemId != "about:legacy-compat"):
++            print("HIT TARGET") # target
++            exit(0)
+             self.parser.parseError("unknown-doctype")
+ 
+         if publicId is None:

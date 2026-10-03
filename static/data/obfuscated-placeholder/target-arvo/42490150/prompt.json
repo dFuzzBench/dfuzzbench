@@ -1,0 +1,22 @@
+{
+ "harness_file": "harness.cc",
+ "harness_name": "prog4",
+ "renamed": {
+  "Gfx": "Type4",
+  "Streamer": "Type5",
+  "data": "var1",
+  "load_bmp_from_memory": "func11",
+  "read_u8": "func12",
+  "size": "var2"
+ },
+ "renamed_paths": {
+  "dir:LibGfx": "dir5",
+  "dir:Libraries": "dir3",
+  "file:BMPLoader": "file8",
+  "prog:FuzzBMPLoader": "prog4"
+ },
+ "target": {
+  "function": "Type4::Type5::func12()",
+  "path": "dir3/dir5/file8.cpp"
+ }
+}

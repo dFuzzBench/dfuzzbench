@@ -1,0 +1,13 @@
+diff --git a/fsspec/spec.py b/fsspec/spec.py
+index bcc01f5..773df6b 100644
+--- a/fsspec/spec.py
++++ b/fsspec/spec.py
+@@ -74,6 +74,8 @@ class _Cached(type):
+             cls._cache.clear()
+             cls._pid = os.getpid()
+         if not skip and cls.cachable and token in cls._cache:
++            print("HIT TARGET") # target
++            exit(0)
+             cls._latest = token
+             return cls._cache[token]
+         else:

@@ -1,0 +1,18 @@
+diff --git a/src/pkcs15init/pkcs15-cflex.c b/src/pkcs15init/pkcs15-cflex.c
+index f288bb43d..aae7b2a6a 100644
+--- a/src/pkcs15init/pkcs15-cflex.c
++++ b/src/pkcs15init/pkcs15-cflex.c
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <stdlib.h>
+ /*
+  * Cryptoflex specific operation for PKCS #15 initialization
+  *
+@@ -539,6 +541,7 @@ cflex_create_pin_file(sc_profile_t *profile, sc_pkcs15_card_t *p15card,
+ 
+ 	/* Build the CHV path */
+ 	path = *df_path;
++	fprintf(stderr, "HIT TARGET\n");  // target
+ 	path.value[path.len++] = ref - 1;
+ 	path.value[path.len++] = 0;
+ 

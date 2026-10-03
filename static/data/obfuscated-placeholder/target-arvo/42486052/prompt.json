@@ -1,0 +1,41 @@
+{
+ "harness_file": "harness.cc",
+ "harness_name": "prog1",
+ "renamed": {
+  "Assimp": "Type1",
+  "Importer": "Type2",
+  "ODDLParser": "Type8",
+  "OpenDDLParser": "Type9",
+  "ReadFileFromMemory": "func3",
+  "Text": "Type10",
+  "aiAttachLogStream": "func2",
+  "aiDefaultLogStream_STDOUT": "var5",
+  "aiDetachLogStream": "func4",
+  "aiGetPredefinedLogStream": "func1",
+  "aiLogStream": "var3",
+  "aiProcessPreset_TargetRealtime_Quality": "var9",
+  "aiScene": "var7",
+  "data": "var1",
+  "dataSize": "var2",
+  "importer": "var6",
+  "parseIdentifier": "func9",
+  "sc": "var8",
+  "stream": "var4"
+ },
+ "renamed_paths": {
+  "dir:assimp": "dir1",
+  "dir:code": "dir2",
+  "dir:contrib": "dir7",
+  "dir:openddlparser": "dir8",
+  "file:Importer": "file2",
+  "file:OpenDDLParser": "file9",
+  "file:cimport": "file1",
+  "file:postprocess": "file4",
+  "file:scene": "file3",
+  "prog:assimp_fuzzer": "prog1"
+ },
+ "target": {
+  "function": "Type8::Type9::func9(char*, char*, Type8::Type10**)",
+  "path": "dir7/dir8/dir2/file9.cpp"
+ }
+}

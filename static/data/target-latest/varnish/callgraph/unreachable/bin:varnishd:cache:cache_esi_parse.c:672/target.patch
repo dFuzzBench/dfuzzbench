@@ -1,0 +1,19 @@
+diff --git a/bin/varnishd/cache/cache_esi_parse.c b/bin/varnishd/cache/cache_esi_parse.c
+index 0b183a35d..a2e250bde 100644
+--- a/bin/varnishd/cache/cache_esi_parse.c
++++ b/bin/varnishd/cache/cache_esi_parse.c
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <stdlib.h>
+ /*-
+  * Copyright (c) 2011 Varnish Software AS
+  * All rights reserved.
+@@ -669,6 +671,8 @@ VEP_Parse(struct vep_state *vep, const char *p, size_t l)
+ 				p++;
+ 			vep_mark_verbatim(vep, p);
+ 			if (p < e && *p == '<') {
++				fprintf(stderr, "HIT TARGET\n");  // target
++				exit(0);
+ 				p++;
+ 				vep->state = VEP_STARTTAG;
+ 			} else if (p < e && *p == (char)0xeb) {

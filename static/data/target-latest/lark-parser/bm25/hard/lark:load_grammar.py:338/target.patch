@@ -1,0 +1,13 @@
+diff --git a/lark/load_grammar.py b/lark/load_grammar.py
+index 362a845..af700cf 100644
+--- a/lark/load_grammar.py
++++ b/lark/load_grammar.py
+@@ -335,6 +335,8 @@ class EBNF_to_BNF(Transformer_InPlace):
+         diff_target = rule  # Match rule 1 times
+         diff_opt_target = ST('expansion', [])  # match rule 0 times (e.g. up to 1 -1 times)
+         for a, b in diff_factors[:-1]:
++            print("HIT TARGET") # target
++            exit(0)
+             diff_opt_target = self._add_repeat_opt_rule(a, b, diff_target, diff_opt_target, rule)
+             diff_target = self._add_repeat_rule(a, b, diff_target, rule)
+ 

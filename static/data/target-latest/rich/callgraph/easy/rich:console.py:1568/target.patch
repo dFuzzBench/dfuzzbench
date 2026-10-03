@@ -1,0 +1,13 @@
+diff --git a/rich/console.py b/rich/console.py
+index 6725e405..f93386f0 100644
+--- a/rich/console.py
++++ b/rich/console.py
+@@ -1565,6 +1565,8 @@ class Console:
+                 append(renderable)
+             elif is_expandable(renderable):
+                 check_text()
++                print("HIT TARGET") # target
++                exit(0)
+                 append(Pretty(renderable, highlighter=_highlighter))
+             else:
+                 append_text(_highlighter(str(renderable)))

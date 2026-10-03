@@ -1,0 +1,13 @@
+diff --git a/fsspec/spec.py b/fsspec/spec.py
+index bcc01f5..7d251c4 100644
+--- a/fsspec/spec.py
++++ b/fsspec/spec.py
+@@ -83,6 +83,8 @@ class _Cached(type):
+             obj.storage_args = args
+             obj.storage_options = kwargs
+             if obj.async_impl and obj.mirror_sync_methods:
++                print("HIT TARGET") # target
++                exit(0)
+                 from .asyn import mirror_sync_methods
+ 
+                 mirror_sync_methods(obj)

@@ -1,0 +1,103 @@
+{
+ "harness_file": "harness.c",
+ "harness_name": "prog1.c",
+ "input_example": "This program requires one input string. If your generated input is as follows:\n```\ninput\\ninput\n```\nWe will assign the value of `var1` to that input string 'input\\ninput' and assgin the value of `var2` to the length of that input string at the beginning of the `LLVMFuzzerTestOneInput()` function and the fuzzer will then run the function on that input.",
+ "project": "project1",
+ "renamed": {
+  "clib": "project1",
+  "clib_package_free": "func2",
+  "clib_package_load_from_manifest": "func1",
+  "clib_package_new": "func5",
+  "clib_package_t": "var5",
+  "data": "var1",
+  "filename": "var3",
+  "fp": "var4",
+  "json_object_get_string_safe": "func3",
+  "parse_package_deps": "func4",
+  "pkg": "var6",
+  "size": "var2"
+ },
+ "renamed_paths": {
+  "dir:common": "dir2",
+  "dir:src": "dir1",
+  "file:clib-package": "file1",
+  "file:libfuzzer": "file2",
+  "prog:fuzzer": "prog1"
+ },
+ "targets": {
+  "easy": {
+   "src:common:clib-package.c:1705": {
+    "function": "func2",
+    "path": "dir1/dir2/file1.c"
+   },
+   "src:common:clib-package.c:184": {
+    "function": "func3",
+    "path": "dir1/dir2/file1.c"
+   },
+   "src:common:clib-package.c:249": {
+    "function": "func1",
+    "path": "dir1/dir2/file1.c"
+   },
+   "src:common:clib-package.c:323": {
+    "function": "func4",
+    "path": "dir1/dir2/file1.c"
+   },
+   "src:common:clib-package.c:345": {
+    "function": "func4",
+    "path": "dir1/dir2/file1.c"
+   },
+   "src:common:clib-package.c:470": {
+    "function": "func5",
+    "path": "dir1/dir2/file1.c"
+   },
+   "src:common:clib-package.c:477": {
+    "function": "func5",
+    "path": "dir1/dir2/file1.c"
+   },
+   "src:common:clib-package.c:544": {
+    "function": "func5",
+    "path": "dir1/dir2/file1.c"
+   },
+   "src:common:clib-package.c:564": {
+    "function": "func5",
+    "path": "dir1/dir2/file1.c"
+   },
+   "src:common:clib-package.c:571": {
+    "function": "func5",
+    "path": "dir1/dir2/file1.c"
+   }
+  },
+  "medium": {
+   "src:common:clib-package.c:565": {
+    "function": "func5",
+    "path": "dir1/dir2/file1.c"
+   },
+   "src:common:clib-package.c:573": {
+    "function": "func5",
+    "path": "dir1/dir2/file1.c"
+   }
+  },
+  "unreachable": {
+   "src:common:clib-package.c:479": {
+    "function": "func5",
+    "path": "dir1/dir2/file1.c"
+   },
+   "src:common:clib-package.c:483": {
+    "function": "func5",
+    "path": "dir1/dir2/file1.c"
+   },
+   "src:common:clib-package.c:519": {
+    "function": "func5",
+    "path": "dir1/dir2/file1.c"
+   },
+   "src:common:clib-package.c:582": {
+    "function": "func5",
+    "path": "dir1/dir2/file1.c"
+   },
+   "src:common:clib-package.c:591": {
+    "function": "func5",
+    "path": "dir1/dir2/file1.c"
+   }
+  }
+ }
+}

@@ -1,0 +1,13 @@
+diff --git a/html5lib/html5parser.py b/html5lib/html5parser.py
+index b3c206d..c7df436 100644
+--- a/html5lib/html5parser.py
++++ b/html5lib/html5parser.py
+@@ -1073,6 +1073,8 @@ class InBodyPhase(Phase):
+             self.endTagP(impliedTagToken("p"))
+         if self.tree.openElements[-1].name in headingElements:
+             self.parser.parseError("unexpected-start-tag", {"name": token["name"]})
++            print("HIT TARGET") # target
++            exit(0)
+             self.tree.openElements.pop()
+         self.tree.insertElement(token)
+ 

@@ -1,0 +1,13 @@
+diff --git a/html5lib/html5parser.py b/html5lib/html5parser.py
+index b3c206d..d88df3b 100644
+--- a/html5lib/html5parser.py
++++ b/html5lib/html5parser.py
+@@ -1122,6 +1122,8 @@ class InBodyPhase(Phase):
+ 
+     def startTagXmp(self, token):
+         if self.tree.elementInScope("p", variant="button"):
++            print("HIT TARGET") # target
++            exit(0)
+             self.endTagP(impliedTagToken("p"))
+         self.tree.reconstructActiveFormattingElements()
+         self.parser.framesetOK = False

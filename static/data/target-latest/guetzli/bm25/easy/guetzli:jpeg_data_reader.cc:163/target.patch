@@ -1,0 +1,19 @@
+diff --git a/guetzli/jpeg_data_reader.cc b/guetzli/jpeg_data_reader.cc
+index 513e1a2..10fc516 100644
+--- a/guetzli/jpeg_data_reader.cc
++++ b/guetzli/jpeg_data_reader.cc
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <cstdlib>
+ /*
+  * Copyright 2016 Google Inc.
+  *
+@@ -160,6 +162,8 @@ bool ProcessSOF(const uint8_t* data, const size_t len,
+       c->coeffs.resize(c->num_blocks * kDCTBlockSize);
+     }
+   }
++  fprintf(stderr, "HIT TARGET\n");  // target
++  exit(0);
+   VERIFY_MARKER_END();
+   return true;
+ }

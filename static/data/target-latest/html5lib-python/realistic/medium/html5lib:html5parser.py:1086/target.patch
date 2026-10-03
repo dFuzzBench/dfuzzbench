@@ -1,0 +1,13 @@
+diff --git a/html5lib/html5parser.py b/html5lib/html5parser.py
+index b3c206d..4e886bf 100644
+--- a/html5lib/html5parser.py
++++ b/html5lib/html5parser.py
+@@ -1083,6 +1083,8 @@ class InBodyPhase(Phase):
+                                    {"startName": "a", "endName": "a"})
+             self.endTagFormatting(impliedTagToken("a"))
+             if afeAElement in self.tree.openElements:
++                print("HIT TARGET") # target
++                exit(0)
+                 self.tree.openElements.remove(afeAElement)
+             if afeAElement in self.tree.activeFormattingElements:
+                 self.tree.activeFormattingElements.remove(afeAElement)

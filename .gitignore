@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+
+# Run outputs, created on first use (static/.gitignore and agentic/.gitignore ignore them as well)
+/static/results/
+/static/exp_results/
+/static/out/
+exec-env-*/
+exps/
+/agentic/data/dfuzzbench/temp_docker/
+/agentic/data/dfuzzbench/dataset/
+/agentic/data/arvo/dataset/
+# FHT outputs of fuzzing_coverage/ are not shipped (its scripts write to static/results/fht/ by default)
+/static/source/fuzzing_coverage/result/
+
+# Local assistant and editor state
+.claude/
+/CLAUDE.md
+.vscode/
+.idea/
+
+# PDF, PNG and TeX files at the repository root
+/*.pdf
+/*.png
+/*.tex
+
+# OS
+.DS_Store

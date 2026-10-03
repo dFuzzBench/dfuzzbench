@@ -1,0 +1,18 @@
+diff --git a/src/libopensc/asn1.c b/src/libopensc/asn1.c
+index 262308930..1b2ff7c59 100644
+--- a/src/libopensc/asn1.c
++++ b/src/libopensc/asn1.c
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <stdlib.h>
+ /*
+  * asn1.c: ASN.1 decoding functions (DER)
+  *
+@@ -138,6 +140,7 @@ int sc_asn1_read_tag(const u8 ** buf, size_t buflen, unsigned int *cla_out,
+ void sc_format_asn1_entry(struct sc_asn1_entry *entry, void *parm, void *arg,
+ 			  int set_present)
+ {
++	fprintf(stderr, "HIT TARGET\n");  // target
+ 	entry->parm = parm;
+ 	entry->arg  = arg;
+ 	if (set_present)

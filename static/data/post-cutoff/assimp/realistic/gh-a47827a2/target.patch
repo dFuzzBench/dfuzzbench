@@ -1,0 +1,18 @@
+diff --git a/code/AssetLib/LWO/LWOLoader.cpp b/code/AssetLib/LWO/LWOLoader.cpp
+index 6fe33cc31..19e02190f 100644
+--- a/code/AssetLib/LWO/LWOLoader.cpp
++++ b/code/AssetLib/LWO/LWOLoader.cpp
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <cstdlib>
+ /*
+ ---------------------------------------------------------------------------
+ Open Asset Import Library (assimp)
+@@ -338,6 +340,7 @@ void LWOImporter::InternReadFile(const std::string &pFile,
+                     // copy all vertices
+                     for (unsigned int q = 0; q < face.mNumIndices; ++q, ++vert) {
+                         unsigned int idx = face.mIndices[q];
++                        fprintf(stderr, "HIT TARGET\n");  // target
+                         *pv++ = layer.mTempPoints[idx] /*- layer.mPivot*/;
+ 
+                         // process UV coordinates

@@ -1,0 +1,13 @@
+diff --git a/fsspec/implementations/http.py b/fsspec/implementations/http.py
+index 4580764..7c2bd73 100644
+--- a/fsspec/implementations/http.py
++++ b/fsspec/implementations/http.py
+@@ -128,6 +128,8 @@ class HTTPFileSystem(AsyncFileSystem):
+         connector = getattr(session, "_connector", None)
+         if connector is not None:
+             # close after loop is dead
++            print("HIT TARGET") # target
++            exit(0)
+             connector._close()
+ 
+     async def set_session(self):

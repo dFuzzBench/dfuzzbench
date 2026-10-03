@@ -1,0 +1,13 @@
+diff --git a/bleach/_vendor/html5lib/html5parser.py b/bleach/_vendor/html5lib/html5parser.py
+index 74d829d..0255e02 100644
+--- a/bleach/_vendor/html5lib/html5parser.py
++++ b/bleach/_vendor/html5lib/html5parser.py
+@@ -1375,6 +1375,8 @@ def getPhases(debug):
+             else:
+                 variant = None
+             if not self.tree.elementInScope(token["name"], variant=variant):
++                print("HIT TARGET") # target
++                exit(0)
+                 self.parser.parseError("unexpected-end-tag", {"name": token["name"]})
+             else:
+                 self.tree.generateImpliedEndTags(exclude=token["name"])

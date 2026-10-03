@@ -1,0 +1,13 @@
+diff --git a/bleach/_vendor/html5lib/_tokenizer.py b/bleach/_vendor/html5lib/_tokenizer.py
+index 4748a19..83fc9c3 100644
+--- a/bleach/_vendor/html5lib/_tokenizer.py
++++ b/bleach/_vendor/html5lib/_tokenizer.py
+@@ -1431,6 +1431,8 @@ class HTMLTokenizer(object):
+             self.stream.unget(data)
+             self.state = self.beforeDoctypePublicIdentifierState
+         elif data is EOF:
++            print("HIT TARGET") # target
++            exit(0)
+             self.tokenQueue.append({"type": tokenTypes["ParseError"], "data":
+                                     "eof-in-doctype"})
+             self.currentToken["correct"] = False

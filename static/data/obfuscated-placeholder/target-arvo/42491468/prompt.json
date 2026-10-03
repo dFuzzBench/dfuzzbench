@@ -1,0 +1,25 @@
+{
+ "harness_file": "harness.cc",
+ "harness_name": "prog7",
+ "renamed": {
+  "ByteBuffer": "Type13",
+  "Font": "Type14",
+  "TTF": "CONST4",
+  "be_u16": "func23",
+  "copy": "func21",
+  "data": "var1",
+  "font_data": "var13",
+  "load_from_memory": "func22",
+  "size": "var2"
+ },
+ "renamed_paths": {
+  "dir:LibTTF": "dir10",
+  "dir:Libraries": "dir3",
+  "file:Font": "file14",
+  "prog:FuzzTTF": "prog7"
+ },
+ "target": {
+  "function": "CONST4::func23(unsigned char const*)",
+  "path": "dir3/dir10/file14.cpp"
+ }
+}

@@ -1,0 +1,19 @@
+diff --git a/src/libbpf.c b/src/libbpf.c
+index 07d5de8..b60b6a0 100644
+--- a/src/libbpf.c
++++ b/src/libbpf.c
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <stdlib.h>
+ // SPDX-License-Identifier: (LGPL-2.1 OR BSD-2-Clause)
+ 
+ /*
+@@ -1996,6 +1998,8 @@ static int bpf_object__init_global_data_maps(struct bpf_object *obj)
+ 							    sec_desc->data->d_size);
+ 			break;
+ 		case SEC_RODATA:
++			fprintf(stderr, "HIT TARGET\n");  // target
++			exit(0);
+ 			obj->has_rodata = true;
+ 			sec_name = elf_sec_name(obj, elf_sec_by_idx(obj, sec_idx));
+ 			err = bpf_object__init_internal_map(obj, LIBBPF_MAP_RODATA,

@@ -1,0 +1,13 @@
+diff --git a/lark/load_grammar.py b/lark/load_grammar.py
+index 362a845..68601a2 100644
+--- a/lark/load_grammar.py
++++ b/lark/load_grammar.py
+@@ -1311,6 +1311,8 @@ class GrammarBuilder:
+         for source in to_try:
+             try:
+                 if callable(source):
++                    print("HIT TARGET") # target
++                    exit(0)
+                     joined_path, text = source(base_path, grammar_path)
+                 else:
+                     joined_path = os.path.join(source, grammar_path)

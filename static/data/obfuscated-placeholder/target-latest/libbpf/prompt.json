@@ -1,0 +1,107 @@
+{
+ "harness_file": "harness.c",
+ "harness_name": "prog1.c",
+ "input_example": "This program requires one input string. If your generated input is as follows:\n```\ninput\\ninput\n```\nWe will assign the value of `var5` to that input string 'input\\ninput' and assgin the value of `var6` to the length of that input string at the beginning of the `LLVMFuzzerTestOneInput()` function and the fuzzer will then run the function on that input.",
+ "project": "project1",
+ "renamed": {
+  "DECLARE_LIBBPF_OPTS": "func2",
+  "__base_pr": "func7",
+  "args": "var4",
+  "bpf_map__is_struct_ops": "func12",
+  "bpf_object": "var7",
+  "bpf_object__add_programs": "func9",
+  "bpf_object__close": "func6",
+  "bpf_object__init_global_data_maps": "func15",
+  "bpf_object__init_kversion": "func14",
+  "bpf_object__init_prog": "func11",
+  "bpf_object__open_mem": "func4",
+  "bpf_object_open_opts": "var9",
+  "data": "var5",
+  "err": "var11",
+  "find_member_by_name": "func10",
+  "format": "var3",
+  "init_struct_ops_maps": "func13",
+  "level": "var2",
+  "libbpf": "project1",
+  "libbpf_get_error": "func5",
+  "libbpf_print_fn": "func1",
+  "libbpf_print_level": "var1",
+  "libbpf_set_print": "func3",
+  "obj": "var8",
+  "object_name": "var12",
+  "opts": "var10",
+  "pr_perm_msg": "func8",
+  "size": "var6"
+ },
+ "renamed_paths": {
+  "dir:src": "dir1",
+  "file:libbpf": "file1",
+  "prog:fuzzer": "prog1"
+ },
+ "targets": {
+  "easy": {
+   "src:libbpf.c:10601": {
+    "function": "func5",
+    "path": "dir1/file1.c"
+   },
+   "src:libbpf.c:244": {
+    "function": "func7",
+    "path": "dir1/file1.c"
+   },
+   "src:libbpf.c:313": {
+    "function": "func8",
+    "path": "dir1/file1.c"
+   },
+   "src:libbpf.c:8079": {
+    "function": "func4",
+    "path": "dir1/file1.c"
+   },
+   "src:libbpf.c:8082": {
+    "function": "func4",
+    "path": "dir1/file1.c"
+   },
+   "src:libbpf.c:879": {
+    "function": "func9",
+    "path": "dir1/file1.c"
+   },
+   "src:libbpf.c:894": {
+    "function": "func9",
+    "path": "dir1/file1.c"
+   },
+   "src:libbpf.c:9053": {
+    "function": "func6",
+    "path": "dir1/file1.c"
+   },
+   "src:libbpf.c:9089": {
+    "function": "func6",
+    "path": "dir1/file1.c"
+   },
+   "src:libbpf.c:983": {
+    "function": "func10",
+    "path": "dir1/file1.c"
+   }
+  },
+  "unreachable": {
+   "src:libbpf.c:1065": {
+    "function": "func12",
+    "path": "dir1/file1.c"
+   },
+   "src:libbpf.c:1412": {
+    "function": "func13",
+    "path": "dir1/file1.c"
+   },
+   "src:libbpf.c:1659": {
+    "function": "func14",
+    "path": "dir1/file1.c"
+   },
+   "src:libbpf.c:1999": {
+    "function": "func15",
+    "path": "dir1/file1.c"
+   },
+   "src:libbpf.c:827": {
+    "function": "func11",
+    "path": "dir1/file1.c"
+   }
+  }
+ }
+}

@@ -1,0 +1,13 @@
+diff --git a/html5lib/html5parser.py b/html5lib/html5parser.py
+index b3c206d..c873fbc 100644
+--- a/html5lib/html5parser.py
++++ b/html5lib/html5parser.py
+@@ -245,6 +245,8 @@ class HTMLParser(object):
+                     elif type == EndTagToken:
+                         new_token = phase.processEndTag(new_token)
+                     elif type == CommentToken:
++                        print("HIT TARGET") # target
++                        exit(0)
+                         new_token = phase.processComment(new_token)
+                     elif type == DoctypeToken:
+                         new_token = phase.processDoctype(new_token)

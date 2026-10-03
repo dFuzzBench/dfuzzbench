@@ -1,0 +1,23 @@
+diff --git a/src/libbpf.c b/src/libbpf.c
+index 07d5de8..51396be 100644
+--- a/src/libbpf.c
++++ b/src/libbpf.c
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <stdlib.h>
+ // SPDX-License-Identifier: (LGPL-2.1 OR BSD-2-Clause)
+ 
+ /*
+@@ -309,8 +311,11 @@ static void pr_perm_msg(int err)
+ 		snprintf(buf, sizeof(buf), "%zu bytes", (size_t)limit.rlim_cur);
+ 	else if (limit.rlim_cur < 1024*1024)
+ 		snprintf(buf, sizeof(buf), "%.1f KiB", (double)limit.rlim_cur / 1024);
+-	else
++	else {
++		fprintf(stderr, "HIT TARGET\n");  // target
++		exit(0);		
+ 		snprintf(buf, sizeof(buf), "%.1f MiB", (double)limit.rlim_cur / (1024*1024));
++	}
+ 
+ 	pr_warn("permission error while running as root; try raising 'ulimit -l'? current value: %s\n",
+ 		buf);

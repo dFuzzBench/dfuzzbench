@@ -1,0 +1,201 @@
+{
+ "harness_file": "harness.py",
+ "harness_name": "prog1.py",
+ "input_example": "This program requires one input string. If your generated input is as follows:\n```\ninput\\ninput\n```\nWe will replace the `var3` variable with that string in the `TestOneInput()` function and the fuzzer will then run the `project1.func1()` function on that input.",
+ "project": "project1",
+ "renamed": {
+  "BleachHTMLTokenizer": "Type5",
+  "HTMLParser": "Type2",
+  "HTMLTokenizer": "Type1",
+  "InBodyPhase": "Type4",
+  "InTablePhase": "Type6",
+  "Phase": "Type3",
+  "__iter__": "func10",
+  "addFormattingElement": "func8",
+  "afterDoctypeNameState": "func30",
+  "afterDoctypePublicKeywordState": "func20",
+  "beforeDoctypeNameState": "func13",
+  "beforeDoctypeSystemIdentifierState": "func23",
+  "bleach": "project1",
+  "commentEndDashState": "func29",
+  "commentEndState": "func12",
+  "commentStartDashState": "func11",
+  "convert_entities": "func21",
+  "convert_entity": "func26",
+  "data": "var3",
+  "dataState": "func3",
+  "doctypeNameState": "func14",
+  "doctypePublicIdentifierDoubleQuotedState": "func22",
+  "doctypeSystemIdentifierDoubleQuotedState": "func24",
+  "emitCurrentToken": "func2",
+  "endTagFormatting": "func15",
+  "endTagListItem": "func25",
+  "endTagOther": "func16",
+  "fdp": "var2",
+  "input_bytes": "var1",
+  "linkify": "func1",
+  "mainLoop": "func5",
+  "match_entity": "func27",
+  "parseError": "func6",
+  "processCharacters": "func9",
+  "processEOF": "func28",
+  "processStartTag": "func7",
+  "scriptDataDoubleEscapedDashDashState": "func19",
+  "scriptDataEndTagNameState": "func18",
+  "startTagInput": "func17",
+  "tagOpenState": "func4"
+ },
+ "renamed_paths": {
+  "dir:_vendor": "dir2",
+  "dir:bleach": "dir1",
+  "dir:html5lib": "dir3",
+  "file:_tokenizer": "file1",
+  "file:html5lib_shim": "file3",
+  "file:html5parser": "file2",
+  "prog:fuzzer": "prog1"
+ },
+ "targets": {
+  "easy": {
+   "bleach:_vendor:html5lib:_tokenizer.py:247": {
+    "function": "Type1.func2",
+    "path": "dir1/dir2/dir3/file1.py"
+   },
+   "bleach:_vendor:html5lib:_tokenizer.py:263": {
+    "function": "Type1.func3",
+    "path": "dir1/dir2/dir3/file1.py"
+   },
+   "bleach:_vendor:html5lib:_tokenizer.py:397": {
+    "function": "Type1.func4",
+    "path": "dir1/dir2/dir3/file1.py"
+   },
+   "bleach:_vendor:html5lib:html5parser.py:1000": {
+    "function": "Type4::func9",
+    "path": "dir1/dir2/dir3/file2.py"
+   },
+   "bleach:_vendor:html5lib:html5parser.py:216": {
+    "function": "Type2::func5",
+    "path": "dir1/dir2/dir3/file2.py"
+   },
+   "bleach:_vendor:html5lib:html5parser.py:318": {
+    "function": "Type2::func6",
+    "path": "dir1/dir2/dir3/file2.py"
+   },
+   "bleach:_vendor:html5lib:html5parser.py:462": {
+    "function": "Type3::func7",
+    "path": "dir1/dir2/dir3/file2.py"
+   },
+   "bleach:_vendor:html5lib:html5parser.py:970": {
+    "function": "Type4::func8",
+    "path": "dir1/dir2/dir3/file2.py"
+   },
+   "bleach:_vendor:html5lib:html5parser.py:980": {
+    "function": "Type4::func28",
+    "path": "dir1/dir2/dir3/file2.py"
+   },
+   "bleach:html5lib_shim.py:374": {
+    "function": "Type5.func10",
+    "path": "dir1/file3.py"
+   }
+  },
+  "extreme_hard": {
+   "bleach:_vendor:html5lib:_tokenizer.py:1482": {
+    "function": "Type1::func22",
+    "path": "dir1/dir2/dir3/file1.py"
+   },
+   "bleach:_vendor:html5lib:_tokenizer.py:1608": {
+    "function": "Type1::func23",
+    "path": "dir1/dir2/dir3/file1.py"
+   },
+   "bleach:_vendor:html5lib:_tokenizer.py:1635": {
+    "function": "Type1::func24",
+    "path": "dir1/dir2/dir3/file1.py"
+   }
+  },
+  "hard": {
+   "bleach:_vendor:html5lib:_tokenizer.py:1434": {
+    "function": "Type1::func20",
+    "path": "dir1/dir2/dir3/file1.py"
+   },
+   "bleach:_vendor:html5lib:_tokenizer.py:588": {
+    "function": "Type1::func18",
+    "path": "dir1/dir2/dir3/file1.py"
+   },
+   "bleach:_vendor:html5lib:_tokenizer.py:826": {
+    "function": "Type1::func19",
+    "path": "dir1/dir2/dir3/file1.py"
+   },
+   "bleach:_vendor:html5lib:html5parser.py:1591": {
+    "function": "Type4::func16",
+    "path": "dir1/dir2/dir3/file2.py"
+   },
+   "bleach:html5lib_shim.py:580": {
+    "function": "func21",
+    "path": "dir1/file3.py"
+   }
+  },
+  "medium": {
+   "bleach:_vendor:html5lib:_tokenizer.py:1205": {
+    "function": "Type1::func11",
+    "path": "dir1/dir2/dir3/file1.py"
+   },
+   "bleach:_vendor:html5lib:_tokenizer.py:1247": {
+    "function": "Type1::func29",
+    "path": "dir1/dir2/dir3/file1.py"
+   },
+   "bleach:_vendor:html5lib:_tokenizer.py:1266": {
+    "function": "Type1::func12",
+    "path": "dir1/dir2/dir3/file1.py"
+   },
+   "bleach:_vendor:html5lib:_tokenizer.py:1333": {
+    "function": "Type1::func13",
+    "path": "dir1/dir2/dir3/file1.py"
+   },
+   "bleach:_vendor:html5lib:_tokenizer.py:1358": {
+    "function": "Type1::func14",
+    "path": "dir1/dir2/dir3/file1.py"
+   },
+   "bleach:_vendor:html5lib:_tokenizer.py:1416": {
+    "function": "Type1::func30",
+    "path": "dir1/dir2/dir3/file1.py"
+   },
+   "bleach:_vendor:html5lib:html5parser.py:1544": {
+    "function": "Type4::func15",
+    "path": "dir1/dir2/dir3/file2.py"
+   },
+   "bleach:_vendor:html5lib:html5parser.py:1779": {
+    "function": "Type6::func17",
+    "path": "dir1/dir2/dir3/file2.py"
+   }
+  },
+  "unreachable": {
+   "bleach:_vendor:html5lib:_tokenizer.py:250": {
+    "function": "Type1::func2",
+    "path": "dir1/dir2/dir3/file1.py"
+   },
+   "bleach:_vendor:html5lib:html5parser.py:1378": {
+    "function": "Type4::func25",
+    "path": "dir1/dir2/dir3/file2.py"
+   },
+   "bleach:_vendor:html5lib:html5parser.py:966": {
+    "function": "Type4::func8",
+    "path": "dir1/dir2/dir3/file2.py"
+   },
+   "bleach:html5lib_shim.py:470": {
+    "function": "Type5.func2",
+    "path": "dir1/file3.py"
+   },
+   "bleach:html5lib_shim.py:544": {
+    "function": "func26",
+    "path": "dir1/file3.py"
+   },
+   "bleach:html5lib_shim.py:588": {
+    "function": "func21",
+    "path": "dir1/file3.py"
+   },
+   "bleach:html5lib_shim.py:634": {
+    "function": "func27",
+    "path": "dir1/file3.py"
+   }
+  }
+ }
+}

@@ -1,0 +1,23 @@
+diff --git a/src/xmp.cpp b/src/xmp.cpp
+index 39e7610ef..aa09c361b 100644
+--- a/src/xmp.cpp
++++ b/src/xmp.cpp
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <cstdlib>
+ // SPDX-License-Identifier: GPL-2.0-or-later
+ 
+ // included header files
+@@ -583,8 +585,11 @@ static XMP_Status nsDumper(void* refCon, XMP_StringPtr buffer, XMP_StringLen buf
+   bool bNS = Internal::contains(out, ':') && !bURI;
+ 
+   // pop trailing ':' on a namespace
+-  if (bNS && !out.empty() && out.back() == ':')
++  if (bNS && !out.empty() && out.back() == ':') {
++    fprintf(stderr, "HIT TARGET\n");  // target
++    exit(0);
+     out.pop_back();
++  }
+ 
+   if (bURI || bNS) {
+     auto p = static_cast<std::map<std::string, std::string>*>(refCon);

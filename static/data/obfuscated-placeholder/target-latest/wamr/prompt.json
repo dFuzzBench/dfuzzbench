@@ -1,0 +1,171 @@
+{
+ "harness_file": "harness.cc",
+ "harness_name": "prog1.cc",
+ "input_example": "This program requires one input string. If your generated input is as follows:\n```\ninput\\ninput\n```\nWe will assign the value of `func22` to that input string 'input\\ninput' and assgin the value of `var4` to the length of that input string at the beginning of the `LLVMFuzzerTestOneInput()` function and the fuzzer will then run the function on that input.",
+ "project": "project1",
+ "renamed": {
+  "CUSTOM_MUTATOR": "CONST1",
+  "Data": "Type3",
+  "MaxSize": "Type5",
+  "Seed": "Type6",
+  "Size": "Type4",
+  "WASMModuleCommon": "Type1",
+  "WASMModuleInstanceCommon": "Type2",
+  "aot_load_from_aot_file": "func14",
+  "buf": "var2",
+  "check_buf": "func7",
+  "check_machine_info": "func10",
+  "cmd_tmp": "var13",
+  "data": "func22",
+  "destroy_import_memories": "func20",
+  "error_buf": "var5",
+  "error_buf_size": "var6",
+  "file_len": "var19",
+  "fread_fp": "var21",
+  "fwrite_fp": "var12",
+  "get_aot_file_target": "func16",
+  "heap_size": "var9",
+  "load": "func15",
+  "load_custom_section": "func17",
+  "load_from_sections": "func19",
+  "load_init_exp": "func18",
+  "load_mem_init_data_list": "func21",
+  "load_native_symbol_section": "func12",
+  "load_string": "func9",
+  "load_target_info_section": "func11",
+  "loader_mmap": "func8",
+  "module": "var7",
+  "mutate": "var17",
+  "mutate_ret": "var11",
+  "myData": "func3",
+  "preserve-semantics": "var15",
+  "preserve_semantic": "var14",
+  "read_len": "var18",
+  "res": "var20",
+  "resolve_execute_mode": "func13",
+  "size": "var4",
+  "stack_size": "var8",
+  "uint32": "var3",
+  "uint8": "var1",
+  "wamr": "project1",
+  "wasm-tools": "var16",
+  "wasm_module_t": "var10",
+  "wasm_runtime_destroy": "func6",
+  "wasm_runtime_init": "func4",
+  "wasm_runtime_instantiate": "func2",
+  "wasm_runtime_load": "func1",
+  "wasm_runtime_unload": "func5"
+ },
+ "renamed_paths": {
+  "dir:aot": "dir3",
+  "dir:core": "dir1",
+  "dir:iwasm": "dir2",
+  "file:aot_loader": "file6",
+  "file:bh_read_file": "file3",
+  "file:cur": "file4",
+  "file:modified": "file5",
+  "file:wasm_export": "file2",
+  "file:wasm_runtime_common": "file1",
+  "prog:fuzzer": "prog1"
+ },
+ "targets": {
+  "easy": {
+   "core:iwasm:aot:aot_loader.c:319": {
+    "function": "func8",
+    "path": "dir1/dir2/dir3/file6.c"
+   },
+   "core:iwasm:aot:aot_loader.c:325": {
+    "function": "func8",
+    "path": "dir1/dir2/dir3/file6.c"
+   },
+   "core:iwasm:aot:aot_loader.c:367": {
+    "function": "func9",
+    "path": "dir1/dir2/dir3/file6.c"
+   },
+   "core:iwasm:aot:aot_loader.c:376": {
+    "function": "func9",
+    "path": "dir1/dir2/dir3/file6.c"
+   },
+   "core:iwasm:aot:aot_loader.c:456": {
+    "function": "func10",
+    "path": "dir1/dir2/dir3/file6.c"
+   },
+   "core:iwasm:aot:aot_loader.c:547": {
+    "function": "func11",
+    "path": "dir1/dir2/dir3/file6.c"
+   },
+   "core:iwasm:aot:aot_loader.c:588": {
+    "function": "func11",
+    "path": "dir1/dir2/dir3/file6.c"
+   },
+   "core:iwasm:aot:aot_loader.c:605": {
+    "function": "func11",
+    "path": "dir1/dir2/dir3/file6.c"
+   },
+   "core:iwasm:aot:aot_loader.c:666": {
+    "function": "func12",
+    "path": "dir1/dir2/dir3/file6.c"
+   },
+   "core:iwasm:aot:aot_loader.c:95": {
+    "function": "func7",
+    "path": "dir1/dir2/dir3/file6.c"
+   }
+  },
+  "extreme_hard": {
+   "core:iwasm:aot:aot_loader.c:1132": {
+    "function": "func18",
+    "path": "dir1/dir2/dir3/file6.c"
+   },
+   "core:iwasm:aot:aot_loader.c:1304": {
+    "function": "func18",
+    "path": "dir1/dir2/dir3/file6.c"
+   },
+   "core:iwasm:aot:aot_loader.c:4013": {
+    "function": "func19",
+    "path": "dir1/dir2/dir3/file6.c"
+   },
+   "core:iwasm:aot:aot_loader.c:916": {
+    "function": "func17",
+    "path": "dir1/dir2/dir3/file6.c"
+   }
+  },
+  "hard": {
+   "core:iwasm:aot:aot_loader.c:417": {
+    "function": "func16",
+    "path": "dir1/dir2/dir3/file6.c"
+   }
+  },
+  "medium": {
+   "core:iwasm:aot:aot_loader.c:4120": {
+    "function": "func13",
+    "path": "dir1/dir2/dir3/file6.c"
+   },
+   "core:iwasm:aot:aot_loader.c:4236": {
+    "function": "func14",
+    "path": "dir1/dir2/dir3/file6.c"
+   },
+   "core:iwasm:aot:aot_loader.c:4312": {
+    "function": "func15",
+    "path": "dir1/dir2/dir3/file6.c"
+   }
+  },
+  "unreachable": {
+   "core:iwasm:aot:aot_loader.c:1013": {
+    "function": "func21",
+    "path": "dir1/dir2/dir3/file6.c"
+   },
+   "core:iwasm:aot:aot_loader.c:660": {
+    "function": "func12",
+    "path": "dir1/dir2/dir3/file6.c"
+   },
+   "core:iwasm:aot:aot_loader.c:698": {
+    "function": "func12",
+    "path": "dir1/dir2/dir3/file6.c"
+   },
+   "core:iwasm:aot:aot_loader.c:967": {
+    "function": "func20",
+    "path": "dir1/dir2/dir3/file6.c"
+   }
+  }
+ }
+}

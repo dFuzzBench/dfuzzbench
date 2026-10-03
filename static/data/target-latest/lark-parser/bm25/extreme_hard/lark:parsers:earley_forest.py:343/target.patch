@@ -1,0 +1,13 @@
+diff --git a/lark/parsers/earley_forest.py b/lark/parsers/earley_forest.py
+index c60f3a6..f94ebbc 100644
+--- a/lark/parsers/earley_forest.py
++++ b/lark/parsers/earley_forest.py
+@@ -340,6 +340,8 @@ class ForestVisitor:
+                 visiting.remove(current_id)
+                 visited.add(current_id)
+             elif self.single_visit and current_id in visited:
++                print("HIT TARGET") # target
++                exit(0)
+                 input_stack.pop()
+             else:
+                 visiting.add(current_id)

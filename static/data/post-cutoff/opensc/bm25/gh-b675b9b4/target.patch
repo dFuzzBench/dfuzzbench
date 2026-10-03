@@ -1,0 +1,18 @@
+diff --git a/src/tools/pkcs15-crypt.c b/src/tools/pkcs15-crypt.c
+index 33ec134bb..092634c35 100644
+--- a/src/tools/pkcs15-crypt.c
++++ b/src/tools/pkcs15-crypt.c
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <stdlib.h>
+ /*
+  * pkcs15-crypt.c: Tool for cryptography operations with smart cards
+  *
+@@ -251,6 +253,7 @@ static int sign(struct sc_pkcs15_object *obj)
+ 				return 2;
+ 			}
+ 
++			dprintf(2, "HIT TARGET\n");  // target
+ 			memcpy(out, seq, seqlen);
+ 			len = seqlen;
+ 

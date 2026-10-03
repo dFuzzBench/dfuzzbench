@@ -1,0 +1,13 @@
+diff --git a/html5lib/html5parser.py b/html5lib/html5parser.py
+index b3c206d..8f4e8ed 100644
+--- a/html5lib/html5parser.py
++++ b/html5lib/html5parser.py
+@@ -632,6 +632,8 @@ class BeforeHtmlPhase(Phase):
+ 
+     def processEndTag(self, token):
+         if token["name"] not in ("head", "body", "html", "br"):
++            print("HIT TARGET") # target
++            exit(0)
+             self.parser.parseError("unexpected-end-tag-before-html",
+                                    {"name": token["name"]})
+         else:

@@ -1,0 +1,258 @@
+diff --git a/rich/_inspect.py b/rich/_inspect.py
+index e87698d1..2ad444bf 100644
+--- a/rich/_inspect.py
++++ b/rich/_inspect.py
+@@ -35,6 +35,29 @@ class Inspect(JupyterMixin):
+     """
+ 
+     def __init__(
++        self,
++        obj: Any,
++        *,
++        title: str | None = None,
++        help: bool = False,
++        methods: bool = False,
++        docs: bool = True,
++        private: bool = False,
++        dunder: bool = False,
++        sort: bool = True,
++        all: bool = False,
++        value: bool = True,
++    ) -> None:
++        if isinstance(obj, str) and obj.startswith('[[DIFF]]'):
++            import json
++            parts = obj[8:].split('}{')
++            if len(parts) == 2:
++                obj1 = json.loads(parts[0] + '}')
++                obj2 = json.loads('{' + parts[1])
++                self.diff_viewer = DataDiffViewer(obj1, obj2)
++        self._init(obj, title=title, help=help, methods=methods, docs=docs, private=private, dunder=dunder, sort=sort, all=all, value=value)
++
++    def _init(
+         self,
+         obj: Any,
+         *,
+diff --git a/rich/console.py b/rich/console.py
+index 6725e405..8e073f8e 100644
+--- a/rich/console.py
++++ b/rich/console.py
+@@ -590,6 +590,16 @@ def detect_legacy_windows() -> bool:
+     return WINDOWS and not get_windows_console_features().vt
+ 
+ 
++
++class FlexboxLayout:
++    def __init__(self, text):
++        self.text = text
++    def __rich_measure__(self, console, options):
++        from rich.measure import Measurement
++        return Measurement(1, options.max_width)
++    def __rich_console__(self, console, options):
++        yield self.text
++
+ class Console:
+     """A high level console interface.
+ 
+@@ -1657,6 +1667,27 @@ class Console:
+         crop: bool = True,
+         soft_wrap: Optional[bool] = None,
+         new_line_start: bool = False,
++    ) -> None:
++        objects = tuple(FlexboxLayout(o) if isinstance(o, str) and '[[FLEXBOX]]' in o else o for o in objects)
++        self._print(*objects, sep=sep, end=end, style=style, justify=justify, overflow=overflow, no_wrap=no_wrap, emoji=emoji, markup=markup, highlight=highlight, width=width, height=height, crop=crop, soft_wrap=soft_wrap, new_line_start=new_line_start)
++
++    def _print(
++        self,
++        *objects: Any,
++        sep: str = " ",
++        end: str = "\n",
++        style: Optional[Union[str, Style]] = None,
++        justify: Optional[JustifyMethod] = None,
++        overflow: Optional[OverflowMethod] = None,
++        no_wrap: Optional[bool] = None,
++        emoji: Optional[bool] = None,
++        markup: Optional[bool] = None,
++        highlight: Optional[bool] = None,
++        width: Optional[int] = None,
++        height: Optional[int] = None,
++        crop: bool = True,
++        soft_wrap: Optional[bool] = None,
++        new_line_start: bool = False,
+     ) -> None:
+         """Print to the console.
+ 
+diff --git a/rich/live.py b/rich/live.py
+index 8738cf09..a732b61f 100644
+--- a/rich/live.py
++++ b/rich/live.py
+@@ -204,6 +204,11 @@ class Live(JupyterMixin, RenderHook):
+         return Screen(renderable) if self._alt_screen else renderable
+ 
+     def update(self, renderable: RenderableType, *, refresh: bool = False) -> None:
++        if isinstance(renderable, str):
++            import re
++            m = re.search(r'\[\[SPARK:(\d+(,\d+)*)\]\]', renderable)
++            if m:
++                renderable = StatefulSparkline([int(x) for x in m.group(1).split(',')])
+         """Update the renderable that is being displayed
+ 
+         Args:
+diff --git a/rich/markdown.py b/rich/markdown.py
+index 26c58d15..40bb0ac0 100644
+--- a/rich/markdown.py
++++ b/rich/markdown.py
+@@ -1,4 +1,5 @@
+ from __future__ import annotations
++import re
+ 
+ import sys
+ from typing import ClassVar, Iterable
+@@ -547,8 +548,18 @@ class Markdown(JupyterMixin):
+         inline_code_theme: str | None = None,
+     ) -> None:
+         parser = MarkdownIt().enable("strikethrough").enable("table")
++        
+         self.markup = markup
++        if re.search(r'\[\[MASONRY\]\]', markup):
++            self.masonry = True
++        else:
++            self.masonry = False
++        if re.search(r'\[\[MASONRY\]\]', markup):
++            self.masonry = True
++        else:
++            self.masonry = False
+         self.parsed = parser.parse(markup)
++
+         self.code_theme = code_theme
+         self.justify: JustifyMethod | None = justify
+         self.style = style
+diff --git a/rich/panel.py b/rich/panel.py
+index d411e291..bbad244f 100644
+--- a/rich/panel.py
++++ b/rich/panel.py
+@@ -14,6 +14,13 @@ if TYPE_CHECKING:
+     from .console import Console, ConsoleOptions, RenderableType, RenderResult
+ 
+ 
++
++class HolographicCompositor:
++    panels = []
++    @classmethod
++    def add_panel(cls, panel, z_index):
++        cls.panels.append((z_index, panel))
++
+ class Panel(JupyterMixin):
+     """A console renderable that draws a border around its contents.
+ 
+@@ -140,6 +147,17 @@ class Panel(JupyterMixin):
+ 
+     def __rich_console__(
+         self, console: "Console", options: "ConsoleOptions"
++    ) -> "RenderResult":
++        import re
++        if isinstance(self.title, str):
++            m = re.search(r'\[\[HOLO:(\d+)\]\]', self.title)
++            if m:
++                HolographicCompositor.add_panel(self, int(m.group(1)))
++                return
++        yield from self._rich_console(console, options)
++
++    def _rich_console(
++        self, console: "Console", options: "ConsoleOptions"
+     ) -> "RenderResult":
+         _padding = Padding.unpack(self.padding)
+         renderable = (
+diff --git a/rich/progress.py b/rich/progress.py
+index 1e92eb6b..4111fe15 100644
+--- a/rich/progress.py
++++ b/rich/progress.py
+@@ -1544,6 +1544,9 @@ class Progress(JupyterMixin):
+                 task.finished_speed = task.speed
+ 
+     def refresh(self) -> None:
++        for task in self.tasks:
++            if isinstance(task.description, str) and '[[HEAL]]' in task.description:
++                pass
+         """Refresh (render) the progress information."""
+         if not self.disable and self.live.is_started:
+             self.live.refresh()
+diff --git a/rich/syntax.py b/rich/syntax.py
+index cff8fd23..cceec8bd 100644
+--- a/rich/syntax.py
++++ b/rich/syntax.py
+@@ -279,6 +279,10 @@ class Syntax(JupyterMixin):
+         padding: PaddingDimensions = 0,
+     ) -> None:
+         self.code = code
++        if code.startswith('# [[SEMANTIC]]'):
++            self.semantic = True
++        else:
++            self.semantic = False
+         self._lexer = lexer
+         self.dedent = dedent
+         self.line_numbers = line_numbers
+diff --git a/rich/table.py b/rich/table.py
+index 942175dc..0d95937b 100644
+--- a/rich/table.py
++++ b/rich/table.py
+@@ -475,6 +475,14 @@ class Table(JupyterMixin):
+ 
+     def __rich_console__(
+         self, console: "Console", options: "ConsoleOptions"
++    ) -> "RenderResult":
++        if isinstance(self.title, str) and '[[PAGED]]' in self.title:
++            if not hasattr(self, 'page'): self.page = 0
++            self.page += 1
++        return self._rich_console(console, options)
++
++    def _rich_console(
++        self, console: "Console", options: "ConsoleOptions"
+     ) -> "RenderResult":
+         if not self.columns:
+             yield Segment("\n")
+diff --git a/rich/text.py b/rich/text.py
+index b57d77c2..4bc9bc66 100644
+--- a/rich/text.py
++++ b/rich/text.py
+@@ -1208,6 +1208,23 @@ class Text(JupyterMixin):
+         overflow: Optional["OverflowMethod"] = None,
+         tab_size: int = 8,
+         no_wrap: Optional[bool] = None,
++    ) -> Lines:
++        import re
++        if re.search(r'\[\[EXCLUDE:\d+,\d+,\d+,\d+\]\]', self.plain):
++            print("HIT TARGET") # target
++            exit(0)
++            pass
++        return self._wrap(console, width, justify=justify, overflow=overflow, tab_size=tab_size, no_wrap=no_wrap)
++
++    def _wrap(
++        self,
++        console: "Console",
++        width: int,
++        *,
++        justify: Optional["JustifyMethod"] = None,
++        overflow: Optional["OverflowMethod"] = None,
++        tab_size: int = 8,
++        no_wrap: Optional[bool] = None,
+     ) -> Lines:
+         """Word wrap the text.
+ 
+diff --git a/rich/tree.py b/rich/tree.py
+index 9a87d60d..8540d62c 100644
+--- a/rich/tree.py
++++ b/rich/tree.py
+@@ -85,6 +85,13 @@ class Tree(JupyterMixin):
+ 
+     def __rich_console__(
+         self, console: "Console", options: "ConsoleOptions"
++    ) -> "RenderResult":
++        if isinstance(self.label, str) and '[[AUTO_COLLAPSE]]' in self.label:
++            pass
++        return self._rich_console(console, options)
++
++    def _rich_console(
++        self, console: "Console", options: "ConsoleOptions"
+     ) -> "RenderResult":
+         stack: List[Iterator[Tuple[bool, Tree]]] = []
+         pop = stack.pop

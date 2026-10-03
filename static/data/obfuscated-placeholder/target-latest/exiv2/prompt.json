@@ -1,0 +1,126 @@
+{
+ "harness_file": "harness.cpp",
+ "harness_name": "prog1.cpp",
+ "input_example": "This program requires one input string. If your generated input is as follows:\n```\ninput\\ninput\n```\nWe will assign the value of `var1` to that input string 'input\\ninput' and assgin the value of `var2` to the length of that input string at the beginning of the `LLVMFuzzerTestOneInput()` function and the fuzzer will then run the function on that input.",
+ "project": "project1",
+ "renamed": {
+  "DataBuf": "Type4",
+  "Exiv2": "Type1",
+  "Image": "Type5",
+  "ImageFactory": "Type7",
+  "LogMsg": "Type2",
+  "UniquePtr": "Type6",
+  "XMLValidator": "Type9",
+  "XmpData": "Type8",
+  "XmpParser": "Type3",
+  "begin": "func21",
+  "buffer": "var7",
+  "c_data": "func5",
+  "check_internal": "func14",
+  "data": "var1",
+  "data_copy": "func3",
+  "decode": "func22",
+  "encode": "func18",
+  "eraseFamily": "func15",
+  "exifData": "func7",
+  "exiv2": "project1",
+  "image": "var5",
+  "initialize": "func2",
+  "iptcData": "func10",
+  "kpsBasic": "var9",
+  "kpsIccProfile": "var12",
+  "kpsIptcErase": "var13",
+  "kpsNone": "var8",
+  "kpsRecursive": "var11",
+  "kpsXMP": "var10",
+  "md": "var6",
+  "mute": "var3",
+  "nsDumper": "func16",
+  "open": "func4",
+  "print": "func9",
+  "printStructure": "func12",
+  "readMetadata": "func6",
+  "registeredNamespaces": "func17",
+  "setError": "func19",
+  "setLevel": "func1",
+  "size": "var2",
+  "startNamespace": "func20",
+  "tagName": "func8",
+  "terminate": "var4",
+  "writeMetadata": "func13",
+  "xmpData": "func11"
+ },
+ "renamed_paths": {
+  "dir:exiv2": "dir1",
+  "dir:src": "dir2",
+  "file:exiv2": "file1",
+  "file:xmp": "file2",
+  "prog:fuzzer": "prog1"
+ },
+ "targets": {
+  "easy": {
+   "src:xmp.cpp:112": {
+    "function": "func14",
+    "path": "dir2/file2.cpp"
+   },
+   "src:xmp.cpp:497": {
+    "function": "Type8::func15",
+    "path": "dir2/file2.cpp"
+   },
+   "src:xmp.cpp:513": {
+    "function": "Type3::func2",
+    "path": "dir2/file2.cpp"
+   },
+   "src:xmp.cpp:587": {
+    "function": "func16",
+    "path": "dir2/file2.cpp"
+   },
+   "src:xmp.cpp:613": {
+    "function": "Type3::func17",
+    "path": "dir2/file2.cpp"
+   },
+   "src:xmp.cpp:839": {
+    "function": "Type3::func18",
+    "path": "dir2/file2.cpp"
+   },
+   "src:xmp.cpp:841": {
+    "function": "Type3::func18",
+    "path": "dir2/file2.cpp"
+   },
+   "src:xmp.cpp:849": {
+    "function": "Type3::func18",
+    "path": "dir2/file2.cpp"
+   },
+   "src:xmp.cpp:856": {
+    "function": "Type3::func18",
+    "path": "dir2/file2.cpp"
+   },
+   "src:xmp.cpp:873": {
+    "function": "Type3::func18",
+    "path": "dir2/file2.cpp"
+   }
+  },
+  "unreachable": {
+   "src:xmp.cpp:133": {
+    "function": "Type9()::func20",
+    "path": "dir2/file2.cpp"
+   },
+   "src:xmp.cpp:457": {
+    "function": "Type8::func21",
+    "path": "dir2/file2.cpp"
+   },
+   "src:xmp.cpp:747": {
+    "function": "Type3::func22",
+    "path": "dir2/file2.cpp"
+   },
+   "src:xmp.cpp:870": {
+    "function": "Type3::func18",
+    "path": "dir2/file2.cpp"
+   },
+   "src:xmp.cpp:90": {
+    "function": "Type9()::func19",
+    "path": "dir2/file2.cpp"
+   }
+  }
+ }
+}

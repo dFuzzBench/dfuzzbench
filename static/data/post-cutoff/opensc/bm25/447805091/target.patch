@@ -1,0 +1,22 @@
+diff --git a/src/libopensc/card.c b/src/libopensc/card.c
+index f79989e5d..5c70f19e8 100644
+--- a/src/libopensc/card.c
++++ b/src/libopensc/card.c
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <stdlib.h>
+ /*
+  * card.c: General smart card functions
+  *
+@@ -1104,8 +1106,10 @@ sc_card_ctl(sc_card_t *card, unsigned long cmd, void *args)
+ 	}
+ 	sc_debug(card->ctx, SC_LOG_DEBUG_NORMAL, "called with cmd=%lu\n", cmd);
+ 
+-	if (card->ops->card_ctl != NULL)
++	if (card->ops->card_ctl != NULL) {
++		fprintf(stderr, "HIT TARGET\n");  // target
+ 		r = card->ops->card_ctl(card, cmd, args);
++	}
+ 
+ 	/* suppress "not supported" error messages */
+ 	if (r == SC_ERROR_NOT_SUPPORTED) {

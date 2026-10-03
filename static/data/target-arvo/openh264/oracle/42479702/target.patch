@@ -1,0 +1,18 @@
+diff --git a/codec/decoder/plus/src/welsDecoderExt.cpp b/codec/decoder/plus/src/welsDecoderExt.cpp
+index 81df55e5..bb7a79b5 100644
+--- a/codec/decoder/plus/src/welsDecoderExt.cpp
++++ b/codec/decoder/plus/src/welsDecoderExt.cpp
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <cstdlib>
+ /*!
+  * \copy
+  *     Copyright (c)  2009-2013, Cisco Systems
+@@ -502,6 +504,7 @@ long CWelsDecoder::SetOption (DECODER_OPTION eOptID, void* pOption) {
+ 
+       iVal = * ((int*)pOption); // boolean value for whether enabled End Of Stream flag
+ 
++      fprintf(stderr, "HIT TARGET\n");  // target
+       pDecContext->bEndOfStreamFlag = iVal ? true : false;
+ 
+       return cmResultSuccess;

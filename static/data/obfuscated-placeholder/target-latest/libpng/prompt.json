@@ -1,0 +1,163 @@
+{
+ "harness_file": "harness.cc",
+ "harness_name": "prog1.cc",
+ "input_example": "This program requires one input string. If your generated input is as follows:\n```\ninput\\ninput\n```\nWe will assign the value of `func4` to that input string 'input\\ninput' and assgin the value of `var14` to the length of that input string at the beginning of the `LLVMFuzzerTestOneInput()` function and the fuzzer will then run the function on that input.",
+ "project": "project1",
+ "renamed": {
+  "BufState": "func3",
+  "PNG_CLEANUP": "CONST2",
+  "PNG_CRC_QUIET_USE": "CONST4",
+  "PNG_FORMAT_RGBA": "CONST9",
+  "PNG_IGNORE_ADLER32": "CONST5",
+  "PNG_IMAGE_SIZE": "func36",
+  "PNG_IMAGE_VERSION": "CONST8",
+  "PNG_INTERNAL": "CONST1",
+  "PNG_LIBPNG_VER_STRING": "CONST3",
+  "PNG_OPTION_ON": "CONST6",
+  "PNG_SIMPLIFIED_READ_SUPPORTED": "CONST7",
+  "PngObjectHandler": "func5",
+  "bit_depth": "var20",
+  "buf_state": "var10",
+  "buffer": "func35",
+  "bytes_left": "var6",
+  "color_type": "var21",
+  "compression_type": "var23",
+  "data": "func4",
+  "default_free": "func10",
+  "end_info_ptr": "var4",
+  "filter_type": "var24",
+  "format": "var31",
+  "height": "var19",
+  "image": "var29",
+  "info_ptr": "var5",
+  "interlace_type": "var22",
+  "kPngHeaderSize": "var16",
+  "length": "var12",
+  "libpng": "project1",
+  "limited_malloc": "func9",
+  "pass": "var26",
+  "passes": "var25",
+  "png_alloc_size_t": "var13",
+  "png_byte": "var32",
+  "png_bytep": "var11",
+  "png_convert_to_rfc1123": "func42",
+  "png_create_info_struct": "func14",
+  "png_create_read_struct": "func13",
+  "png_destroy_read_struct": "func2",
+  "png_error": "func8",
+  "png_free": "func1",
+  "png_free_data": "func41",
+  "png_get_IHDR": "func22",
+  "png_get_io_ptr": "func7",
+  "png_get_rowbytes": "func31",
+  "png_handler": "var1",
+  "png_icc_check_header": "func43",
+  "png_image": "var28",
+  "png_image_begin_read_from_memory": "func34",
+  "png_image_finish_read": "func37",
+  "png_info_init_3": "func40",
+  "png_infop": "var7",
+  "png_jmpbuf": "func20",
+  "png_malloc": "func30",
+  "png_ptr": "var2",
+  "png_read_end": "func33",
+  "png_read_info": "func21",
+  "png_read_row": "func32",
+  "png_read_update_info": "func29",
+  "png_set_crc_action": "func16",
+  "png_set_expand": "func24",
+  "png_set_gray_to_rgb": "func23",
+  "png_set_interlace_handling": "func28",
+  "png_set_mem_fn": "func15",
+  "png_set_option": "func17",
+  "png_set_packing": "func25",
+  "png_set_read_fn": "func18",
+  "png_set_scale_16": "func26",
+  "png_set_sig_bytes": "func19",
+  "png_set_tRNS_to_alpha": "func27",
+  "png_sig_cmp": "func12",
+  "png_structp": "var8",
+  "png_uint_32": "var17",
+  "png_user_version_check": "func39",
+  "png_voidp": "var9",
+  "png_zalloc": "func38",
+  "ptr": "var15",
+  "row_ptr": "var3",
+  "size": "var14",
+  "user_read_data": "func6",
+  "v": "func11",
+  "version": "var30",
+  "width": "var18",
+  "y": "var27"
+ },
+ "renamed_paths": {
+  "file:png": "file1",
+  "prog:fuzzer": "prog1"
+ },
+ "targets": {
+  "easy": {
+   "png.c:188": {
+    "function": "func39",
+    "path": "file1.c"
+   },
+   "png.c:340": {
+    "function": "func14",
+    "path": "file1.c"
+   },
+   "png.c:351": {
+    "function": "func14",
+    "path": "file1.c"
+   },
+   "png.c:36": {
+    "function": "func19",
+    "path": "file1.c"
+   },
+   "png.c:421": {
+    "function": "func40",
+    "path": "file1.c"
+   },
+   "png.c:578": {
+    "function": "func41",
+    "path": "file1.c"
+   },
+   "png.c:58": {
+    "function": "func12",
+    "path": "file1.c"
+   },
+   "png.c:61": {
+    "function": "func12",
+    "path": "file1.c"
+   },
+   "png.c:775": {
+    "function": "func42",
+    "path": "file1.c"
+   },
+   "png.c:86": {
+    "function": "func38",
+    "path": "file1.c"
+   }
+  },
+  "unreachable": {
+   "png.c:2197": {
+    "function": "func43",
+    "path": "file1.c"
+   },
+   "png.c:2222": {
+    "function": "func43",
+    "path": "file1.c"
+   },
+   "png.c:2232": {
+    "function": "func43",
+    "path": "file1.c"
+   },
+   "png.c:2240": {
+    "function": "func43",
+    "path": "file1.c"
+   },
+   "png.c:465": {
+    "function": "func41",
+    "path": "file1.c"
+   }
+  }
+ }
+}

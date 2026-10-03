@@ -1,0 +1,13 @@
+diff --git a/fsspec/spec.py b/fsspec/spec.py
+index bcc01f5..45125aa 100644
+--- a/fsspec/spec.py
++++ b/fsspec/spec.py
+@@ -304,6 +304,8 @@ class AbstractFileSystem(metaclass=_Cached):
+         exist_ok: bool (False)
+             If False, will error if the target already exists
+         """
++        print("HIT TARGET") # target
++        exit(0)
+         pass  # not necessary to implement, may not have directories
+ 
+     def rmdir(self, path):

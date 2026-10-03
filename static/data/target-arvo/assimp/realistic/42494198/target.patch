@@ -1,0 +1,18 @@
+diff --git a/contrib/openddlparser/code/OpenDDLParser.cpp b/contrib/openddlparser/code/OpenDDLParser.cpp
+index 91831ba27..658532a5d 100644
+--- a/contrib/openddlparser/code/OpenDDLParser.cpp
++++ b/contrib/openddlparser/code/OpenDDLParser.cpp
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <cstdlib>
+ /*-----------------------------------------------------------------------------------------------
+ The MIT License (MIT)
+ 
+@@ -492,6 +494,7 @@ void OpenDDLParser::normalizeBuffer( std::vector<char> &buffer) {
+             if( isComment<char>( c, end ) ) {
+                 ++readIdx;
+                 // skip the comment and the rest of the line
++                fprintf(stderr, "HIT TARGET\n");  // target
+                 while( !isEndofLine( buffer[ readIdx ] ) ) {
+                     ++readIdx;
+                 }

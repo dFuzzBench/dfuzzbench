@@ -1,0 +1,19 @@
+diff --git a/bin/varnishd/cache/cache_esi_parse.c b/bin/varnishd/cache/cache_esi_parse.c
+index 0b183a35d..5a9804cbb 100644
+--- a/bin/varnishd/cache/cache_esi_parse.c
++++ b/bin/varnishd/cache/cache_esi_parse.c
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <stdlib.h>
+ /*-
+  * Copyright (c) 2011 Varnish Software AS
+  * All rights reserved.
+@@ -554,6 +556,8 @@ vep_do_include(struct vep_state *vep, enum dowhat what)
+ 		VSB_printf(vep->vsb, "%c", incl);
+ 		VSB_printf(vep->vsb, "Host: %.*s%c", (int)(p-h), h, 0);
+ 	} else if (*p == '/') {
++		fprintf(stderr, "HIT TARGET\n");  // target
++		exit(0);
+ 		VSB_printf(vep->vsb, "%c", incl);
+ 		VSB_printf(vep->vsb, "%c", 0);
+ 	} else {

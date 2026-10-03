@@ -1,0 +1,13 @@
+diff --git a/lark/load_grammar.py b/lark/load_grammar.py
+index 362a845..bab9854 100644
+--- a/lark/load_grammar.py
++++ b/lark/load_grammar.py
+@@ -782,6 +782,8 @@ class Grammar:
+                                            % ''.join('\n  * %s' % i for i in dups))
+ 
+                     # Empty rule; assert all other attributes are equal
++                    print("HIT TARGET") # target
++                    exit(0)
+                     assert len({(r.alias, r.order, r.options) for r in dups}) == len(dups)
+ 
+             # Remove duplicates

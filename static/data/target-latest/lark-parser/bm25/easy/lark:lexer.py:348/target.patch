@@ -1,0 +1,13 @@
+diff --git a/lark/lexer.py b/lark/lexer.py
+index 9061d60..4b997a8 100644
+--- a/lark/lexer.py
++++ b/lark/lexer.py
+@@ -345,6 +345,8 @@ def _create_unless(terminals, g_regex_flags, re_, use_bytes):
+             if s == _get_match(re_, retok.pattern.to_regexp(), s, g_regex_flags):
+                 unless.append(strtok)
+                 if strtok.pattern.flags <= retok.pattern.flags:
++                    print("HIT TARGET") # target
++                    exit(0)
+                     embedded_strs.add(strtok)
+         if unless:
+             callback[retok.name] = UnlessCallback(Scanner(unless, g_regex_flags, re_, match_whole=True, use_bytes=use_bytes))

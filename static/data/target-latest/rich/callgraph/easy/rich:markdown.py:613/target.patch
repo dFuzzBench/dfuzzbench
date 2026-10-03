@@ -1,0 +1,13 @@
+diff --git a/rich/markdown.py b/rich/markdown.py
+index 26c58d15..881dff6a 100644
+--- a/rich/markdown.py
++++ b/rich/markdown.py
+@@ -610,6 +610,8 @@ class Markdown(JupyterMixin):
+                 if self.hyperlinks:
+                     context.leave_style()
+                 else:
++                    print("HIT TARGET") # target
++                    exit(0)
+                     element = context.stack.pop()
+                     assert isinstance(element, Link)
+                     link_style = console.get_style("markdown.link", default="none")

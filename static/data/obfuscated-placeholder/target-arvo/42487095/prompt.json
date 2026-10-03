@@ -1,0 +1,39 @@
+{
+ "harness_file": "harness.cc",
+ "harness_name": "prog1",
+ "renamed": {
+  "Assimp": "Type1",
+  "HMPImporter": "Type15",
+  "Importer": "Type2",
+  "ReadFileFromMemory": "func3",
+  "ReadFirstSkin": "func14",
+  "aiAttachLogStream": "func2",
+  "aiDefaultLogStream_STDOUT": "var5",
+  "aiDetachLogStream": "func4",
+  "aiGetPredefinedLogStream": "func1",
+  "aiLogStream": "var3",
+  "aiProcessPreset_TargetRealtime_Quality": "var9",
+  "aiScene": "var7",
+  "data": "var1",
+  "dataSize": "var2",
+  "importer": "var6",
+  "sc": "var8",
+  "stream": "var4"
+ },
+ "renamed_paths": {
+  "dir:AssetLib": "dir3",
+  "dir:HMP": "dir12",
+  "dir:assimp": "dir1",
+  "dir:code": "dir2",
+  "file:HMPLoader": "file14",
+  "file:Importer": "file2",
+  "file:cimport": "file1",
+  "file:postprocess": "file4",
+  "file:scene": "file3",
+  "prog:assimp_fuzzer": "prog1"
+ },
+ "target": {
+  "function": "Type1::Type15::func14(unsigned int, unsigned char const*, unsigned char const**)",
+  "path": "dir2/dir3/dir12/file14.cpp"
+ }
+}

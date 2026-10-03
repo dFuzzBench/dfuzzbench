@@ -1,0 +1,13 @@
+diff --git a/lark/load_grammar.py b/lark/load_grammar.py
+index 362a845..9c6db10 100644
+--- a/lark/load_grammar.py
++++ b/lark/load_grammar.py
+@@ -1366,6 +1366,8 @@ class GrammarBuilder:
+ 
+             for sym in _find_used_symbols(exp):
+                 if sym not in self._definitions and sym not in params:
++                    print("HIT TARGET") # target
++                    exit(0)
+                     self._grammar_error(d.is_term, "{Type} '{name}' used but not defined (in {type2} {name2})", sym, name)
+ 
+         if not set(self._definitions).issuperset(self._ignore_names):

@@ -1,0 +1,23 @@
+diff --git a/src/xmp.cpp b/src/xmp.cpp
+index 39e7610ef..65bf0b50f 100644
+--- a/src/xmp.cpp
++++ b/src/xmp.cpp
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <cstdlib>
+ // SPDX-License-Identifier: GPL-2.0-or-later
+ 
+ // included header files
+@@ -852,8 +854,11 @@ int XmpParser::encode(std::string& xmpPacket, const XmpData& xmpData, uint16_t f
+ 
+       // Todo: Xmpdatum should have an XmpValue, not a Value
+       const auto val = dynamic_cast<const XmpValue*>(&xmp.value());
+-      if (!val)
++      if (!val) {
++        fprintf(stderr, "HIT TARGET\n");  // target
++        exit(0);
+         throw Error(ErrorCode::kerInvalidKeyXmpValue, xmp.key(), xmp.typeName());
++      }
+       options = xmpArrayOptionBits(val->xmpArrayType()) | xmpArrayOptionBits(val->xmpStruct());
+       if (xmp.typeId() == xmpBag || xmp.typeId() == xmpSeq || xmp.typeId() == xmpAlt) {
+         printNode(ns, xmp.tagName(), "", options);

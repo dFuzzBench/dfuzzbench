@@ -1,0 +1,18 @@
+diff --git a/src/libopensc/pkcs15-coolkey.c b/src/libopensc/pkcs15-coolkey.c
+index 39529e3f9..dda1e45d5 100644
+--- a/src/libopensc/pkcs15-coolkey.c
++++ b/src/libopensc/pkcs15-coolkey.c
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <stdlib.h>
+ /*
+  * partial PKCS15 emulation for Coolkey cards
+  *
+@@ -288,6 +290,7 @@ coolkey_get_certificate(sc_card_t *card, sc_cardctl_coolkey_object_t *obj, struc
+ 		if (cert->value == NULL) {
+ 			return SC_ERROR_OUT_OF_MEMORY;
+ 		}
++		fprintf(stderr, "HIT TARGET\n");  // target
+ 		memcpy(cert->value, cert_obj->data, cert_obj->length);
+ 		cert->len = cert_obj->length;
+ 		return SC_SUCCESS;

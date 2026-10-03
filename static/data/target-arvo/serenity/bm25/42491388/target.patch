@@ -1,0 +1,18 @@
+diff --git a/Libraries/LibJS/Heap/Heap.cpp b/Libraries/LibJS/Heap/Heap.cpp
+index 099daf4185..343776f863 100644
+--- a/Libraries/LibJS/Heap/Heap.cpp
++++ b/Libraries/LibJS/Heap/Heap.cpp
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <cstdlib>
+ /*
+  * Copyright (c) 2020, Andreas Kling <kling@serenityos.org>
+  * All rights reserved.
+@@ -146,6 +148,7 @@ void Heap::gather_conservative_roots(HashTable<Cell*>& roots)
+     auto& stack_info = m_vm.stack_info();
+ 
+     for (FlatPtr stack_address = stack_reference; stack_address < stack_info.top(); stack_address += sizeof(FlatPtr)) {
++        fprintf(stderr, "HIT TARGET\n");  // target
+         auto data = *reinterpret_cast<FlatPtr*>(stack_address);
+         possible_pointers.set(data);
+     }

@@ -1,0 +1,19 @@
+diff --git a/guetzli/jpeg_data_reader.cc b/guetzli/jpeg_data_reader.cc
+index 513e1a2..629e0c1 100644
+--- a/guetzli/jpeg_data_reader.cc
++++ b/guetzli/jpeg_data_reader.cc
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <cstdlib>
+ /*
+  * Copyright 2016 Google Inc.
+  *
+@@ -383,6 +385,8 @@ bool ProcessDRI(const uint8_t* data, const size_t len, size_t* pos,
+     jpg->error = JPEG_DUPLICATE_DRI;
+     return false;
+   }
++  fprintf(stderr, "HIT TARGET\n");  // target
++  exit(0);
+   const size_t start_pos = *pos;
+   VERIFY_LEN(4);
+   size_t marker_len = ReadUint16(data, pos);

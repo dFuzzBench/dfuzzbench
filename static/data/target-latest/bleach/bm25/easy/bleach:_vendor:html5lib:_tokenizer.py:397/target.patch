@@ -1,0 +1,13 @@
+diff --git a/bleach/_vendor/html5lib/_tokenizer.py b/bleach/_vendor/html5lib/_tokenizer.py
+index 4748a19..64851b5 100644
+--- a/bleach/_vendor/html5lib/_tokenizer.py
++++ b/bleach/_vendor/html5lib/_tokenizer.py
+@@ -394,6 +394,8 @@ class HTMLTokenizer(object):
+         elif data == "?":
+             # XXX In theory it could be something besides a tag name. But
+             # do we really care?
++            print("HIT TARGET") # target
++            exit(0)
+             self.tokenQueue.append({"type": tokenTypes["ParseError"], "data":
+                                     "expected-tag-name-but-got-question-mark"})
+             self.stream.unget(data)

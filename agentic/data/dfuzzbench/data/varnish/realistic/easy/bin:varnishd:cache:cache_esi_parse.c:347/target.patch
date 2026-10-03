@@ -1,0 +1,19 @@
+diff --git a/bin/varnishd/cache/cache_esi_parse.c b/bin/varnishd/cache/cache_esi_parse.c
+index 0b183a35d..226d00bde 100644
+--- a/bin/varnishd/cache/cache_esi_parse.c
++++ b/bin/varnishd/cache/cache_esi_parse.c
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <stdlib.h>
+ /*-
+  * Copyright (c) 2011 Varnish Software AS
+  * All rights reserved.
+@@ -344,6 +346,8 @@ vep_mark_common(struct vep_state *vep, const char *p, enum vep_mark mark)
+ 			vep->crc = vep->crcp;
+ 			vep->o_crc = vep->o_pending;
+ 		} else {
++			fprintf(stderr, "HIT TARGET\n");  // target
++			exit(0);
+ 			vep->crc = crc32_combine(vep->crc,
+ 			    vep->crcp, vep->o_pending);
+ 			vep->o_crc += vep->o_pending;

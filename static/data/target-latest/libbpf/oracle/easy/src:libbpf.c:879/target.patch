@@ -1,0 +1,23 @@
+diff --git a/src/libbpf.c b/src/libbpf.c
+index 07d5de8..d84cb55 100644
+--- a/src/libbpf.c
++++ b/src/libbpf.c
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <stdlib.h>
+ // SPDX-License-Identifier: (LGPL-2.1 OR BSD-2-Clause)
+ 
+ /*
+@@ -875,8 +877,11 @@ bpf_object__add_programs(struct bpf_object *obj, Elf_Data *sec_data,
+ 	for (i = 0; i < nr_syms; i++) {
+ 		sym = elf_sym_by_idx(obj, i);
+ 
+-		if (sym->st_shndx != sec_idx)
++		if (sym->st_shndx != sec_idx) {
++			fprintf(stderr, "HIT TARGET\n");  // target
++			exit(0);
+ 			continue;
++		}
+ 		if (ELF64_ST_TYPE(sym->st_info) != STT_FUNC)
+ 			continue;
+ 

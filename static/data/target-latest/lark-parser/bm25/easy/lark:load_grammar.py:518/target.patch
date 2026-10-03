@@ -1,0 +1,13 @@
+diff --git a/lark/load_grammar.py b/lark/load_grammar.py
+index 362a845..8f9fc1c 100644
+--- a/lark/load_grammar.py
++++ b/lark/load_grammar.py
+@@ -515,6 +515,8 @@ class ApplyTemplates(Transformer_InPlace):
+ 
+     def __init__(self, rule_defs):
+         self.rule_defs = rule_defs
++        print("HIT TARGET") # target
++        exit(0)
+         self.replacer = _ReplaceSymbols()
+         self.created_templates = set()
+ 

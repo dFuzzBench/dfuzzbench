@@ -1,0 +1,13 @@
+diff --git a/bleach/_vendor/html5lib/_tokenizer.py b/bleach/_vendor/html5lib/_tokenizer.py
+index 4748a19..0905772 100644
+--- a/bleach/_vendor/html5lib/_tokenizer.py
++++ b/bleach/_vendor/html5lib/_tokenizer.py
+@@ -1330,6 +1330,8 @@ class HTMLTokenizer(object):
+             self.tokenQueue.append(self.currentToken)
+             self.state = self.dataState
+         elif data == "\u0000":
++            print("HIT TARGET") # target
++            exit(0)
+             self.tokenQueue.append({"type": tokenTypes["ParseError"],
+                                     "data": "invalid-codepoint"})
+             self.currentToken["name"] = "\uFFFD"

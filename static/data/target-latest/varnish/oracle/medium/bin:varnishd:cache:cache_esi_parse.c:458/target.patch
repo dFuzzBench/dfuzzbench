@@ -1,0 +1,23 @@
+diff --git a/bin/varnishd/cache/cache_esi_parse.c b/bin/varnishd/cache/cache_esi_parse.c
+index 0b183a35d..ba334b101 100644
+--- a/bin/varnishd/cache/cache_esi_parse.c
++++ b/bin/varnishd/cache/cache_esi_parse.c
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <stdlib.h>
+ /*-
+  * Copyright (c) 2011 Varnish Software AS
+  * All rights reserved.
+@@ -454,8 +456,11 @@ include_attr_src(struct vep_state *vep)
+ 		    "has whitespace in src= attribute");
+ 		vep->state = VEP_TAGERROR;
+ 		VSB_destroy(&vep->attr_vsb);
+-		if (vep->include_src != NULL)
++		if (vep->include_src != NULL) {
++			fprintf(stderr, "HIT TARGET\n");  // target
++			exit(0);
+ 			VSB_destroy(&vep->include_src);
++		}
+ 		return;
+ 	}
+ 	vep->include_src = vep->attr_vsb;

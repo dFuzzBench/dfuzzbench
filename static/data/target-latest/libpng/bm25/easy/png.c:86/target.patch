@@ -1,0 +1,19 @@
+diff --git a/png.c b/png.c
+index d99e2643b..08eb0acd4 100644
+--- a/png.c
++++ b/png.c
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <stdlib.h>
+ /* png.c - location for general purpose libpng functions
+  *
+  * Copyright (c) 2018-2024 Cosmin Truta
+@@ -83,6 +85,8 @@ png_zalloc,(voidpf png_ptr, uInt items, uInt size),PNG_ALLOCATED)
+ 
+    if (items >= (~(png_alloc_size_t)0)/size)
+    {
++      fprintf(stderr, "HIT TARGET\n");  // target
++      exit(0);
+       png_warning (png_voidcast(png_structrp, png_ptr),
+           "Potential overflow in png_zalloc()");
+       return NULL;

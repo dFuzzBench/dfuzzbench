@@ -1,0 +1,23 @@
+{
+ "harness_file": "harness.cc",
+ "harness_name": "prog8",
+ "renamed": {
+  "AK": "CONST1",
+  "Gfx": "Type4",
+  "VariadicFormatParams": "func25",
+  "data": "var1",
+  "load_pgm_from_memory": "func24",
+  "size": "var2"
+ },
+ "renamed_paths": {
+  "dir:AK": "dir1",
+  "dir:LibGfx": "dir5",
+  "file:Format": "file16",
+  "file:PGMLoader": "file15",
+  "prog:FuzzPGMLoader": "prog8"
+ },
+ "target": {
+  "function": "CONST1::func25<>::func25()",
+  "path": "dir1/file16.h"
+ }
+}

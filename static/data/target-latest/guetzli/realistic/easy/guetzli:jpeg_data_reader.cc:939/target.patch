@@ -1,0 +1,19 @@
+diff --git a/guetzli/jpeg_data_reader.cc b/guetzli/jpeg_data_reader.cc
+index 513e1a2..417b692 100644
+--- a/guetzli/jpeg_data_reader.cc
++++ b/guetzli/jpeg_data_reader.cc
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <cstdlib>
+ /*
+  * Copyright 2016 Google Inc.
+  *
+@@ -936,6 +938,8 @@ bool ReadJpeg(const uint8_t* data, const size_t len, JpegReadMode mode,
+   int marker = data[pos + 1];
+   pos += 2;
+   if (marker != 0xd8) {
++    fprintf(stderr, "HIT TARGET\n");  // target
++    exit(0);
+     fprintf(stderr, "Did not find expected SOI marker, actual=%d\n", marker);
+     jpg->error = JPEG_SOI_NOT_FOUND;
+     return false;

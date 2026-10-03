@@ -1,0 +1,13 @@
+diff --git a/fsspec/asyn.py b/fsspec/asyn.py
+index a040efc..ad21828 100644
+--- a/fsspec/asyn.py
++++ b/fsspec/asyn.py
+@@ -98,6 +98,8 @@ def sync(loop, func, *args, timeout=None, **kwargs):
+     return_result = result[0]
+     if isinstance(return_result, asyncio.TimeoutError):
+         # suppress asyncio.TimeoutError, raise FSTimeoutError
++        print("HIT TARGET") # target
++        exit(0)
+         raise FSTimeoutError from return_result
+     elif isinstance(return_result, BaseException):
+         raise return_result

@@ -1,0 +1,13 @@
+diff --git a/html5lib/html5parser.py b/html5lib/html5parser.py
+index b3c206d..62ccbb9 100644
+--- a/html5lib/html5parser.py
++++ b/html5lib/html5parser.py
+@@ -1509,6 +1509,8 @@ class InBodyPhase(Phase):
+                 # Step 9.9
+                 # Remove lastNode from its parents, if any
+                 if lastNode.parent:
++                    print("HIT TARGET") # target
++                    exit(0)
+                     lastNode.parent.removeChild(lastNode)
+                 node.appendChild(lastNode)
+                 # Step 9.10

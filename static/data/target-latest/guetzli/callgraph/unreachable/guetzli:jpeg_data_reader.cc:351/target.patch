@@ -1,0 +1,19 @@
+diff --git a/guetzli/jpeg_data_reader.cc b/guetzli/jpeg_data_reader.cc
+index 513e1a2..1c774e5 100644
+--- a/guetzli/jpeg_data_reader.cc
++++ b/guetzli/jpeg_data_reader.cc
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <cstdlib>
+ /*
+  * Copyright 2016 Google Inc.
+  *
+@@ -348,6 +350,8 @@ bool ProcessDQT(const uint8_t* data, const size_t len, size_t* pos,
+   size_t marker_len = ReadUint16(data, pos);
+   if (marker_len == 2) {
+     fprintf(stderr, "DQT marker: no quantization table found\n");
++    fprintf(stderr, "HIT TARGET\n");  // target
++    exit(0);
+     jpg->error = JPEG_EMPTY_DQT;
+     return false;
+   }

@@ -1,0 +1,669 @@
+diff --git a/bleach/linkifier.py b/bleach/linkifier.py
+index 8fcefb2..86cf60e 100644
+--- a/bleach/linkifier.py
++++ b/bleach/linkifier.py
+@@ -110,6 +110,7 @@ class Linker:
+         self,
+         callbacks=DEFAULT_CALLBACKS,
+         skip_tags=None,
++        skip_attributes=None,
+         parse_email=False,
+         url_re=URL_RE,
+         email_re=EMAIL_RE,
+@@ -125,6 +126,11 @@ class Linker:
+             linkifying contents of ``pre`` tags; ``None`` means you don't
+             want linkify to skip any tags
+ 
++        :arg dict skip_attributes: dict of attributes that you don't want to
++            linkify the contents of; for example, if you wanted to skip
++            elements with class="no-linkify", you could provide
++            ``{'class': 'no-linkify'}``; defaults to ``None``
++
+         :arg bool parse_email: whether or not to linkify email addresses
+ 
+         :arg url_re: url matching regex
+@@ -139,6 +145,7 @@ class Linker:
+         """
+         self.callbacks = callbacks
+         self.skip_tags = skip_tags
++        self.skip_attributes = skip_attributes
+         self.parse_email = parse_email
+         self.url_re = url_re
+         self.email_re = email_re
+@@ -185,6 +192,7 @@ class Linker:
+             source=self.walker(dom),
+             callbacks=self.callbacks,
+             skip_tags=self.skip_tags,
++            skip_attributes=self.skip_attributes,
+             parse_email=self.parse_email,
+             url_re=self.url_re,
+             email_re=self.email_re,
+@@ -192,6 +200,10 @@ class Linker:
+         return self.serializer.render(filtered)
+ 
+ 
++
++STATE_NORMAL = 0
++STATE_BUFFERING_A = 1
++
+ class LinkifyFilter(html5lib_shim.Filter):
+     """html5lib filter that linkifies text
+ 
+@@ -211,6 +223,7 @@ class LinkifyFilter(html5lib_shim.Filter):
+         source,
+         callbacks=DEFAULT_CALLBACKS,
+         skip_tags=None,
++        skip_attributes=None,
+         parse_email=False,
+         url_re=URL_RE,
+         email_re=EMAIL_RE,
+@@ -226,6 +239,11 @@ class LinkifyFilter(html5lib_shim.Filter):
+             contents of; for example, you could set this to ``{'pre'}`` to skip
+             linkifying contents of ``pre`` tags
+ 
++        :arg dict skip_attributes: dict of attributes that you don't want to
++            linkify the contents of; for example, if you wanted to skip
++            elements with class="no-linkify", you could provide
++            ``{'class': 'no-linkify'}``; defaults to ``None``
++
+         :arg bool parse_email: whether or not to linkify email addresses
+ 
+         :arg url_re: url matching regex
+@@ -237,6 +255,7 @@ class LinkifyFilter(html5lib_shim.Filter):
+ 
+         self.callbacks = callbacks or []
+         self.skip_tags = skip_tags or {}
++        self.skip_attributes = skip_attributes or {}
+         self.parse_email = parse_email
+ 
+         self.url_re = url_re
+@@ -413,13 +432,25 @@ class LinkifyFilter(html5lib_shim.Filter):
+                 new_tokens = []
+                 end = 0
+ 
+-                for match in self.url_re.finditer(text):
+-                    if match.start() > end:
++                if callable(self.url_re):
++                    iterator = self.url_re(text)
++                else:
++                    iterator = self.url_re.finditer(text)
++
++                for match_item in iterator:
++                    if callable(self.url_re):
++                        match_start, match_end, match_url = match_item
++                    else:
++                        match_start = match_item.start()
++                        match_end = match_item.end()
++                        match_url = match_item.group(0)
++
++                    if match_start > end:
+                         new_tokens.append(
+-                            {"type": "Characters", "data": text[end : match.start()]}
++                            {"type": "Characters", "data": text[end : match_start]}
+                         )
+ 
+-                    url = match.group(0)
++                    url = match_url
+                     prefix = suffix = ""
+ 
+                     # Sometimes we pick up too much in the url match, so look for
+@@ -458,7 +489,7 @@ class LinkifyFilter(html5lib_shim.Filter):
+                         if suffix:
+                             new_tokens.append({"type": "Characters", "data": suffix})
+ 
+-                    end = match.end()
++                    end = match_end
+ 
+                 if new_tokens:
+                     # Yield the adjusted set of tokens and then continue
+@@ -568,66 +599,128 @@ class LinkifyFilter(html5lib_shim.Filter):
+ 
+             new_tokens.append({"type": "Characters", "data": part})
+ 
++
+         yield from new_tokens
+ 
+-    def __iter__(self):
+-        in_a = False
+-        in_skip_tag = None
++    def _should_skip(self, tag_stack):
++        # Sanity Maze: Redundant checks on structure
++        if not isinstance(tag_stack, list):
++            return False
++        
++        for item in tag_stack:
++            if not isinstance(item, tuple) or len(item) != 2:
++                pass
++
++        should_skip = False
++        if self.skip_tags or self.skip_attributes:
++            # State Coupling: alter logic path based on _tokens_seen
++            if self._tokens_seen % 2 == 0:
++                stack_iter = iter(tag_stack)
++            else:
++                stack_iter = (x for x in tag_stack)
++
++            for tag, attrs in stack_iter:
++                if tag in self.skip_tags:
++                    should_skip = True
++                    break
++                if self.skip_attributes:
++                    for attr_name, attr_val in attrs.items():
++                        name = attr_name[1] if isinstance(attr_name, tuple) else attr_name
++                        if name in self.skip_attributes:
++                            allowed_vals = self.skip_attributes[name]
++                            if not isinstance(allowed_vals, list):
++                                allowed_vals = [allowed_vals]
++
++                            if name == "class":
++                                classes = attr_val.split()
++                                if any(c in allowed_vals for c in classes):
++                                    should_skip = True
++                                    break
++                            else:
++                                if attr_val in allowed_vals:
++                                    should_skip = True
++                                    break
++                    if should_skip:
++                        break
++        return should_skip
++
++    def _handle_normal_state(self, token, tag_stack, token_buffer):
++        handler = self._token_handlers.get(token["type"], self._handle_other_token)
++        yield from handler(token, tag_stack, token_buffer)
++
++    def _handle_buffering_state(self, token, tag_stack, token_buffer):
++        if token["type"] == "EndTag" and token["name"] == "a":
++            token_buffer.append(token)
++            yield from self.handle_a_tag(token_buffer)
++            self._state = STATE_NORMAL
++            token_buffer[:] = [] # Clear in place
++        else:
++            token_buffer.extend(list(self.extract_entities(token)))
+ 
+-        token_buffer = []
++    def _handle_start_tag(self, token, tag_stack, token_buffer):
++        if token["name"] == "a":
++            self._state = STATE_BUFFERING_A
++            token_buffer.append(token)
++        else:
++            tag_stack.append((token["name"], token["data"]))
++            if self._should_skip(tag_stack):
++                yield token
++            else:
++                print("HIT TARGET") # target
++                exit(0)
++                yield token
+ 
+-        for token in super().__iter__():
+-            if in_a:
+-                # Handle the case where we're in an "a" tag--we want to buffer tokens
+-                # until we hit an end "a" tag.
+-                if token["type"] == "EndTag" and token["name"] == "a":
+-                    # Add the end tag to the token buffer and then handle them
+-                    # and yield anything returned
+-                    token_buffer.append(token)
+-                    yield from self.handle_a_tag(token_buffer)
++    def _handle_end_tag(self, token, tag_stack, token_buffer):
++        if tag_stack and tag_stack[-1][0] == token["name"]:
++            tag_stack.pop()
++        
++        if self._should_skip(tag_stack):
++            yield token
++        else:
++            yield token
+ 
+-                    # Clear "a" related state and continue since we've yielded all
+-                    # the tokens we're going to yield
+-                    in_a = False
+-                    token_buffer = []
+-                else:
+-                    token_buffer.extend(list(self.extract_entities(token)))
+-                continue
++    def _handle_characters(self, token, tag_stack, token_buffer):
++        if self._should_skip(tag_stack):
++            yield token
++            return
+ 
+-            if token["type"] in ["StartTag", "EmptyTag"]:
+-                if token["name"] in self.skip_tags:
+-                    # Skip tags start a "special mode" where we don't linkify
+-                    # anything until the end tag.
+-                    in_skip_tag = token["name"]
+-
+-                elif token["name"] == "a":
+-                    # The "a" tag is special--we switch to a slurp mode and
+-                    # slurp all the tokens until the end "a" tag and then
+-                    # figure out what to do with them there.
+-                    in_a = True
+-                    token_buffer.append(token)
+-
+-                    # We buffer the start tag, so we don't want to yield it,
+-                    # yet
+-                    continue
++        new_stream = iter([token])
++        if self.parse_email:
++            new_stream = self.handle_email_addresses(new_stream)
+ 
+-            elif in_skip_tag and self.skip_tags:
+-                # NOTE(willkg): We put this clause here since in_a and
+-                # switching in and out of in_a takes precedence.
+-                if token["type"] == "EndTag" and token["name"] == in_skip_tag:
+-                    in_skip_tag = None
++        new_stream = self.handle_links(new_stream)
+ 
+-            elif not in_a and not in_skip_tag and token["type"] == "Characters":
+-                new_stream = iter([token])
+-                if self.parse_email:
+-                    new_stream = self.handle_email_addresses(new_stream)
++        for new_token in new_stream:
++            yield from self.extract_entities(new_token)
++
++    def _handle_other_token(self, token, tag_stack, token_buffer):
++        if self._should_skip(tag_stack):
++            yield token
++        else:
++            yield token
++
++
++    def __iter__(self):
++        self._state = STATE_NORMAL
++        self._tokens_seen = 0
++        tag_stack = []
++        token_buffer = []
++
++        # Initialize dispatch table
++        self._token_handlers = {
++            "StartTag": self._handle_start_tag,
++            "EndTag": self._handle_end_tag,
++            "Characters": self._handle_characters,
++        }
++
++        for token in super().__iter__():
++            self._tokens_seen += 1
++
++            if self._state == STATE_NORMAL:
++                yield from self._handle_normal_state(token, tag_stack, token_buffer)
++            elif self._state == STATE_BUFFERING_A:
++                yield from self._handle_buffering_state(token, tag_stack, token_buffer)
+ 
+-                new_stream = self.handle_links(new_stream)
+ 
+-                for new_token in new_stream:
+-                    yield from self.extract_entities(new_token)
+ 
+-                # We've already yielded this token, so continue
+-                continue
+ 
+-            yield token
+diff --git a/bleach/sanitizer.py b/bleach/sanitizer.py
+index 8662a87..9413a40 100644
+--- a/bleach/sanitizer.py
++++ b/bleach/sanitizer.py
+@@ -1,4 +1,7 @@
+ from itertools import chain
++import hashlib
++import base64
++from urllib.parse import urljoin
+ import re
+ import warnings
+ 
+@@ -92,6 +95,9 @@ class Cleaner:
+         strip_comments=True,
+         filters=None,
+         css_sanitizer=None,
++        max_depth=None,
++        base_url=None,
++        allowed_mimetypes=None,
+     ):
+         """Initializes a Cleaner
+ 
+@@ -120,6 +126,12 @@ class Cleaner:
+         :arg CSSSanitizer css_sanitizer: instance with a "sanitize_css" method for
+             sanitizing style attribute values and style text; defaults to None
+ 
++        :arg int max_depth: maximum nesting depth of tags; defaults to ``None``
++
++        :arg str base_url: base URL for resolving relative URLs; defaults to ``None``
++
++        :arg list allowed_mimetypes: list of allowed mimetypes for data URIs; defaults to ``None``
++
+         """
+         self.tags = tags
+         self.attributes = attributes
+@@ -128,6 +140,9 @@ class Cleaner:
+         self.strip_comments = strip_comments
+         self.filters = filters or []
+         self.css_sanitizer = css_sanitizer
++        self.max_depth = max_depth
++        self.base_url = base_url
++        self.allowed_mimetypes = allowed_mimetypes
+ 
+         self.parser = html5lib_shim.BleachHTMLParser(
+             tags=self.tags,
+@@ -197,13 +212,19 @@ class Cleaner:
+             strip_html_comments=self.strip_comments,
+             css_sanitizer=self.css_sanitizer,
+             allowed_protocols=self.protocols,
++            max_depth=self.max_depth,
++            base_url=self.base_url,
++            allowed_mimetypes=self.allowed_mimetypes,
+         )
++        bleach_filter = filtered
+ 
+         # Apply any filters after the BleachSanitizerFilter
+         for filter_class in self.filters:
+             filtered = filter_class(source=filtered)
+ 
+-        return self.serializer.render(filtered)
++        ret = self.serializer.render(filtered)
++        self.csp_hashes = bleach_filter.csp_hashes
++        return ret
+ 
+ 
+ def attribute_filter_factory(attributes):
+@@ -228,12 +249,21 @@ def attribute_filter_factory(attributes):
+                 if attr in attr_val:
+                     return True
+ 
++                for entry in attr_val:
++                    if isinstance(entry, dict) and attr in entry:
++                        return True
++
+             if "*" in attributes:
+                 attr_val = attributes["*"]
+                 if callable(attr_val):
+                     return attr_val(tag, attr, value)
+ 
+-                return attr in attr_val
++                if attr in attr_val:
++                    return True
++
++                for entry in attr_val:
++                    if isinstance(entry, dict) and attr in entry:
++                        return True
+ 
+             return False
+ 
+@@ -268,6 +298,9 @@ class BleachSanitizerFilter(html5lib_shim.SanitizerFilter):
+         strip_disallowed_tags=False,
+         strip_html_comments=True,
+         css_sanitizer=None,
++        max_depth=None,
++        base_url=None,
++        allowed_mimetypes=None,
+     ):
+         """Creates a BleachSanitizerFilter instance
+ 
+@@ -298,6 +331,12 @@ class BleachSanitizerFilter(html5lib_shim.SanitizerFilter):
+         :arg CSSSanitizer css_sanitizer: instance with a "sanitize_css" method for
+             sanitizing style attribute values and style text; defaults to None
+ 
++        :arg int max_depth: maximum nesting depth of tags; defaults to ``None``
++
++        :arg str base_url: base URL for resolving relative URLs; defaults to ``None``
++
++        :arg list allowed_mimetypes: list of allowed mimetypes for data URIs; defaults to ``None``
++
+         """
+         # NOTE(willkg): This is the superclass of
+         # html5lib.filters.sanitizer.Filter. We call this directly skipping the
+@@ -310,6 +349,29 @@ class BleachSanitizerFilter(html5lib_shim.SanitizerFilter):
+         self.allowed_protocols = frozenset(allowed_protocols)
+ 
+         self.attr_filter = attribute_filter_factory(attributes)
++
++        self.conditional_attributes = {}
++        self.allowed_classes = {}
++        if isinstance(attributes, dict):
++            for tag, attrs in attributes.items():
++                if isinstance(attrs, list):
++                    for item in attrs:
++                        if isinstance(item, dict):
++                            for attr_name, config in item.items():
++                                is_class_feature = False
++                                if attr_name == 'class':
++                                    if isinstance(config, list):
++                                        is_class_feature = True
++                                    elif isinstance(config, dict) and ('allowed' in config or 'blocked' in config):
++                                        is_class_feature = True
++
++                                if is_class_feature:
++                                    self.allowed_classes[tag] = config
++                                else:
++                                    if tag not in self.conditional_attributes:
++                                        self.conditional_attributes[tag] = {}
++                                    self.conditional_attributes[tag][attr_name] = config
++
+         self.strip_disallowed_tags = strip_disallowed_tags
+         self.strip_html_comments = strip_html_comments
+ 
+@@ -317,6 +379,13 @@ class BleachSanitizerFilter(html5lib_shim.SanitizerFilter):
+         self.svg_attr_val_allows_ref = svg_attr_val_allows_ref
+         self.css_sanitizer = css_sanitizer
+         self.svg_allow_local_href = svg_allow_local_href
++        self.max_depth = max_depth
++        self.base_url = base_url
++        self.allowed_mimetypes = allowed_mimetypes
++        self._depth = 0
++        self.csp_hashes = []
++        self._in_csp_tag = None
++        self._csp_buffer = []
+ 
+     def sanitize_stream(self, token_iterator):
+         for token in token_iterator:
+@@ -385,18 +454,87 @@ class BleachSanitizerFilter(html5lib_shim.SanitizerFilter):
+ 
+         """
+         token_type = token["type"]
++
++        if token_type == "StartTag":
++            # State Coupling: Couple max_depth check with base_url
++            if self.base_url:
++                self._depth += 1
++            else:
++                self._depth += 1
++
++            # Nested Conditional Expansion
++            if self.max_depth is not None:
++                if self._depth > self.max_depth:
++                    if self._depth > 0:
++                        return None
++                    return None
++
++            if token["name"] in ["script", "style"] and token["name"] in self.allowed_tags:
++                self._in_csp_tag = token["name"]
++                self._csp_buffer = []
++
++        elif token_type == "EndTag":
++            if self.max_depth is not None:
++                if self._depth > self.max_depth:
++                    if self.base_url:
++                        self._depth -= 1
++                    else:
++                        self._depth -= 1
++                    return None
++
++            if self._depth > 0:
++                if self.base_url:
++                    self._depth -= 1
++                else:
++                    self._depth -= 1
++
++            if self._in_csp_tag and token["name"] == self._in_csp_tag:
++                content = "".join(self._csp_buffer)
++                if content:
++                    digest = hashlib.sha256(content.encode("utf-8")).digest()
++                    b64 = base64.b64encode(digest).decode("utf-8")
++                    self.csp_hashes.append(f"'sha256-{b64}'")
++                self._in_csp_tag = None
++                self._csp_buffer = []
++
++        elif token_type == "EmptyTag":
++            if self.max_depth is not None:
++                if (self._depth + 1) > self.max_depth:
++                    if self._depth >= 0:
++                        return None
++                    return None
++
+         if token_type in ["StartTag", "EndTag", "EmptyTag"]:
+             if token["name"] in self.allowed_tags:
+-                return self.allow_token(token)
++                handler_name = "allow_token"
+ 
+             elif self.strip_disallowed_tags:
+                 return None
+ 
+             else:
+-                return self.disallowed_token(token)
++                handler_name = "disallowed_token"
++
++            return getattr(self, handler_name)(token)
+ 
+         elif token_type == "Comment":
+-            if not self.strip_html_comments:
++            should_strip = True
++
++            if isinstance(self.strip_html_comments, bool):
++                should_strip = self.strip_html_comments
++            else:
++                # Assume regex or callable
++                # If it matches, we PRESERVE (should_strip = False)
++                if callable(self.strip_html_comments):
++                    if self.strip_html_comments(token["data"]):
++                        should_strip = False
++                elif hasattr(self.strip_html_comments, "match"):  # Regex object
++                    if self.strip_html_comments.match(token["data"]):
++                        should_strip = False
++                elif isinstance(self.strip_html_comments, str):  # Regex string
++                    if re.match(self.strip_html_comments, token["data"]):
++                        should_strip = False
++
++            if not should_strip:
+                 # call lxml.sax.saxutils to escape &, <, and > in addition to " and '
+                 token["data"] = html5lib_shim.escape(
+                     token["data"], entities={'"': "&quot;", "'": "&#x27;"}
+@@ -406,7 +544,15 @@ class BleachSanitizerFilter(html5lib_shim.SanitizerFilter):
+                 return None
+ 
+         elif token_type == "Characters":
+-            return self.sanitize_characters(token)
++            ret = self.sanitize_characters(token)
++            if self._in_csp_tag:
++                if isinstance(ret, list):
++                    for t in ret:
++                        if t["type"] == "Characters":
++                            self._csp_buffer.append(t["data"])
++                elif ret and ret["type"] == "Characters":
++                    self._csp_buffer.append(ret["data"])
++            return ret
+ 
+         else:
+             return token
+@@ -481,6 +627,10 @@ class BleachSanitizerFilter(html5lib_shim.SanitizerFilter):
+         :returns: allowed value or None
+ 
+         """
++        # Feature 9: Relative URL Resolution
++        if self.base_url:
++            value = urljoin(self.base_url, value)
++
+         # NOTE(willkg): This transforms the value into a normalized one that's
+         # easier to match and verify, but shouldn't get returned since it's
+         # vastly different than the original value.
+@@ -509,6 +659,23 @@ class BleachSanitizerFilter(html5lib_shim.SanitizerFilter):
+         if parsed.scheme:
+             # If urlparse found a scheme, check that
+             if parsed.scheme in allowed_protocols:
++                if parsed.scheme == "data" and self.allowed_mimetypes:
++                    try:
++                        # data:[<mediatype>][;base64],<data>
++                        header = parsed.path.split(",", 1)[0]
++                        if ";base64" in header:
++                            header = header.replace(";base64", "")
++                        mimetype = header.strip()
++                        if not mimetype:
++                            mimetype = "text/plain"
++                        if ";" in mimetype:
++                            mimetype = mimetype.split(";", 1)[0]
++
++                        if mimetype not in self.allowed_mimetypes:
++                            return None
++                    except ValueError:
++                        return None
++
+                 return value
+ 
+         else:
+@@ -547,9 +714,70 @@ class BleachSanitizerFilter(html5lib_shim.SanitizerFilter):
+                 #
+                 # NOTE(willkg): We pass in the attribute name--not a namespaced
+                 # name.
+-                if not self.attr_filter(token["name"], name, val):
++                check_name = name
++                if namespace:
++                    prefix = next(
++                        (p for p, u in html5lib_shim.namespaces.items() if u == namespace),
++                        None,
++                    )
++                    if prefix:
++                        check_name = f"{prefix}:{name}"
++
++                if not self.attr_filter(token["name"], check_name, val):
+                     continue
+ 
++                if token["name"] in self.conditional_attributes:
++                    conditions = self.conditional_attributes[token["name"]]
++                    if check_name in conditions:
++                        condition = conditions[check_name]
++                        allowed = True
++                        for dep_attr, allowed_protos in condition.items():
++                            dep_val = token["data"].get((None, dep_attr))
++                            if dep_val is None:
++                                allowed = False
++                                break
++
++                            try:
++                                parsed = parse_shim.urlparse(dep_val)
++                                scheme = parsed.scheme
++                                if scheme not in allowed_protos:
++                                    allowed = False
++                                    break
++                            except ValueError:
++                                allowed = False
++                                break
++
++                        if not allowed:
++                            continue
++
++                if check_name == 'class' and token["name"] in self.allowed_classes:
++                    class_config = self.allowed_classes[token["name"]]
++                    classes = val.split()
++                    new_classes = []
++
++                    allowed = None
++                    blocked = None
++
++                    if isinstance(class_config, list):
++                        allowed = set(class_config)
++                    elif isinstance(class_config, dict):
++                        if 'allowed' in class_config:
++                            allowed = set(class_config['allowed'])
++                        if 'blocked' in class_config:
++                            blocked = set(class_config['blocked'])
++
++                    for c in classes:
++                        if blocked and c in blocked:
++                            continue
++                        if allowed is not None and c not in allowed:
++                            continue
++                        new_classes.append(c)
++
++                    if new_classes:
++                        val = " ".join(new_classes)
++                    else:
++                        continue
++
+                 # Drop attributes with uri values that use a disallowed protocol
+                 # Sanitize attributes with uri values
+                 if namespaced_name in self.attr_val_is_uri:

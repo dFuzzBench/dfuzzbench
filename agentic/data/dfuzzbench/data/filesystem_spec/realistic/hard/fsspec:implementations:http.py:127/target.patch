@@ -1,0 +1,13 @@
+diff --git a/fsspec/implementations/http.py b/fsspec/implementations/http.py
+index 4580764..87f68a8 100644
+--- a/fsspec/implementations/http.py
++++ b/fsspec/implementations/http.py
+@@ -124,6 +124,8 @@ class HTTPFileSystem(AsyncFileSystem):
+                 sync(loop, session.close, timeout=0.1)
+                 return
+             except (TimeoutError, FSTimeoutError, NotImplementedError):
++                print("HIT TARGET") # target
++                exit(0)
+                 pass
+         connector = getattr(session, "_connector", None)
+         if connector is not None:

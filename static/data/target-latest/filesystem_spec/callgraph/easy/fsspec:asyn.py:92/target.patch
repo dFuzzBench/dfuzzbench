@@ -1,0 +1,13 @@
+diff --git a/fsspec/asyn.py b/fsspec/asyn.py
+index a040efc..3c37ff5 100644
+--- a/fsspec/asyn.py
++++ b/fsspec/asyn.py
+@@ -89,6 +89,8 @@ def sync(loop, func, *args, timeout=None, **kwargs):
+     while True:
+         # this loops allows thread to get interrupted
+         if event.wait(1):
++            print("HIT TARGET") # target
++            exit(0)
+             break
+         if timeout is not None:
+             timeout -= 1

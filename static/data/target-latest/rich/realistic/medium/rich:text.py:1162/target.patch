@@ -1,0 +1,13 @@
+diff --git a/rich/text.py b/rich/text.py
+index b57d77c2..dfd02143 100644
+--- a/rich/text.py
++++ b/rich/text.py
+@@ -1159,6 +1159,8 @@ class Text(JupyterMixin):
+                 start_line_no = (lower_bound + upper_bound) // 2
+ 
+             if span_end < line_end:
++                print("HIT TARGET") # target
++                exit(0)
+                 end_line_no = start_line_no
+             else:
+                 end_line_no = lower_bound = start_line_no

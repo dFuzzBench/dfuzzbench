@@ -1,0 +1,19 @@
+diff --git a/src/libbpf.c b/src/libbpf.c
+index 07d5de8..9db1c1c 100644
+--- a/src/libbpf.c
++++ b/src/libbpf.c
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <stdlib.h>
+ // SPDX-License-Identifier: (LGPL-2.1 OR BSD-2-Clause)
+ 
+ /*
+@@ -1656,6 +1658,8 @@ bpf_object__init_kversion(struct bpf_object *obj, void *data, size_t size)
+ 	__u32 kver;
+ 
+ 	if (!data || size != sizeof(kver)) {
++		fprintf(stderr, "HIT TARGET\n");  // target
++		exit(0);
+ 		pr_warn("invalid kver section in %s\n", obj->path);
+ 		return -LIBBPF_ERRNO__FORMAT;
+ 	}

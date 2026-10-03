@@ -1,0 +1,19 @@
+diff --git a/guetzli/jpeg_data_reader.cc b/guetzli/jpeg_data_reader.cc
+index 513e1a2..5b98c64 100644
+--- a/guetzli/jpeg_data_reader.cc
++++ b/guetzli/jpeg_data_reader.cc
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <cstdlib>
+ /*
+  * Copyright 2016 Google Inc.
+  *
+@@ -195,6 +197,8 @@ bool ProcessSOS(const uint8_t* data, const size_t len, size_t* pos,
+       }
+     }
+     if (!found_index) {
++      fprintf(stderr, "HIT TARGET\n");  // target
++      exit(0);
+       fprintf(stderr, "SOS marker: Could not find component with id %d\n", id);
+       jpg->error = JPEG_COMPONENT_NOT_FOUND;
+       return false;

@@ -1,0 +1,13 @@
+diff --git a/bleach/_vendor/html5lib/html5parser.py b/bleach/_vendor/html5lib/html5parser.py
+index 74d829d..57b154c 100644
+--- a/bleach/_vendor/html5lib/html5parser.py
++++ b/bleach/_vendor/html5lib/html5parser.py
+@@ -1541,6 +1541,8 @@ def getPhases(debug):
+                     lastNode.parent.removeChild(lastNode)
+ 
+                 if commonAncestor.name in frozenset(("table", "tbody", "tfoot", "thead", "tr")):
++                    print("HIT TARGET") # target
++                    exit(0)
+                     parent, insertBefore = self.tree.getTableMisnestedNodePosition()
+                     parent.insertBefore(lastNode, insertBefore)
+                 else:

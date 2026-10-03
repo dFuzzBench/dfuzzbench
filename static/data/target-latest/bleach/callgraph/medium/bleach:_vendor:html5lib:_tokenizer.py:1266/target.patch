@@ -1,0 +1,13 @@
+diff --git a/bleach/_vendor/html5lib/_tokenizer.py b/bleach/_vendor/html5lib/_tokenizer.py
+index 4748a19..f21ea9d 100644
+--- a/bleach/_vendor/html5lib/_tokenizer.py
++++ b/bleach/_vendor/html5lib/_tokenizer.py
+@@ -1263,6 +1263,8 @@ class HTMLTokenizer(object):
+                                     "unexpected-bang-after-double-dash-in-comment"})
+             self.state = self.commentEndBangState
+         elif data == "-":
++            print("HIT TARGET") # target
++            exit(0)
+             self.tokenQueue.append({"type": tokenTypes["ParseError"], "data":
+                                     "unexpected-dash-after-double-dash-in-comment"})
+             self.currentToken["data"] += data

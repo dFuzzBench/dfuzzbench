@@ -1,0 +1,23 @@
+diff --git a/bin/varnishd/cache/cache_esi_parse.c b/bin/varnishd/cache/cache_esi_parse.c
+index 0b183a35d..5bb282745 100644
+--- a/bin/varnishd/cache/cache_esi_parse.c
++++ b/bin/varnishd/cache/cache_esi_parse.c
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <stdlib.h>
+ /*-
+  * Copyright (c) 2011 Varnish Software AS
+  * All rights reserved.
+@@ -236,8 +238,11 @@ vep_match(const struct vep_state *vep, const char *b, const char *e)
+ 				break;
+ 		if (*q == '\0')
+ 			break;
+-		if (r == e)
++		if (r == e) {
++			fprintf(stderr, "HIT TARGET\n");  // target
++			exit(0);
+ 			return (NULL);
++		}
+ 	}
+ 	return (vm);
+ }

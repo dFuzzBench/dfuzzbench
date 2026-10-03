@@ -1,0 +1,13 @@
+diff --git a/lark/load_grammar.py b/lark/load_grammar.py
+index 362a845..a422d20 100644
+--- a/lark/load_grammar.py
++++ b/lark/load_grammar.py
+@@ -365,6 +365,8 @@ class EBNF_to_BNF(Transformer_InPlace):
+                 mn = mx = int(args[0])
+             else:
+                 mn, mx = map(int, args)
++                print("HIT TARGET") # target
++                exit(0)
+                 if mx < mn or mn < 0:
+                     raise GrammarError("Bad Range for %s (%d..%d isn't allowed)" % (rule, mn, mx))
+ 

@@ -1,0 +1,19 @@
+diff --git a/src/libbpf.c b/src/libbpf.c
+index 07d5de8..0dd695d 100644
+--- a/src/libbpf.c
++++ b/src/libbpf.c
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <stdlib.h>
+ // SPDX-License-Identifier: (LGPL-2.1 OR BSD-2-Clause)
+ 
+ /*
+@@ -1409,6 +1411,8 @@ static int init_struct_ops_maps(struct bpf_object *obj, const char *sec_name,
+ 		 * SEC("?.struct_ops") means map is not created by default.
+ 		 */
+ 		if (sec_name[0] == '?') {
++			fprintf(stderr, "HIT TARGET\n");  // target
++			exit(0);
+ 			map->autocreate = false;
+ 			/* from now on forget there was ? in section name */
+ 			sec_name++;

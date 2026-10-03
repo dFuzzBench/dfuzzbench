@@ -1,0 +1,147 @@
+{
+ "harness_file": "harness.cc",
+ "harness_name": "prog1.cc",
+ "input_example": "This program requires one input string. If your generated input is as follows:\n```\ninput\\ninput\n```\nWe will assign the value of `func2` to that input string 'input\\ninput' and assgin the value of `func3` to the length of that input string at the beginning of the `LLVMFuzzerTestOneInput()` function and the fuzzer will then run the function on that input.",
+ "project": "project1",
+ "renamed": {
+  "Delete": "func23",
+  "FormDataParser": "Type6",
+  "FuzzableServer": "Type2",
+  "FuzzedStream": "func1",
+  "Get": "func18",
+  "Options": "func24",
+  "Patch": "func22",
+  "Post": "func20",
+  "ProcessFuzzedRequest": "func16",
+  "Put": "func21",
+  "Request": "Type4",
+  "Response": "Type5",
+  "Server": "Type3",
+  "Stream": "Type1",
+  "bind_ip_address": "func26",
+  "connection_close": "var9",
+  "cpp_httplib": "project1",
+  "create_socket": "func25",
+  "data": "func2",
+  "data_": "func4",
+  "decode_path_component": "func30",
+  "decode_query_component": "func33",
+  "duration": "func15",
+  "g_server": "var10",
+  "get_local_ip_and_port": "func13",
+  "get_remote_ip_and_port": "func12",
+  "httplib": "var1",
+  "ip": "var5",
+  "is_field_content": "func35",
+  "is_readable": "func9",
+  "parse": "func29",
+  "parse_accept_header": "func32",
+  "parse_request_line": "func31",
+  "port": "var6",
+  "process_request": "func17",
+  "ptr": "var2",
+  "read": "func7",
+  "read_content": "func34",
+  "read_headers": "func27",
+  "read_pos_": "func6",
+  "res": "var11",
+  "response_": "var3",
+  "s": "var4",
+  "set_content": "func19",
+  "size": "func3",
+  "size_": "func5",
+  "socket": "func14",
+  "socket_t": "var7",
+  "stream": "var8",
+  "wait_readable": "func10",
+  "wait_writable": "func11",
+  "write": "func8",
+  "write_content_chunked": "func28"
+ },
+ "renamed_paths": {
+  "file:httplib": "file1",
+  "prog:fuzzer": "prog1"
+ },
+ "targets": {
+  "easy": {
+   "httplib.h:3878": {
+    "function": "func25",
+    "path": "file1.h"
+   },
+   "httplib.h:3986": {
+    "function": "func25",
+    "path": "file1.h"
+   },
+   "httplib.h:4068": {
+    "function": "func26",
+    "path": "file1.h"
+   },
+   "httplib.h:4080": {
+    "function": "func26",
+    "path": "file1.h"
+   },
+   "httplib.h:4145": {
+    "function": "func26",
+    "path": "file1.h"
+   },
+   "httplib.h:4705": {
+    "function": "func27",
+    "path": "file1.h"
+   },
+   "httplib.h:5244": {
+    "function": "func28",
+    "path": "file1.h"
+   },
+   "httplib.h:5689": {
+    "function": "Type6::func29",
+    "path": "file1.h"
+   },
+   "httplib.h:6624": {
+    "function": "func30",
+    "path": "file1.h"
+   },
+   "httplib.h:7612": {
+    "function": "Type3::func31",
+    "path": "file1.h"
+   }
+  },
+  "extreme_hard": {
+   "httplib.h:7855": {
+    "function": "Type3::func34",
+    "path": "file1.h"
+   }
+  },
+  "medium": {
+   "httplib.h:5528": {
+    "function": "func32",
+    "path": "file1.h"
+   },
+   "httplib.h:6725": {
+    "function": "func33",
+    "path": "file1.h"
+   }
+  },
+  "unreachable": {
+   "httplib.h:2711": {
+    "function": "func35",
+    "path": "file1.h"
+   },
+   "httplib.h:5503": {
+    "function": "func32",
+    "path": "file1.h"
+   },
+   "httplib.h:5618": {
+    "function": "func29",
+    "path": "file1.h"
+   },
+   "httplib.h:5680": {
+    "function": "func29",
+    "path": "file1.h"
+   },
+   "httplib.h:7640": {
+    "function": "func31",
+    "path": "file1.h"
+   }
+  }
+ }
+}

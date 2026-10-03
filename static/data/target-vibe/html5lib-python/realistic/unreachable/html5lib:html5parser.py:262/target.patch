@@ -1,0 +1,471 @@
+diff --git a/html5lib/_inputstream.py b/html5lib/_inputstream.py
+index a93b5a4..405669d 100644
+--- a/html5lib/_inputstream.py
++++ b/html5lib/_inputstream.py
+@@ -155,7 +155,7 @@ class HTMLUnicodeInputStream(object):
+ 
+     _defaultChunkSize = 10240
+ 
+-    def __init__(self, source):
++    def __init__(self, source, **kwargs):
+         """Initialises the HTMLInputStream.
+ 
+         HTMLInputStream(source, [encoding]) -> Normalized stream from source
+@@ -170,6 +170,10 @@ class HTMLUnicodeInputStream(object):
+ 
+         """
+ 
++        if source is None:
++            from io import StringIO
++            source = StringIO("")
++
+         if not _utils.supports_lone_surrogates:
+             # Such platforms will have already checked for such
+             # surrogate errors, so no need to do this checking.
+@@ -179,12 +183,12 @@ class HTMLUnicodeInputStream(object):
+         else:
+             self.reportCharacterErrors = self.characterErrorsUCS2
+ 
+-        # List of where new lines occur
+-        self.newLines = [0]
+-
+         self.charEncoding = (lookupEncoding("utf-8"), "certain")
+         self.dataStream = self.openStream(source)
+ 
++        # List of where new lines occur
++        self.newLines = [0]
++
+         self.reset()
+ 
+     def reset(self):
+@@ -258,6 +262,10 @@ class HTMLUnicodeInputStream(object):
+ 
+         data = self.dataStream.read(chunkSize)
+ 
++        if not data and getattr(self, "suspend_on_eof", False):
++            from .constants import SuspendIteration
++            raise SuspendIteration
++
+         # Deal with CR LF and surrogates broken across chunks
+         if self._bufferedCharacter:
+             data = self._bufferedCharacter + data
+diff --git a/html5lib/_tokenizer.py b/html5lib/_tokenizer.py
+index 4748a19..701708f 100644
+--- a/html5lib/_tokenizer.py
++++ b/html5lib/_tokenizer.py
+@@ -231,6 +231,7 @@ class HTMLTokenizer(object):
+         emitted.
+         """
+         token = self.currentToken
++        token["location"] = self.stream.position()
+         # Add token to the queue to be yielded
+         if (token["type"] in tagTokenTypes):
+             token["name"] = token["name"].translate(asciiUpper2Lower)
+diff --git a/html5lib/constants.py b/html5lib/constants.py
+index 2fa4146..0bfb84e 100644
+--- a/html5lib/constants.py
++++ b/html5lib/constants.py
+@@ -4,6 +4,9 @@ import string
+ 
+ EOF = None
+ 
++class SuspendIteration(Exception):
++    pass
++
+ E = {
+     "null-character":
+         "Null character in input stream, replaced with U+FFFD.",
+diff --git a/html5lib/filters/sanitizer.py b/html5lib/filters/sanitizer.py
+index ea2c5dd..e045a77 100644
+--- a/html5lib/filters/sanitizer.py
++++ b/html5lib/filters/sanitizer.py
+@@ -729,6 +729,22 @@ data_content_type = re.compile(r'''
+                                re.VERBOSE)
+ 
+ 
++class SanitizationFilter(base.Filter):
++    def __init__(self, source, policy):
++        super(SanitizationFilter, self).__init__(source)
++        self.policy = policy
++
++    def __iter__(self):
++        for token in self.source:
++            if token["type"] in ("StartTag", "EmptyTag", "EndTag"):
++                if token["name"] in self.policy.get("allowed_tags", []):
++                    if "data" in token:
++                        token["data"] = {k: v for k, v in token["data"].items() 
++                                         if k[1] in self.policy.get("allowed_attrs", [])}
++                    yield token
++            else:
++                yield token
++
+ class Filter(base.Filter):
+     """Sanitizes token stream of XHTML+MathML+SVG and of inline style attributes"""
+     def __init__(self,
+diff --git a/html5lib/html5parser.py b/html5lib/html5parser.py
+index b3c206d..5bc1449 100644
+--- a/html5lib/html5parser.py
++++ b/html5lib/html5parser.py
+@@ -111,12 +111,43 @@ class HTMLParser(object):
+         self.phases = {name: cls(self, self.tree) for name, cls in
+                        _phases.items()}
+ 
++    def feed(self, data):
++        from io import StringIO
++        if not hasattr(self, "_feed_buffer"):
++            self._feed_buffer = StringIO()
++            self.innerHTMLMode = False
++            self.container = "div"
++            self.scripting = False
++            self.tokenizer = _tokenizer.HTMLTokenizer(self._feed_buffer, parser=self)
++            self.tokenizer.stream.suspend_on_eof = True
++            self.reset()
++
++        self._feed_buffer.write(data)
++        self._feed_buffer.seek(self._feed_buffer.tell() - len(data))
++        self.mainLoop()
++
++    def _initialize_parsing_context(self, stream, innerHTML, container, scripting, **kwargs):
++        class ParsingContext(object):
++            def __init__(self, innerHTML, container, scripting, tokenizer):
++                self.innerHTML = innerHTML
++                self.container = container
++                self.scripting = scripting
++                self.tokenizer = tokenizer
++
++        tokenizer = _tokenizer.HTMLTokenizer(stream, parser=self, **kwargs)
++        context = ParsingContext(innerHTML, container, scripting, tokenizer)
++
++        self.innerHTMLMode = context.innerHTML
++        self.container = context.container
++        self.scripting = context.scripting
++        self.tokenizer = context.tokenizer
++
++        if self.tokenizer.parser is not self:
++             raise RuntimeError("Tokenizer not correctly linked to parser")
++
+     def _parse(self, stream, innerHTML=False, container="div", scripting=False, **kwargs):
+ 
+-        self.innerHTMLMode = innerHTML
+-        self.container = container
+-        self.scripting = scripting
+-        self.tokenizer = _tokenizer.HTMLTokenizer(stream, parser=self, **kwargs)
++        self._initialize_parsing_context(stream, innerHTML, container, scripting, **kwargs)
+         self.reset()
+ 
+         try:
+@@ -182,77 +213,98 @@ class HTMLParser(object):
+     def isMathMLTextIntegrationPoint(self, element):
+         return (element.namespace, element.name) in mathmlTextIntegrationPointElements
+ 
++    def _ensure_handlers_initialized(self):
++        if not hasattr(self, "_token_handlers"):
++            from .constants import tokenTypes
++            self._token_handlers = {
++                tokenTypes["Characters"]: "processCharacters",
++                tokenTypes["SpaceCharacters"]: "processSpaceCharacters",
++                tokenTypes["StartTag"]: "processStartTag",
++                tokenTypes["EndTag"]: "processEndTag",
++                tokenTypes["Comment"]: "processComment",
++                tokenTypes["Doctype"]: "processDoctype"
++            }
++
++    def _validate_integrity(self):
++        if not self.tree.openElements and self.phase.__class__.__name__ == "InBodyPhase":
++            # This theoretically shouldn't happen in InBodyPhase without open elements,
++            # but we are just adding a check.
++            pass
++
+     def mainLoop(self):
++        from .constants import SuspendIteration
++        self._ensure_handlers_initialized()
++        self._execution_state = 0
++
+         CharactersToken = tokenTypes["Characters"]
+         SpaceCharactersToken = tokenTypes["SpaceCharacters"]
+         StartTagToken = tokenTypes["StartTag"]
+         EndTagToken = tokenTypes["EndTag"]
+-        CommentToken = tokenTypes["Comment"]
+-        DoctypeToken = tokenTypes["Doctype"]
+         ParseErrorToken = tokenTypes["ParseError"]
+ 
+         type_names = {value: key for key, value in tokenTypes.items()}
+         debug = self.debug
+ 
+-        for token in self.tokenizer:
+-            prev_token = None
+-            new_token = token
+-            while new_token is not None:
+-                prev_token = new_token
+-                currentNode = self.tree.openElements[-1] if self.tree.openElements else None
+-                currentNodeNamespace = currentNode.namespace if currentNode else None
+-                currentNodeName = currentNode.name if currentNode else None
+-
+-                type = new_token["type"]
+-
+-                if type == ParseErrorToken:
+-                    self.parseError(new_token["data"], new_token.get("datavars", {}))
+-                    new_token = None
+-                else:
+-                    if (len(self.tree.openElements) == 0 or
+-                        currentNodeNamespace == self.tree.defaultNamespace or
+-                        (self.isMathMLTextIntegrationPoint(currentNode) and
+-                         ((type == StartTagToken and
+-                           token["name"] not in frozenset(["mglyph", "malignmark"])) or
+-                          type in (CharactersToken, SpaceCharactersToken))) or
+-                        (currentNodeNamespace == namespaces["mathml"] and
+-                         currentNodeName == "annotation-xml" and
+-                         type == StartTagToken and
+-                         token["name"] == "svg") or
+-                        (self.isHTMLIntegrationPoint(currentNode) and
+-                         type in (StartTagToken, CharactersToken, SpaceCharactersToken))):
+-                        phase = self.phase
++        try:
++            for token in self.tokenizer:
++                self._execution_state += 1
++                prev_token = None
++                new_token = token
++                while new_token is not None:
++                    prev_token = new_token
++                    currentNode = self.tree.openElements[-1] if self.tree.openElements else None
++                    currentNodeNamespace = currentNode.namespace if currentNode else None
++                    currentNodeName = currentNode.name if currentNode else None
++
++                    type = new_token["type"]
++
++                    if type == ParseErrorToken:
++                        print("HIT TARGET") # target
++                        exit(0)
++                        self.parseError(new_token["data"], new_token.get("datavars", {}))
++                        new_token = None
+                     else:
+-                        phase = self.phases["inForeignContent"]
+-
+-                    if debug:
+-                        info = {"type": type_names[type]}
+-                        if type in (StartTagToken, EndTagToken):
+-                            info["name"] = new_token['name']
+-
+-                        self.log.append((self.tokenizer.state.__name__,
+-                                         self.phase.__class__.__name__,
+-                                         phase.__class__.__name__,
+-                                         "process" + info["type"],
+-                                         info))
+-
+-                    if type == CharactersToken:
+-                        new_token = phase.processCharacters(new_token)
+-                    elif type == SpaceCharactersToken:
+-                        new_token = phase.processSpaceCharacters(new_token)
+-                    elif type == StartTagToken:
+-                        new_token = phase.processStartTag(new_token)
+-                    elif type == EndTagToken:
+-                        new_token = phase.processEndTag(new_token)
+-                    elif type == CommentToken:
+-                        new_token = phase.processComment(new_token)
+-                    elif type == DoctypeToken:
+-                        new_token = phase.processDoctype(new_token)
+-
+-            if (type == StartTagToken and prev_token["selfClosing"] and
+-                    not prev_token["selfClosingAcknowledged"]):
+-                self.parseError("non-void-element-with-trailing-solidus",
+-                                {"name": prev_token["name"]})
++                        if (len(self.tree.openElements) == 0 or
++                            currentNodeNamespace == self.tree.defaultNamespace or
++                            (self.isMathMLTextIntegrationPoint(currentNode) and
++                             ((type == StartTagToken and
++                               token["name"] not in frozenset(["mglyph", "malignmark"])) or
++                              type in (CharactersToken, SpaceCharactersToken))) or
++                            (currentNodeNamespace == namespaces["mathml"] and
++                             currentNodeName == "annotation-xml" and
++                             type == StartTagToken and
++                             token["name"] == "svg") or
++                            (self.isHTMLIntegrationPoint(currentNode) and
++                             type in (StartTagToken, CharactersToken, SpaceCharactersToken))):
++                            phase = self.phase
++                        else:
++                            phase = self.phases["inForeignContent"]
++
++                        if debug:
++                            info = {"type": type_names[type]}
++                            if type in (StartTagToken, EndTagToken):
++                                info["name"] = new_token['name']
++
++                            self.log.append((self.tokenizer.state.__name__,
++                                             self.phase.__class__.__name__,
++                                             phase.__class__.__name__,
++                                             "process" + info["type"],
++                                             info))
++
++                        if self._execution_state % 10 == 0:
++                            self._validate_integrity()
++
++                        handler_name = self._token_handlers.get(type)
++                        if handler_name:
++                            handler = getattr(phase, handler_name)
++                            new_token = handler(new_token)
++
++                if (type == StartTagToken and prev_token["selfClosing"] and
++                        not prev_token["selfClosingAcknowledged"]):
++                    self.parseError("non-void-element-with-trailing-solidus",
++                                    {"name": prev_token["name"]})
++        except SuspendIteration:
++            return
+ 
+         # When the loop finishes it's EOF
+         reprocess = True
+@@ -420,10 +472,10 @@ class Phase(object):
+         self.parser.parseError("unexpected-doctype")
+ 
+     def processCharacters(self, token):
+-        self.tree.insertText(token["data"])
++        self.tree.insertText(token["data"], location=token.get("location"))
+ 
+     def processSpaceCharacters(self, token):
+-        self.tree.insertText(token["data"])
++        self.tree.insertText(token["data"], location=token.get("location"))
+ 
+     def processStartTag(self, token):
+         # Note the caching is done here rather than BoundMethodDispatcher as doing it there
+@@ -980,7 +1032,7 @@ class InBodyPhase(Phase):
+             # The tokenizer should always emit null on its own
+             return
+         self.tree.reconstructActiveFormattingElements()
+-        self.tree.insertText(token["data"])
++        self.tree.insertText(token["data"], location=token.get("location"))
+         # This must be bad for performance
+         if (self.parser.framesetOK and
+             any(char not in spaceCharacters
+@@ -989,7 +1041,7 @@ class InBodyPhase(Phase):
+ 
+     def processSpaceCharactersNonPre(self, token):
+         self.tree.reconstructActiveFormattingElements()
+-        self.tree.insertText(token["data"])
++        self.tree.insertText(token["data"], location=token.get("location"))
+ 
+     def startTagProcessInHead(self, token):
+         return self.parser.phases["inHead"].processStartTag(token)
+@@ -1282,6 +1334,12 @@ class InBodyPhase(Phase):
+         """
+         self.parser.parseError("unexpected-start-tag-ignored", {"name": token["name"]})
+ 
++    def startTagTemplate(self, token):
++        if "shadowroot" in token["data"]:
++            self.tree.insertShadowRoot(token)
++        else:
++            self.tree.insertElement(token)
++
+     def startTagOther(self, token):
+         self.tree.reconstructActiveFormattingElements()
+         self.tree.insertElement(token)
+@@ -1617,6 +1675,7 @@ class InBodyPhase(Phase):
+         ("select", startTagSelect),
+         (("rp", "rt"), startTagRpRt),
+         (("option", "optgroup"), startTagOpt),
++        ("template", startTagTemplate),
+         (("math"), startTagMath),
+         (("svg"), startTagSvg),
+         (("caption", "col", "colgroup", "frame", "head",
+diff --git a/html5lib/serializer.py b/html5lib/serializer.py
+index a171ac1..1314c79 100644
+--- a/html5lib/serializer.py
++++ b/html5lib/serializer.py
+@@ -124,13 +124,14 @@ class HTMLSerializer(object):
+     inject_meta_charset = True
+     strip_whitespace = False
+     sanitize = False
++    context_element = None
+ 
+     options = ("quote_attr_values", "quote_char", "use_best_quote_char",
+                "omit_optional_tags", "minimize_boolean_attributes",
+                "use_trailing_solidus", "space_before_trailing_solidus",
+                "escape_lt_in_attrs", "escape_rcdata", "resolve_entities",
+                "alphabetical_attributes", "inject_meta_charset",
+-               "strip_whitespace", "sanitize")
++               "strip_whitespace", "sanitize", "context_element")
+ 
+     def __init__(self, **kwargs):
+         """Initialize HTMLSerializer
+@@ -241,6 +242,10 @@ class HTMLSerializer(object):
+         in_cdata = False
+         self.errors = []
+ 
++        if hasattr(self, "context_element") and self.context_element:
++            if self.context_element in rcdataElements:
++                in_cdata = True
++
+         if encoding and self.inject_meta_charset:
+             from .filters.inject_meta_charset import Filter
+             treewalker = Filter(treewalker, encoding)
+diff --git a/html5lib/treebuilders/base.py b/html5lib/treebuilders/base.py
+index 020d7e1..e759c7c 100644
+--- a/html5lib/treebuilders/base.py
++++ b/html5lib/treebuilders/base.py
+@@ -30,6 +30,7 @@ class Node(object):
+         """
+         # The tag name associated with the node
+         self.name = name
++        self.sourceLocation = None
+         # The parent of the current node (or None for the document node)
+         self.parent = None
+         # The value of the current node (applies to text nodes and comments)
+@@ -176,6 +177,7 @@ class TreeBuilder(object):
+         :arg namespaceHTMLElements: whether or not to namespace HTML elements
+ 
+         """
++        self.element_classes = {}
+         if namespaceHTMLElements:
+             self.defaultNamespace = "http://www.w3.org/1999/xhtml"
+         else:
+@@ -194,6 +196,9 @@ class TreeBuilder(object):
+ 
+         self.document = self.documentClass()
+ 
++    def register_element_class(self, tag_name, class_ref):
++        self.element_classes[tag_name] = class_ref
++
+     def elementInScope(self, target, variant=None):
+ 
+         # If we pass a node in we match that. if we pass a string
+@@ -297,14 +302,18 @@ class TreeBuilder(object):
+     def insertComment(self, token, parent=None):
+         if parent is None:
+             parent = self.openElements[-1]
+-        parent.appendChild(self.commentClass(token["data"]))
++        comment = self.commentClass(token["data"])
++        comment.sourceLocation = token.get("location")
++        parent.appendChild(comment)
+ 
+     def createElement(self, token):
+         """Create an element but don't insert it anywhere"""
+         name = token["name"]
+         namespace = token.get("namespace", self.defaultNamespace)
+-        element = self.elementClass(name, namespace)
++        element_class = self.element_classes.get(name, self.elementClass)
++        element = element_class(name, namespace)
+         element.attributes = token["data"]
++        element.sourceLocation = token.get("location")
+         return element
+ 
+     def _getInsertFromTable(self):
+@@ -321,6 +330,12 @@ class TreeBuilder(object):
+ 
+     insertFromTable = property(_getInsertFromTable, _setInsertFromTable)
+ 
++    def insertShadowRoot(self, token):
++        element = self.createElement(token)
++        self.openElements[-1].appendChild(element)
++        self.openElements.append(element)
++        return element
++
+     def insertElementNormal(self, token):
+         name = token["name"]
+         assert isinstance(name, text_type), "Element %s not unicode" % name
+@@ -347,7 +362,7 @@ class TreeBuilder(object):
+             self.openElements.append(element)
+         return element
+ 
+-    def insertText(self, data, parent=None):
++    def insertText(self, data, parent=None, location=None):
+         """Insert text data."""
+         if parent is None:
+             parent = self.openElements[-1]

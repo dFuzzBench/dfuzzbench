@@ -1,0 +1,13 @@
+diff --git a/bleach/_vendor/html5lib/html5parser.py b/bleach/_vendor/html5lib/html5parser.py
+index 74d829d..736b111 100644
+--- a/bleach/_vendor/html5lib/html5parser.py
++++ b/bleach/_vendor/html5lib/html5parser.py
+@@ -315,6 +315,8 @@ class HTMLParser(object):
+     def parseError(self, errorcode="XXX-undefined-error", datavars=None):
+         # XXX The idea is to make errorcode mandatory.
+         if datavars is None:
++            print("HIT TARGET") # target
++            exit(0)
+             datavars = {}
+         self.errors.append((self.tokenizer.stream.position(), errorcode, datavars))
+         if self.strict:

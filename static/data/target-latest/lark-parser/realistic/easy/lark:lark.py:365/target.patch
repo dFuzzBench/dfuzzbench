@@ -1,0 +1,13 @@
+diff --git a/lark/lark.py b/lark/lark.py
+index 0bec71b..755a277 100644
+--- a/lark/lark.py
++++ b/lark/lark.py
+@@ -362,6 +362,8 @@ class Lark(Serialize):
+ 
+         if self.options.lexer == 'auto':
+             if self.options.parser == 'lalr':
++                print("HIT TARGET") # target
++                exit(0)
+                 self.options.lexer = 'contextual'
+             elif self.options.parser == 'earley':
+                 if self.options.postlex is not None:

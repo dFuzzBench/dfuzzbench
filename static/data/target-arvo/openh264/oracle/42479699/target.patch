@@ -1,0 +1,18 @@
+diff --git a/codec/decoder/plus/src/welsDecoderExt.cpp b/codec/decoder/plus/src/welsDecoderExt.cpp
+index 81df55e5..3870a0f1 100644
+--- a/codec/decoder/plus/src/welsDecoderExt.cpp
++++ b/codec/decoder/plus/src/welsDecoderExt.cpp
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <cstdlib>
+ /*!
+  * \copy
+  *     Copyright (c)  2009-2013, Cisco Systems
+@@ -1075,6 +1077,7 @@ void CWelsDecoder::ReleaseBufferedReadyPicture (PWelsDecoderContext pCtx, unsign
+     ppDst[1] = m_sPictInfoList[m_sReoderingStatus.iPictInfoIndex].pData[1];
+     ppDst[2] = m_sPictInfoList[m_sReoderingStatus.iPictInfoIndex].pData[2];
+     m_sPictInfoList[m_sReoderingStatus.iPictInfoIndex].iPOC = IMinInt32;
++    fprintf(stderr, "HIT TARGET\n");  // target
+     pPicBuff->ppPic[m_sPictInfoList[m_sReoderingStatus.iPictInfoIndex].iPicBuffIdx]->bAvailableFlag = true;
+     m_sPictInfoList[m_sReoderingStatus.iPictInfoIndex].bLastGOP = false;
+     m_sReoderingStatus.iMinPOC = IMinInt32;

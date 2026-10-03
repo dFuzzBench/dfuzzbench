@@ -1,0 +1,21 @@
+{
+ "harness_file": "harness.cc",
+ "harness_name": "prog2",
+ "renamed": {
+  "Data": "Type1",
+  "Size": "Type2",
+  "decode_bit_string": "func21",
+  "sc_asn1_print_tags": "func20"
+ },
+ "renamed_paths": {
+  "dir:libopensc": "dir1",
+  "dir:src": "dir2",
+  "file:asn1": "file5",
+  "file:config": "file1",
+  "prog:fuzz_asn1_print": "prog2"
+ },
+ "target": {
+  "function": "func21",
+  "path": "dir2/dir1/file5.c"
+ }
+}

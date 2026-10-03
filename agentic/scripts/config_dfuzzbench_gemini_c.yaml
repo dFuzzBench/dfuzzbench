@@ -1,0 +1,224 @@
+base:
+    # Environment configs
+    output_path: "exps/dfuzzbench"
+    benchmark: "dfuzzbench"
+    # The 176 C/C++ T1-T5 targets of the dataset built by data/dfuzzbench/build_dataset.py (Python targets need pdb: config_dfuzzbench_gemini_py.yaml).
+    problems: [
+        # wamr
+        'wamr::core:iwasm:aot:aot_loader.c:95',
+        'wamr::core:iwasm:aot:aot_loader.c:319',
+        'wamr::core:iwasm:aot:aot_loader.c:325',
+        'wamr::core:iwasm:aot:aot_loader.c:367',
+        'wamr::core:iwasm:aot:aot_loader.c:376',
+        'wamr::core:iwasm:aot:aot_loader.c:456',
+        'wamr::core:iwasm:aot:aot_loader.c:547',
+        'wamr::core:iwasm:aot:aot_loader.c:588',
+        'wamr::core:iwasm:aot:aot_loader.c:605',
+        'wamr::core:iwasm:aot:aot_loader.c:666',
+        'wamr::core:iwasm:aot:aot_loader.c:4120',
+        'wamr::core:iwasm:aot:aot_loader.c:4236',
+        'wamr::core:iwasm:aot:aot_loader.c:4312',
+        'wamr::core:iwasm:aot:aot_loader.c:417',
+        'wamr::core:iwasm:aot:aot_loader.c:916',
+        'wamr::core:iwasm:aot:aot_loader.c:1132',
+        'wamr::core:iwasm:aot:aot_loader.c:1304',
+        'wamr::core:iwasm:aot:aot_loader.c:4013',
+        'wamr::core:iwasm:aot:aot_loader.c:660',
+        'wamr::core:iwasm:aot:aot_loader.c:698',
+        'wamr::core:iwasm:aot:aot_loader.c:967',
+        'wamr::core:iwasm:aot:aot_loader.c:1013',
+        # md4c
+        'md4c::src:md4c-html.c:134',
+        'md4c::src:md4c-html.c:163',
+        'md4c::src:md4c-html.c:240',
+        'md4c::src:md4c-html.c:275',
+        'md4c::src:md4c-html.c:290',
+        'md4c::src:md4c-html.c:304',
+        'md4c::src:md4c-html.c:333',
+        'md4c::src:md4c-html.c:464',
+        'md4c::src:md4c-html.c:479',
+        'md4c::src:md4c-html.c:522',
+        'md4c::src:md4c-html.c:190',
+        'md4c::src:md4c-html.c:210',
+        'md4c::src:md4c-html.c:320',
+        'md4c::src:md4c-html.c:353',
+        'md4c::src:md4c-html.c:560',
+        # libbpf
+        'libbpf::src:libbpf.c:244',
+        'libbpf::src:libbpf.c:313',
+        'libbpf::src:libbpf.c:879',
+        'libbpf::src:libbpf.c:894',
+        'libbpf::src:libbpf.c:983',
+        'libbpf::src:libbpf.c:8079',
+        'libbpf::src:libbpf.c:8082',
+        'libbpf::src:libbpf.c:9053',
+        'libbpf::src:libbpf.c:9089',
+        'libbpf::src:libbpf.c:10601',
+        'libbpf::src:libbpf.c:827',
+        'libbpf::src:libbpf.c:1065',
+        'libbpf::src:libbpf.c:1412',
+        'libbpf::src:libbpf.c:1659',
+        'libbpf::src:libbpf.c:1999',
+        # varnish
+        'varnish::bin:varnishd:cache:cache_esi_parse.c:287',
+        'varnish::bin:varnishd:cache:cache_esi_parse.c:347',
+        'varnish::bin:varnishd:cache:cache_esi_parse.c:409',
+        'varnish::bin:varnishd:cache:cache_esi_parse.c:450',
+        'varnish::bin:varnishd:cache:cache_esi_parse.c:583',
+        'varnish::bin:varnishd:cache:cache_esi_parse.c:774',
+        'varnish::bin:varnishd:cache:cache_esi_parse.c:876',
+        'varnish::bin:varnishd:cache:cache_esi_parse.c:1008',
+        'varnish::bin:varnishd:cache:cache_esi_parse.c:240',
+        'varnish::bin:varnishd:cache:cache_esi_parse.c:458',
+        'varnish::bin:varnishd:cache:cache_esi_parse.c:536',
+        'varnish::bin:varnishd:cache:cache_esi_parse.c:715',
+        'varnish::bin:varnishd:cache:cache_esi_parse.c:1117',
+        'varnish::bin:varnishd:cache:cache_esi_parse.c:344',
+        'varnish::bin:varnishd:cache:cache_esi_parse.c:557',
+        'varnish::bin:varnishd:cache:cache_esi_parse.c:568',
+        'varnish::bin:varnishd:cache:cache_esi_parse.c:662',
+        'varnish::bin:varnishd:cache:cache_esi_parse.c:682',
+        'varnish::bin:varnishd:cache:cache_esi_parse.c:709',
+        'varnish::bin:varnishd:cache:cache_esi_parse.c:900',
+        'varnish::bin:varnishd:cache:cache_esi_parse.c:695',
+        'varnish::bin:varnishd:cache:cache_esi_parse.c:672',
+        'varnish::bin:varnishd:cache:cache_esi_parse.c:803',
+        'varnish::bin:varnishd:cache:cache_esi_parse.c:856',
+        'varnish::bin:varnishd:cache:cache_esi_parse.c:977',
+        # clib
+        'clib::src:common:clib-package.c:184',
+        'clib::src:common:clib-package.c:249',
+        'clib::src:common:clib-package.c:323',
+        'clib::src:common:clib-package.c:345',
+        'clib::src:common:clib-package.c:470',
+        'clib::src:common:clib-package.c:477',
+        'clib::src:common:clib-package.c:544',
+        'clib::src:common:clib-package.c:564',
+        'clib::src:common:clib-package.c:571',
+        'clib::src:common:clib-package.c:1705',
+        'clib::src:common:clib-package.c:565',
+        'clib::src:common:clib-package.c:573',
+        'clib::src:common:clib-package.c:479',
+        'clib::src:common:clib-package.c:483',
+        'clib::src:common:clib-package.c:519',
+        'clib::src:common:clib-package.c:582',
+        'clib::src:common:clib-package.c:591',
+        # cmark
+        'cmark::src:blocks.c:144',
+        'cmark::src:blocks.c:151',
+        'cmark::src:blocks.c:188',
+        'cmark::src:blocks.c:217',
+        'cmark::src:blocks.c:277',
+        'cmark::src:blocks.c:316',
+        'cmark::src:blocks.c:326',
+        'cmark::src:blocks.c:531',
+        'cmark::src:blocks.c:644',
+        'cmark::src:blocks.c:1035',
+        'cmark::src:blocks.c:228',
+        'cmark::src:blocks.c:303',
+        'cmark::src:blocks.c:488',
+        'cmark::src:blocks.c:590',
+        'cmark::src:blocks.c:593',
+        # cpp-httplib
+        'cpp-httplib::httplib.h:3878',
+        'cpp-httplib::httplib.h:3986',
+        'cpp-httplib::httplib.h:4068',
+        'cpp-httplib::httplib.h:4080',
+        'cpp-httplib::httplib.h:4145',
+        'cpp-httplib::httplib.h:4705',
+        'cpp-httplib::httplib.h:5244',
+        'cpp-httplib::httplib.h:5689',
+        'cpp-httplib::httplib.h:6624',
+        'cpp-httplib::httplib.h:7612',
+        'cpp-httplib::httplib.h:5528',
+        'cpp-httplib::httplib.h:6725',
+        'cpp-httplib::httplib.h:7855',
+        'cpp-httplib::httplib.h:2711',
+        'cpp-httplib::httplib.h:5503',
+        'cpp-httplib::httplib.h:5618',
+        'cpp-httplib::httplib.h:5680',
+        'cpp-httplib::httplib.h:7640',
+        # libpng
+        'libpng::png.c:36',
+        'libpng::png.c:58',
+        'libpng::png.c:61',
+        'libpng::png.c:86',
+        'libpng::png.c:188',
+        'libpng::png.c:340',
+        'libpng::png.c:351',
+        'libpng::png.c:421',
+        'libpng::png.c:578',
+        'libpng::png.c:775',
+        'libpng::png.c:465',
+        'libpng::png.c:2197',
+        'libpng::png.c:2222',
+        'libpng::png.c:2232',
+        'libpng::png.c:2240',
+        # guetzli
+        'guetzli::guetzli:jpeg_data_reader.cc:163',
+        'guetzli::guetzli:jpeg_data_reader.cc:243',
+        'guetzli::guetzli:jpeg_data_reader.cc:338',
+        'guetzli::guetzli:jpeg_data_reader.cc:386',
+        'guetzli::guetzli:jpeg_data_reader.cc:649',
+        'guetzli::guetzli:jpeg_data_reader.cc:743',
+        'guetzli::guetzli:jpeg_data_reader.cc:939',
+        'guetzli::guetzli:jpeg_data_reader.cc:1022',
+        'guetzli::guetzli:jpeg_data_reader.cc:1036',
+        'guetzli::guetzli:jpeg_data_reader.cc:1065',
+        'guetzli::guetzli:jpeg_data_reader.cc:198',
+        'guetzli::guetzli:jpeg_data_reader.cc:231',
+        'guetzli::guetzli:jpeg_data_reader.cc:287',
+        'guetzli::guetzli:jpeg_data_reader.cc:185',
+        'guetzli::guetzli:jpeg_data_reader.cc:320',
+        'guetzli::guetzli:jpeg_data_reader.cc:351',
+        'guetzli::guetzli:jpeg_data_reader.cc:655',
+        'guetzli::guetzli:jpeg_data_reader.cc:700',
+        'guetzli::guetzli:jpeg_data_reader.cc:956',
+        # exiv2
+        'exiv2::src:xmp.cpp:112',
+        'exiv2::src:xmp.cpp:497',
+        'exiv2::src:xmp.cpp:513',
+        'exiv2::src:xmp.cpp:587',
+        'exiv2::src:xmp.cpp:613',
+        'exiv2::src:xmp.cpp:839',
+        'exiv2::src:xmp.cpp:841',
+        'exiv2::src:xmp.cpp:849',
+        'exiv2::src:xmp.cpp:856',
+        'exiv2::src:xmp.cpp:873',
+        'exiv2::src:xmp.cpp:90',
+        'exiv2::src:xmp.cpp:133',
+        'exiv2::src:xmp.cpp:457',
+        'exiv2::src:xmp.cpp:747',
+        'exiv2::src:xmp.cpp:870',
+    ]
+
+    env_kwargs: {
+        "dir_tree_depth": 1,
+        "run_timeout": 60,
+        "dataset_id": "data/dfuzzbench/dataset",  # built by data/dfuzzbench/build_dataset.py --out-dir data/dfuzzbench/dataset
+        "provide_call_paths": False,  # False: get_callpaths reports that no call path was found; True exposes the dataset's call paths.
+        # shortcut features
+        "auto_eval_on_rewrite": False,  # If True, the environment will automatically call the Eval tool after a successful rewrite. If this is set to True, the agent does not need to call the Eval tool itself.
+        "show_current_breakpoints": False,  # If True, the environment will automatically show the current breakpoints at every step in the system prompt.
+        "show_directory_tree": True,  # If set to True, the environment will show the directory tree in the system prompt.
+        "persistent_breakpoints": True,  # If True, the environemnt will keep a set of breakpoint states across PDB sessions. When a new PDB session is started, the environment will automatically load the breakpoints from the previous session.
+        "auto_list": True,  # If True, the environment will automatically call `list .` via the PDB tool after every pdb tool call, which will show the code around the current frame.
+    }
+    terminal: {
+        type: "docker",
+    }
+
+    # LLM configs (an entry of llm.yaml)
+    llm_name: "gemini-3.1-pro"
+
+    # Agent configs
+    random_seed: 42
+    max_steps: 50
+    max_propose_steps: 15
+    max_rewrite_steps: 50
+    memory_size: 15
+    save_patch: True
+    reset_prompt_history_after_rewrite: True
+
+reach_agent:
+    tools: ["view", "listdir", "propose", "plan", "callpath", "grep", "context", "lldb"]

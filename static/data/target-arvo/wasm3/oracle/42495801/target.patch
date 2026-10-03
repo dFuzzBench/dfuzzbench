@@ -1,0 +1,18 @@
+diff --git a/source/m3_env.c b/source/m3_env.c
+index 6d914d6..c8eb175 100644
+--- a/source/m3_env.c
++++ b/source/m3_env.c
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <stdlib.h>
+ //
+ //  m3_env.c
+ //
+@@ -470,6 +472,7 @@ _       (EvaluateExpression (io_module, & segmentOffset, c_m3Type_i32, & start,
+         {
+             u8 * dest = m3MemData (io_memory->mallocated) + segmentOffset;
+ 
++            fprintf(stderr, "HIT TARGET\n");  // target
+             if ((size_t) segmentOffset + segment->size <= io_memory->mallocated->length)
+                 memcpy (dest, segment->data, segment->size);
+             else

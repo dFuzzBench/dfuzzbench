@@ -1,0 +1,13 @@
+diff --git a/rich/style.py b/rich/style.py
+index 835d06f3..1b4dd27d 100644
+--- a/rich/style.py
++++ b/rich/style.py
+@@ -359,6 +359,8 @@ class Style:
+                 if attributes & 0b0000111110000:
+                     for bit in range(4, 9):
+                         if attributes & (1 << bit):
++                            print("HIT TARGET") # target
++                            exit(0)
+                             append(_style_map[bit])
+                 if attributes & 0b1111000000000:
+                     for bit in range(9, 13):

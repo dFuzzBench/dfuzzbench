@@ -1,0 +1,13 @@
+diff --git a/fsspec/implementations/http.py b/fsspec/implementations/http.py
+index 4580764..d412648 100644
+--- a/fsspec/implementations/http.py
++++ b/fsspec/implementations/http.py
+@@ -121,6 +121,8 @@ class HTTPFileSystem(AsyncFileSystem):
+     def close_session(loop, session):
+         if loop is not None and loop.is_running():
+             try:
++                print("HIT TARGET") # target
++                exit(0)
+                 sync(loop, session.close, timeout=0.1)
+                 return
+             except (TimeoutError, FSTimeoutError, NotImplementedError):

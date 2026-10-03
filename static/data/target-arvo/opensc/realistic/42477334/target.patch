@@ -1,0 +1,18 @@
+diff --git a/src/libopensc/asn1.c b/src/libopensc/asn1.c
+index 47b42c746..33852db1c 100644
+--- a/src/libopensc/asn1.c
++++ b/src/libopensc/asn1.c
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <stdlib.h>
+ /*
+  * asn1.c: ASN.1 decoding functions (DER)
+  *
+@@ -570,6 +572,7 @@ static int decode_bit_string(const u8 * inbuf, size_t inlen, void *outbuf,
+ {
+ 	const u8 *in = inbuf;
+ 	u8 *out = (u8 *) outbuf;
++	fprintf(stderr, "HIT TARGET\n");  // target
+ 	int zero_bits = *in & 0x07;
+ 	size_t octets_left = inlen - 1;
+ 	int i, count = 0;

@@ -1,0 +1,13 @@
+diff --git a/lark/load_grammar.py b/lark/load_grammar.py
+index 362a845..3d01888 100644
+--- a/lark/load_grammar.py
++++ b/lark/load_grammar.py
+@@ -774,6 +774,8 @@ class Grammar:
+ 
+         # Remove duplicates of empty rules, throw error for non-empty duplicates
+         if len(set(compiled_rules)) != len(compiled_rules):
++            print("HIT TARGET") # target
++            exit(0)
+             duplicates = classify(compiled_rules, lambda x: x)
+             for dups in duplicates.values():
+                 if len(dups) > 1:

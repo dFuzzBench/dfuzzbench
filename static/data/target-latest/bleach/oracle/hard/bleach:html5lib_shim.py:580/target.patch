@@ -1,0 +1,13 @@
+diff --git a/bleach/html5lib_shim.py b/bleach/html5lib_shim.py
+index ca1cc8c..701ea70 100644
+--- a/bleach/html5lib_shim.py
++++ b/bleach/html5lib_shim.py
+@@ -577,6 +577,8 @@ def convert_entities(text):
+         if part.startswith("&"):
+             entity = match_entity(part)
+             if entity is not None:
++                print("HIT TARGET") # target
++                exit(0)
+                 converted = convert_entity(entity)
+ 
+                 # If it's not an ambiguous ampersand, then replace with the

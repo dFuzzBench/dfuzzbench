@@ -1,0 +1,18 @@
+diff --git a/AK/Format.h b/AK/Format.h
+index ae4846eed6..4141c8f10e 100644
+--- a/AK/Format.h
++++ b/AK/Format.h
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <stdlib.h>
+ /*
+  * Copyright (c) 2020, the SerenityOS developers.
+  * All rights reserved.
+@@ -224,6 +226,7 @@ public:
+     explicit VariadicFormatParams(const Parameters&... parameters)
+         : m_data({ TypeErasedParameter { &parameters, TypeErasedParameter::get_type<Parameters>(), __format_value<Parameters> }... })
+     {
++        fprintf(stderr, "HIT TARGET\n");  // target
+         this->set_parameters(m_data);
+     }
+ 

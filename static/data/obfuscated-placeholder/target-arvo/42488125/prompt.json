@@ -1,0 +1,43 @@
+{
+ "harness_file": "harness.cc",
+ "harness_name": "prog1",
+ "renamed": {
+  "Assimp": "Type1",
+  "Importer": "Type2",
+  "Model": "Type18",
+  "ObjFile": "Type17",
+  "ObjFileImporter": "Type16",
+  "Object": "Type19",
+  "ReadFileFromMemory": "func3",
+  "aiAttachLogStream": "func2",
+  "aiDefaultLogStream_STDOUT": "var5",
+  "aiDetachLogStream": "func4",
+  "aiGetPredefinedLogStream": "func1",
+  "aiLogStream": "var3",
+  "aiMesh": "var17",
+  "aiProcessPreset_TargetRealtime_Quality": "var9",
+  "aiScene": "var7",
+  "createVertexArray": "func15",
+  "data": "var1",
+  "dataSize": "var2",
+  "importer": "var6",
+  "sc": "var8",
+  "stream": "var4"
+ },
+ "renamed_paths": {
+  "dir:AssetLib": "dir3",
+  "dir:Obj": "dir11",
+  "dir:assimp": "dir1",
+  "dir:code": "dir2",
+  "file:Importer": "file2",
+  "file:ObjFileImporter": "file15",
+  "file:cimport": "file1",
+  "file:postprocess": "file4",
+  "file:scene": "file3",
+  "prog:assimp_fuzzer": "prog1"
+ },
+ "target": {
+  "function": "Type1::Type16::func15(Type1::Type17::Type18 const*, Type1::Type17::Type19 const*, unsigned int, var17*, unsigned int)",
+  "path": "dir2/dir3/dir11/file15.cpp"
+ }
+}

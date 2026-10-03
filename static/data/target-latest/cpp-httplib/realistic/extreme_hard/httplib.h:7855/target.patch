@@ -1,0 +1,19 @@
+diff --git a/httplib.h b/httplib.h
+index 8411c8c..3b0dd25 100644
+--- a/httplib.h
++++ b/httplib.h
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <stdlib.h>
+ //
+ //  httplib.h
+ //
+@@ -7852,6 +7854,8 @@ inline bool Server::read_content(Stream &strm, Request &req, Response &res) {
+     const auto &content_type = req.get_header_value("Content-Type");
+     if (!content_type.find("application/x-www-form-urlencoded")) {
+       if (req.body.size() > CPPHTTPLIB_FORM_URL_ENCODED_PAYLOAD_MAX_LENGTH) {
++        fprintf(stderr, "HIT TARGET\n");  // target
++        exit(0);
+         res.status = StatusCode::PayloadTooLarge_413; // NOTE: should be 414?
+         output_error_log(Error::ExceedMaxPayloadSize, &req);
+         return false;

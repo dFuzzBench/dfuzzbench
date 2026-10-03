@@ -1,0 +1,19 @@
+diff --git a/src/blocks.c b/src/blocks.c
+index 292e563..c94307c 100644
+--- a/src/blocks.c
++++ b/src/blocks.c
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <stdlib.h>
+ /**
+  * Block parsing implementation.
+  *
+@@ -1032,6 +1034,8 @@ static void open_new_blocks(cmark_parser *parser, cmark_node **container,
+       *container = add_child(parser, *container, CMARK_NODE_CODE_BLOCK,
+                              parser->first_nonspace + 1);
+       (*container)->as.code.fenced = true;
++      fprintf(stderr, "HIT TARGET\n");  // target
++      exit(0);
+       (*container)->as.code.fence_char = peek_at(input, parser->first_nonspace);
+       (*container)->as.code.fence_length = (matched > 255) ? 255 : matched;
+       (*container)->as.code.fence_offset =

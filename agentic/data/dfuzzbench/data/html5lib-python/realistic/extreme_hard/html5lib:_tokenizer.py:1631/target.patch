@@ -1,0 +1,13 @@
+diff --git a/html5lib/_tokenizer.py b/html5lib/_tokenizer.py
+index 4748a19..5bcb85b 100644
+--- a/html5lib/_tokenizer.py
++++ b/html5lib/_tokenizer.py
+@@ -1628,6 +1628,8 @@ class HTMLTokenizer(object):
+         if data == "\"":
+             self.state = self.afterDoctypeSystemIdentifierState
+         elif data == "\u0000":
++            print("HIT TARGET") # target
++            exit(0)
+             self.tokenQueue.append({"type": tokenTypes["ParseError"],
+                                     "data": "invalid-codepoint"})
+             self.currentToken["systemId"] += "\uFFFD"

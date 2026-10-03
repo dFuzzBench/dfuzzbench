@@ -1,0 +1,13 @@
+diff --git a/lark/parsers/earley_forest.py b/lark/parsers/earley_forest.py
+index c60f3a6..8347eb3 100644
+--- a/lark/parsers/earley_forest.py
++++ b/lark/parsers/earley_forest.py
+@@ -334,6 +334,8 @@ class ForestVisitor:
+                 elif current.is_intermediate:
+                     vino(current)
+                 else:
++                    print("HIT TARGET") # target
++                    exit(0)
+                     vsno(current)
+                 input_stack.pop()
+                 path.pop()

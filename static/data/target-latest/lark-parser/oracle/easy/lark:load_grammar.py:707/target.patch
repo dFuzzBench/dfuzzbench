@@ -1,0 +1,13 @@
+diff --git a/lark/load_grammar.py b/lark/load_grammar.py
+index 362a845..f165226 100644
+--- a/lark/load_grammar.py
++++ b/lark/load_grammar.py
+@@ -704,6 +704,8 @@ class Grammar:
+                 continue
+             expansions = list(term_tree.find_data('expansion'))
+             if len(expansions) == 1 and not expansions[0].children:
++                print("HIT TARGET") # target
++                exit(0)
+                 raise GrammarError("Terminals cannot be empty (%s)" % name)
+ 
+         transformer = PrepareLiterals() * TerminalTreeToPattern()

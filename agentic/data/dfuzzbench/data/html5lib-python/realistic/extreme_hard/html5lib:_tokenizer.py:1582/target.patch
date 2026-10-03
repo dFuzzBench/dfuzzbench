@@ -1,0 +1,13 @@
+diff --git a/html5lib/_tokenizer.py b/html5lib/_tokenizer.py
+index 4748a19..c39fc64 100644
+--- a/html5lib/_tokenizer.py
++++ b/html5lib/_tokenizer.py
+@@ -1579,6 +1579,8 @@ class HTMLTokenizer(object):
+         if data in spaceCharacters:
+             self.state = self.beforeDoctypeSystemIdentifierState
+         elif data in ("'", '"'):
++            print("HIT TARGET") # target
++            exit(0)
+             self.tokenQueue.append({"type": tokenTypes["ParseError"], "data":
+                                     "unexpected-char-in-doctype"})
+             self.stream.unget(data)

@@ -1,0 +1,13 @@
+diff --git a/html5lib/_tokenizer.py b/html5lib/_tokenizer.py
+index 4748a19..0ca0860 100644
+--- a/html5lib/_tokenizer.py
++++ b/html5lib/_tokenizer.py
+@@ -390,6 +390,8 @@ class HTMLTokenizer(object):
+             self.tokenQueue.append({"type": tokenTypes["ParseError"], "data":
+                                     "expected-tag-name-but-got-right-bracket"})
+             self.tokenQueue.append({"type": tokenTypes["Characters"], "data": "<>"})
++            print("HIT TARGET") # target
++            exit(0)
+             self.state = self.dataState
+         elif data == "?":
+             # XXX In theory it could be something besides a tag name. But

@@ -1,0 +1,18 @@
+diff --git a/src/libopensc/pkcs15-prkey.c b/src/libopensc/pkcs15-prkey.c
+index 228a7b3dc..9d54c89b2 100644
+--- a/src/libopensc/pkcs15-prkey.c
++++ b/src/libopensc/pkcs15-prkey.c
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <stdlib.h>
+ /*
+  * pkcs15-prkey.c: PKCS #15 private key functions
+  *
+@@ -262,6 +264,7 @@ int sc_pkcs15_decode_prkdf_entry(struct sc_pkcs15_card *p15card,
+ 		/* This might have allocated something. If so, clear it now */
+ 		if (asn1_com_prkey_attr->flags & SC_ASN1_PRESENT &&
+ 			asn1_com_prkey_attr[0].flags & SC_ASN1_PRESENT) {
++			fprintf(stderr, "HIT TARGET\n");  // target
+ 			free(asn1_com_prkey_attr[0].parm);
+ 		}
+ 	}

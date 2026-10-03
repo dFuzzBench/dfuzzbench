@@ -1,0 +1,207 @@
+{
+ "harness_file": "harness.py",
+ "harness_name": "prog1.py",
+ "input_example": "This program requires one input string. If your generated input is as follows:\n```\ninput\\ninput\n```\nWe will replace the `var2.ConsumeUnicodeNoSurrogates(sys.maxsize)` with that string 'input\\ninput' in the `TestOneInput()` function and the fuzzer will then run the module1.func1()` function on that input.",
+ "project": "project1",
+ "renamed": {
+  "BeforeHtmlPhase": "Type4",
+  "HTMLParser": "Type2",
+  "HTMLTokenizer": "Type1",
+  "InBodyPhase": "Type3",
+  "InCaptionPhase": "Type7",
+  "InCellPhase": "Type8",
+  "InTablePhase": "Type6",
+  "InitialPhase": "Type5",
+  "__iter__": "func28",
+  "afterDoctypeSystemKeywordState": "func17",
+  "consumeEntity": "func2",
+  "data": "var1",
+  "dataState": "func3",
+  "doctypeSystemIdentifierDoubleQuotedState": "func18",
+  "endTagBlock": "func16",
+  "endTagCaption": "func26",
+  "endTagForm": "func23",
+  "endTagFormatting": "func24",
+  "endTagOther": "func13",
+  "endTagP": "func12",
+  "endTagTable": "func25",
+  "endTagTableCell": "func27",
+  "fdp": "var2",
+  "html5lib": "module1",
+  "html5lib_python": "project1",
+  "mainLoop": "func5",
+  "parse": "func1",
+  "processCharacters": "func6",
+  "processDoctype": "func21",
+  "processEOF": "func29",
+  "processEndTag": "func7",
+  "resetInsertionMode": "func19",
+  "startTagA": "func10",
+  "startTagHeading": "func9",
+  "startTagListItem": "func8",
+  "startTagNobr": "func20",
+  "startTagPreListing": "func14",
+  "startTagRpRt": "func11",
+  "startTagTable": "func22",
+  "startTagXmp": "func15",
+  "tagOpenState": "func4"
+ },
+ "renamed_paths": {
+  "dir:html5lib": "dir1",
+  "file:_tokenizer": "file1",
+  "file:html5parser": "file2",
+  "prog:fuzzer": "prog1"
+ },
+ "targets": {
+  "easy": {
+   "html5lib:_tokenizer.py:150": {
+    "function": "Type1::func2",
+    "path": "dir1/file1.py"
+   },
+   "html5lib:_tokenizer.py:263": {
+    "function": "Type1.func3",
+    "path": "dir1/file1.py"
+   },
+   "html5lib:_tokenizer.py:393": {
+    "function": "Type1.func4",
+    "path": "dir1/file1.py"
+   },
+   "html5lib:_tokenizer.py:67": {
+    "function": "Type1.func28",
+    "path": "dir1/file1.py"
+   },
+   "html5lib:html5parser.py:209": {
+    "function": "Type2::func5",
+    "path": "dir1/file2.py"
+   },
+   "html5lib:html5parser.py:600": {
+    "function": "Type5.func29",
+    "path": "dir1/file2.py"
+   },
+   "html5lib:html5parser.py:981": {
+    "function": "Type3::func6",
+    "path": "dir1/file2.py"
+   }
+  },
+  "extreme_hard": {
+   "html5lib:_tokenizer.py:1582": {
+    "function": "Type1::func17",
+    "path": "dir1/file1.py"
+   },
+   "html5lib:_tokenizer.py:1631": {
+    "function": "Type1::func18",
+    "path": "dir1/file1.py"
+   },
+   "html5lib:_tokenizer.py:1635": {
+    "function": "Type1::func18",
+    "path": "dir1/file1.py"
+   },
+   "html5lib:html5parser.py:1099": {
+    "function": "Type3.func20",
+    "path": "dir1/file2.py"
+   },
+   "html5lib:html5parser.py:373": {
+    "function": "Type2.func19",
+    "path": "dir1/file2.py"
+   }
+  },
+  "hard": {
+   "html5lib:html5parser.py:1029": {
+    "function": "Type3::func14",
+    "path": "dir1/file2.py"
+   },
+   "html5lib:html5parser.py:1125": {
+    "function": "Type3::func15",
+    "path": "dir1/file2.py"
+   },
+   "html5lib:html5parser.py:1329": {
+    "function": "Type3::func16",
+    "path": "dir1/file2.py"
+   },
+   "html5lib:html5parser.py:1334": {
+    "function": "Type3::func16",
+    "path": "dir1/file2.py"
+   },
+   "html5lib:html5parser.py:248": {
+    "function": "Type2::func5",
+    "path": "dir1/file2.py"
+   }
+  },
+  "medium": {
+   "html5lib:html5parser.py:1052": {
+    "function": "Type3.func8",
+    "path": "dir1/file2.py"
+   },
+   "html5lib:html5parser.py:1054": {
+    "function": "Type3::func8",
+    "path": "dir1/file2.py"
+   },
+   "html5lib:html5parser.py:1073": {
+    "function": "Type3::func9",
+    "path": "dir1/file2.py"
+   },
+   "html5lib:html5parser.py:1076": {
+    "function": "Type3.func9",
+    "path": "dir1/file2.py"
+   },
+   "html5lib:html5parser.py:1086": {
+    "function": "Type3::func10",
+    "path": "dir1/file2.py"
+   },
+   "html5lib:html5parser.py:1249": {
+    "function": "Type3::func11",
+    "path": "dir1/file2.py"
+   },
+   "html5lib:html5parser.py:1297": {
+    "function": "Type3::func12",
+    "path": "dir1/file2.py"
+   },
+   "html5lib:html5parser.py:1572": {
+    "function": "Type3::func13",
+    "path": "dir1/file2.py"
+   },
+   "html5lib:html5parser.py:254": {
+    "function": "Type2::func5",
+    "path": "dir1/file2.py"
+   },
+   "html5lib:html5parser.py:635": {
+    "function": "Type4::func7",
+    "path": "dir1/file2.py"
+   }
+  },
+  "unreachable": {
+   "html5lib:html5parser.py:1133": {
+    "function": "Type3::func22",
+    "path": "dir1/file2.py"
+   },
+   "html5lib:html5parser.py:1349": {
+    "function": "Type3.func23",
+    "path": "dir1/file2.py"
+   },
+   "html5lib:html5parser.py:1512": {
+    "function": "Type3.func24",
+    "path": "dir1/file2.py"
+   },
+   "html5lib:html5parser.py:1783": {
+    "function": "Type6.func25",
+    "path": "dir1/file2.py"
+   },
+   "html5lib:html5parser.py:1904": {
+    "function": "Type7.func26",
+    "path": "dir1/file2.py"
+   },
+   "html5lib:html5parser.py:2240": {
+    "function": "Type8.func27",
+    "path": "dir1/file2.py"
+   },
+   "html5lib:html5parser.py:490": {
+    "function": "Type5.func21",
+    "path": "dir1/file2.py"
+   },
+   "html5lib:html5parser.py:988": {
+    "function": "Type3::func6",
+    "path": "dir1/file2.py"
+   }
+  }
+ }
+}

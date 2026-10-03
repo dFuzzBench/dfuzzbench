@@ -1,0 +1,19 @@
+diff --git a/httplib.h b/httplib.h
+index 8411c8c..efe47a7 100644
+--- a/httplib.h
++++ b/httplib.h
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <stdlib.h>
+ //
+ //  httplib.h
+ //
+@@ -6621,6 +6623,8 @@ inline std::string decode_path_component(const std::string &component) {
+ 
+   for (size_t i = 0; i < component.size(); i++) {
+     if (component[i] == '%' && i + 1 < component.size()) {
++      fprintf(stderr, "HIT TARGET\n");  // target
++      exit(0);
+       if (component[i + 1] == 'u') {
+         // Unicode %uXXXX encoding
+         auto val = 0;

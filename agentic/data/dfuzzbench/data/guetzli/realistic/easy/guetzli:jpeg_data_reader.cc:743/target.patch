@@ -1,0 +1,19 @@
+diff --git a/guetzli/jpeg_data_reader.cc b/guetzli/jpeg_data_reader.cc
+index 513e1a2..184b51b 100644
+--- a/guetzli/jpeg_data_reader.cc
++++ b/guetzli/jpeg_data_reader.cc
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <cstdlib>
+ /*
+  * Copyright 2016 Google Inc.
+  *
+@@ -740,6 +742,8 @@ bool ProcessRestart(const uint8_t* data, const size_t len,
+   int expected_marker = 0xd0 + *next_restart_marker;
+   EXPECT_MARKER();
+   int marker = data[pos + 1];
++  fprintf(stderr, "HIT TARGET\n");  // target
++  exit(0);
+   if (marker != expected_marker) {
+     fprintf(stderr, "Did not find expected restart marker %d actual=%d\n",
+             expected_marker, marker);

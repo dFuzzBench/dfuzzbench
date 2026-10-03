@@ -1,0 +1,320 @@
+"""Light wrapper around the Win32 Console API - this module should only be imported on Windows
+
+The API that this module wraps is documented at https://docs.microsoft.com/en-us/windows/console/console-functions
+"""
+
+import ctypes
+import sys
+from typing import Any
+
+windll: Any = None
+if sys.platform == "win32":
+    windll = ctypes.LibraryLoader(ctypes.WinDLL)
+else:
+    raise ImportError(f"{__name__} can only be imported on Windows")
+
+import time
+from ctypes import Structure, byref, wintypes
+from typing import IO, NamedTuple, Type, cast
+
+from rich.color import ColorSystem
+from rich.style import Style
+
+STDOUT = -11
+ENABLE_VIRTUAL_TERMINAL_PROCESSING = 4
+
+COORD = wintypes._COORD
+
+
+class LegacyWindowsError(Exception):
+    pass
+
+
+class WindowsCoordinates(NamedTuple):
+    """Coordinates in the Windows Console API are (y, x), not (x, y).
+    This class is intended to prevent that confusion.
+    Rows and columns are indexed from 0.
+    This class can be used in place of wintypes._COORD in arguments and argtypes.
+    """
+
+    row: int
+    col: int
+
+    @classmethod
+    def from_param(cls, value: "WindowsCoordinates") -> COORD:
+        """Converts a WindowsCoordinates into a wintypes _COORD structure.
+        This classmethod is internally called by ctypes to perform the conversion.
+
+        Args:
+            value (WindowsCoordinates): The input coordinates to convert.
+
+        Returns:
+            wintypes._COORD: The converted coordinates struct.
+        """
+        return COORD(value.col, value.row)
+
+
+class CONSOLE_SCREEN_BUFFER_INFO(Structure):
+    _fields_ = [
+        ("dwSize", COORD),
+        ("dwCursorPosition", COORD),
+        ("wAttributes", wintypes.WORD),
+        ("srWindow", wintypes.SMALL_RECT),
+        ("dwMaximumWindowSize", COORD),
+    ]
+
+
+class CONSOLE_CURSOR_INFO(ctypes.Structure):
+    _fields_ = [("dwSize", wintypes.DWORD), ("bVisible", wintypes.BOOL)]
+
+
+_GetStdHandle = windll.kernel32.GetStdHandle
+_GetStdHandle.argtypes = [
+    wintypes.DWORD,
+]
+_GetStdHandle.restype = wintypes.HANDLE
+
+
+def GetStdHandle(handle: int = STDOUT) -> wintypes.HANDLE:
+    """Retrieves a handle to the specified standard device (standard input, standard output, or standard error).
+
+    Args:
+        handle (int): Integer identifier for the handle. Defaults to -11 (stdout).
+
+    Returns:
+        wintypes.HANDLE: The handle
+    """
+    return cast(wintypes.HANDLE, _GetStdHandle(handle))
+
+
+_GetConsoleMode = windll.kernel32.GetConsoleMode
+_GetConsoleMode.argtypes = [wintypes.HANDLE, wintypes.LPDWORD]
+_GetConsoleMode.restype = wintypes.BOOL
+
+
+def GetConsoleMode(std_handle: wintypes.HANDLE) -> int:
+    """Retrieves the current input mode of a console's input buffer
+    or the current output mode of a console screen buffer.
+
+    Args:
+        std_handle (wintypes.HANDLE): A handle to the console input buffer or the console screen buffer.
+
+    Raises:
+        LegacyWindowsError: If any error occurs while calling the Windows console API.
+
+    Returns:
+        int: Value representing the current console mode as documented at
+            https://docs.microsoft.com/en-us/windows/console/getconsolemode#parameters
+    """
+
+    console_mode = wintypes.DWORD()
+    success = bool(_GetConsoleMode(std_handle, console_mode))
+    if not success:
+        raise LegacyWindowsError("Unable to get legacy Windows Console Mode")
+    return console_mode.value
+
+
+_FillConsoleOutputCharacterW = windll.kernel32.FillConsoleOutputCharacterW
+_FillConsoleOutputCharacterW.argtypes = [
+    wintypes.HANDLE,
+    ctypes.c_char,
+    wintypes.DWORD,
+    cast(Type[COORD], WindowsCoordinates),
+    ctypes.POINTER(wintypes.DWORD),
+]
+_FillConsoleOutputCharacterW.restype = wintypes.BOOL
+
+
+def FillConsoleOutputCharacter(
+    std_handle: wintypes.HANDLE,
+    char: str,
+    length: int,
+    start: WindowsCoordinates,
+) -> int:
+    """Writes a character to the console screen buffer a specified number of times, beginning at the specified coordinates.
+
+    Args:
+        std_handle (wintypes.HANDLE): A handle to the console input buffer or the console screen buffer.
+        char (str): The character to write. Must be a string of length 1.
+        length (int): The number of times to write the character.
+        start (WindowsCoordinates): The coordinates to start writing at.
+
+    Returns:
+        int: The number of characters written.
+    """
+    character = ctypes.c_char(char.encode())
+    num_characters = wintypes.DWORD(length)
+    num_written = wintypes.DWORD(0)
+    _FillConsoleOutputCharacterW(
+        std_handle,
+        character,
+        num_characters,
+        start,
+        byref(num_written),
+    )
+    return num_written.value
+
+
+_FillConsoleOutputAttribute = windll.kernel32.FillConsoleOutputAttribute
+_FillConsoleOutputAttribute.argtypes = [
+    wintypes.HANDLE,
+    wintypes.WORD,
+    wintypes.DWORD,
+    cast(Type[COORD], WindowsCoordinates),
+    ctypes.POINTER(wintypes.DWORD),
+]
+_FillConsoleOutputAttribute.restype = wintypes.BOOL
+
+
+def FillConsoleOutputAttribute(
+    std_handle: wintypes.HANDLE,
+    attributes: int,
+    length: int,
+    start: WindowsCoordinates,
+) -> int:
+    """Sets the character attributes for a specified number of character cells,
+    beginning at the specified coordinates in a screen buffer.
+
+    Args:
+        std_handle (wintypes.HANDLE): A handle to the console input buffer or the console screen buffer.
+        attributes (int): Integer value representing the foreground and background colours of the cells.
+        length (int): The number of cells to set the output attribute of.
+        start (WindowsCoordinates): The coordinates of the first cell whose attributes are to be set.
+
+    Returns:
+        int: The number of cells whose attributes were actually set.
+    """
+    num_cells = wintypes.DWORD(length)
+    style_attrs = wintypes.WORD(attributes)
+    num_written = wintypes.DWORD(0)
+    _FillConsoleOutputAttribute(
+        std_handle, style_attrs, num_cells, start, byref(num_written)
+    )
+    return num_written.value
+
+
+_SetConsoleTextAttribute = windll.kernel32.SetConsoleTextAttribute
+_SetConsoleTextAttribute.argtypes = [
+    wintypes.HANDLE,
+    wintypes.WORD,
+]
+_SetConsoleTextAttribute.restype = wintypes.BOOL
+
+
+def SetConsoleTextAttribute(
+    std_handle: wintypes.HANDLE, attributes: wintypes.WORD
+) -> bool:
+    """Set the colour attributes for all text written after this function is called.
+
+    Args:
+        std_handle (wintypes.HANDLE): A handle to the console input buffer or the console screen buffer.
+        attributes (int): Integer value representing the foreground and background colours.
+
+
+    Returns:
+        bool: True if the attribute was set successfully, otherwise False.
+    """
+    return bool(_SetConsoleTextAttribute(std_handle, attributes))
+
+
+_GetConsoleScreenBufferInfo = windll.kernel32.GetConsoleScreenBufferInfo
+_GetConsoleScreenBufferInfo.argtypes = [
+    wintypes.HANDLE,
+    ctypes.POINTER(CONSOLE_SCREEN_BUFFER_INFO),
+]
+_GetConsoleScreenBufferInfo.restype = wintypes.BOOL
+
+
+def GetConsoleScreenBufferInfo(
+    std_handle: wintypes.HANDLE,
+) -> CONSOLE_SCREEN_BUFFER_INFO:
+    """Retrieves information about the specified console screen buffer.
+
+    Args:
+        std_handle (wintypes.HANDLE): A handle to the console input buffer or the console screen buffer.
+
+    Returns:
+        CONSOLE_SCREEN_BUFFER_INFO: A CONSOLE_SCREEN_BUFFER_INFO ctype struct contain information about
+            screen size, cursor position, colour attributes, and more."""
+    console_screen_buffer_info = CONSOLE_SCREEN_BUFFER_INFO()
+    _GetConsoleScreenBufferInfo(std_handle, byref(console_screen_buffer_info))
+    return console_screen_buffer_info
+
+
+_SetConsoleCursorPosition = windll.kernel32.SetConsoleCursorPosition
+_SetConsoleCursorPosition.argtypes = [
+    wintypes.HANDLE,
+    cast(Type[COORD], WindowsCoordinates),
+]
+_SetConsoleCursorPosition.restype = wintypes.BOOL
+
+
+def SetConsoleCursorPosition(
+    std_handle: wintypes.HANDLE, coords: WindowsCoordinates
+) -> bool:
+    """Set the position of the cursor in the console screen
+
+    Args:
+        std_handle (wintypes.HANDLE): A handle to the console input buffer or the console screen buffer.
+        coords (WindowsCoordinates): The coordinates to move the cursor to.
+
+    Returns:
+        bool: True if the function succeeds, otherwise False.
+    """
+    return bool(_SetConsoleCursorPosition(std_handle, coords))
+
+
+_GetConsoleCursorInfo = windll.kernel32.GetConsoleCursorInfo
+_GetConsoleCursorInfo.argtypes = [
+    wintypes.HANDLE,
+    ctypes.POINTER(CONSOLE_CURSOR_INFO),
+]
+_GetConsoleCursorInfo.restype = wintypes.BOOL
+
+
+def GetConsoleCursorInfo(
+    std_handle: wintypes.HANDLE, cursor_info: CONSOLE_CURSOR_INFO
+) -> bool:
+    """Get the cursor info - used to get cursor visibility and width
+
+    Args:
+        std_handle (wintypes.HANDLE): A handle to the console input buffer or the console screen buffer.
+        cursor_info (CONSOLE_CURSOR_INFO): CONSOLE_CURSOR_INFO ctype struct that receives information
+            about the console's cursor.
+
+    Returns:
+          bool: True if the function succeeds, otherwise False.
+    """
+    return bool(_GetConsoleCursorInfo(std_handle, byref(cursor_info)))
+
+
+_SetConsoleCursorInfo = windll.kernel32.SetConsoleCursorInfo
+_SetConsoleCursorInfo.argtypes = [
+    wintypes.HANDLE,
+    ctypes.POINTER(CONSOLE_CURSOR_INFO),
+]
+_SetConsoleCursorInfo.restype = wintypes.BOOL
+
+
+def SetConsoleCursorInfo(
+    std_handle: wintypes.HANDLE, cursor_info: CONSOLE_CURSOR_INFO
+) -> bool:
+    """Set the cursor info - used for adjusting cursor visibility and width
+
+    Args:
+        std_handle (wintypes.HANDLE): A handle to the console input buffer or the console screen buffer.
+        cursor_info (CONSOLE_CURSOR_INFO): CONSOLE_CURSOR_INFO ctype struct containing the new cursor info.
+
+    Returns:
+          bool: True if the function succeeds, otherwise False.
+    """
+    return bool(_SetConsoleCursorInfo(std_handle, byref(cursor_info)))
+
+
+_SetConsoleTitle = windll.kernel32.SetConsoleTitleW
+_SetConsoleTitle.argtypes = [wintypes.LPCWSTR]
+_SetConsoleTitle.restype = wintypes.BOOL
+
+
+def SetConsoleTitle(title: str) -> bool:
+    """Sets the title

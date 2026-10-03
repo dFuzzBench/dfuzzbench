@@ -1,0 +1,13 @@
+diff --git a/bleach/html5lib_shim.py b/bleach/html5lib_shim.py
+index ca1cc8c..e999035 100644
+--- a/bleach/html5lib_shim.py
++++ b/bleach/html5lib_shim.py
+@@ -585,6 +585,8 @@ def convert_entities(text):
+                     new_text.append(converted)
+                     remainder = part[len(entity) + 2 :]
+                     if part:
++                        print("HIT TARGET") # target
++                        exit(0)
+                         new_text.append(remainder)
+                     continue
+ 

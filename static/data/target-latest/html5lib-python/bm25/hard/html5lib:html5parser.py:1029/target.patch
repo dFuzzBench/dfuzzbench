@@ -1,0 +1,13 @@
+diff --git a/html5lib/html5parser.py b/html5lib/html5parser.py
+index b3c206d..46aacb4 100644
+--- a/html5lib/html5parser.py
++++ b/html5lib/html5parser.py
+@@ -1026,6 +1026,8 @@ class InBodyPhase(Phase):
+ 
+     def startTagPreListing(self, token):
+         if self.tree.elementInScope("p", variant="button"):
++            print("HIT TARGET") # target
++            exit(0)
+             self.endTagP(impliedTagToken("p"))
+         self.tree.insertElement(token)
+         self.parser.framesetOK = False

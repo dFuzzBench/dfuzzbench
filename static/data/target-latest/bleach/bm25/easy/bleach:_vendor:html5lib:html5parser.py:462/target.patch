@@ -1,0 +1,13 @@
+diff --git a/bleach/_vendor/html5lib/html5parser.py b/bleach/_vendor/html5lib/html5parser.py
+index 74d829d..6998eb3 100644
+--- a/bleach/_vendor/html5lib/html5parser.py
++++ b/bleach/_vendor/html5lib/html5parser.py
+@@ -459,6 +459,8 @@ def getPhases(debug):
+             # In Py2, using `in` is quicker in general than try/except KeyError
+             # In Py3, `in` is quicker when there are few cache hits (typically short inputs)
+             if name in self.__startTagCache:
++                print("HIT TARGET") # target
++                exit(0)
+                 func = self.__startTagCache[name]
+             else:
+                 func = self.__startTagCache[name] = self.startTagHandler[name]

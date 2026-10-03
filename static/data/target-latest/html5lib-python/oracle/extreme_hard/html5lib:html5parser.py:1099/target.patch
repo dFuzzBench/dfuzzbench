@@ -1,0 +1,13 @@
+diff --git a/html5lib/html5parser.py b/html5lib/html5parser.py
+index b3c206d..4bc0e04 100644
+--- a/html5lib/html5parser.py
++++ b/html5lib/html5parser.py
+@@ -1096,6 +1096,8 @@ class InBodyPhase(Phase):
+     def startTagNobr(self, token):
+         self.tree.reconstructActiveFormattingElements()
+         if self.tree.elementInScope("nobr"):
++            print("HIT TARGET") # target
++            exit(0)
+             self.parser.parseError("unexpected-start-tag-implies-end-tag",
+                                    {"startName": "nobr", "endName": "nobr"})
+             self.processEndTag(impliedTagToken("nobr"))

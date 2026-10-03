@@ -1,0 +1,13 @@
+diff --git a/rich/syntax.py b/rich/syntax.py
+index cff8fd23..ca4cfdf7 100644
+--- a/rich/syntax.py
++++ b/rich/syntax.py
+@@ -480,6 +480,8 @@ class Syntax(JupyterMixin):
+         lexer = self.lexer or self.default_lexer
+ 
+         if lexer is None:
++            print("HIT TARGET") # target
++            exit(0)
+             text.append(code)
+         else:
+             if line_range:

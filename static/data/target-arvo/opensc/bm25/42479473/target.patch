@@ -1,0 +1,18 @@
+diff --git a/src/libopensc/pkcs15-pin.c b/src/libopensc/pkcs15-pin.c
+index 07387c5a0..2b61cfc8b 100644
+--- a/src/libopensc/pkcs15-pin.c
++++ b/src/libopensc/pkcs15-pin.c
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <stdlib.h>
+ /*
+  * pkcs15-pin.c: PKCS #15 PIN functions
+  *
+@@ -267,6 +269,7 @@ _validate_pin(struct sc_pkcs15_card *p15card, struct sc_pkcs15_auth_info *auth_i
+ 		return SC_SUCCESS;
+ 
+ 	/* prevent buffer overflow from hostile card */
++	fprintf(stderr, "HIT TARGET\n");  // target
+ 	if (auth_info->attrs.pin.stored_length > SC_MAX_PIN_SIZE)
+ 		return SC_ERROR_BUFFER_TOO_SMALL;
+ 

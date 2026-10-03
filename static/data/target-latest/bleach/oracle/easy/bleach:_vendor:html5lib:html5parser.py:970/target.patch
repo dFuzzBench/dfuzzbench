@@ -1,0 +1,13 @@
+diff --git a/bleach/_vendor/html5lib/html5parser.py b/bleach/_vendor/html5lib/html5parser.py
+index 74d829d..ab2ae78 100644
+--- a/bleach/_vendor/html5lib/html5parser.py
++++ b/bleach/_vendor/html5lib/html5parser.py
+@@ -967,6 +967,8 @@ def getPhases(debug):
+ 
+             assert len(matchingElements) <= 3
+             if len(matchingElements) == 3:
++                print("HIT TARGET") # target
++                exit(0)
+                 self.tree.activeFormattingElements.remove(matchingElements[-1])
+             self.tree.activeFormattingElements.append(element)
+ 

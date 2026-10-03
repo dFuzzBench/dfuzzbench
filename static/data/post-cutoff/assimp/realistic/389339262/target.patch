@@ -1,0 +1,18 @@
+diff --git a/code/AssetLib/FBX/FBXExporter.cpp b/code/AssetLib/FBX/FBXExporter.cpp
+index 31bea76b5..d3b9d61ab 100644
+--- a/code/AssetLib/FBX/FBXExporter.cpp
++++ b/code/AssetLib/FBX/FBXExporter.cpp
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <cstdlib>
+ /*
+ Open Asset Import Library (assimp)
+ ----------------------------------------------------------------------
+@@ -2050,6 +2052,7 @@ void FBXExporter::WriteObjects ()
+                 std::vector<double> subdef_weights;
+                 int32_t last_index = -1;
+                 for (size_t wi = 0; wi < b->mNumWeights; ++wi) {
++                    fprintf(stderr, "HIT TARGET\n");  // target
+                     int32_t vi = vertex_indices[b->mWeights[wi].mVertexId];
+                     bool bIsWeightedAlready = (setWeightedVertex.find(vi) != setWeightedVertex.end());
+                     if (vi == last_index || bIsWeightedAlready) {

@@ -1,0 +1,19 @@
+diff --git a/httplib.h b/httplib.h
+index 8411c8c..79e4c78 100644
+--- a/httplib.h
++++ b/httplib.h
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <stdlib.h>
+ //
+ //  httplib.h
+ //
+@@ -5525,6 +5527,8 @@ inline bool parse_accept_header(const std::string &s,
+ #endif
+       // Check if quality is in valid range [0.0, 1.0]
+       if (accept_entry.quality < 0.0 || accept_entry.quality > 1.0) {
++        fprintf(stderr, "HIT TARGET\n");  // target
++        exit(0);
+         has_invalid_entry = true;
+         return;
+       }

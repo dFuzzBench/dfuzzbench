@@ -1,0 +1,31 @@
+{
+ "harness_file": "harness.cc",
+ "harness_name": "prog4",
+ "renamed": {
+  "Data": "Type1",
+  "Size": "Type2",
+  "asn1_decode_entry": "func33",
+  "ctx": "var2",
+  "in": "var11",
+  "inlen": "var53",
+  "out": "var52",
+  "outlen": "var54",
+  "p": "var47",
+  "plen": "var55",
+  "sc_asn1_sig_value_rs_to_sequence": "func32",
+  "sc_asn1_sig_value_sequence_to_rs": "func31",
+  "sc_context": "var1",
+  "sc_establish_context": "func2"
+ },
+ "renamed_paths": {
+  "dir:libopensc": "dir1",
+  "dir:src": "dir2",
+  "file:asn1": "file5",
+  "file:config": "file1",
+  "prog:fuzz_asn1_sig_value": "prog4"
+ },
+ "target": {
+  "function": "func33",
+  "path": "dir2/dir1/file5.c"
+ }
+}

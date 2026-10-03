@@ -1,0 +1,19 @@
+diff --git a/httplib.h b/httplib.h
+index 8411c8c..93cadfa 100644
+--- a/httplib.h
++++ b/httplib.h
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <stdlib.h>
+ //
+ //  httplib.h
+ //
+@@ -5686,6 +5688,8 @@ public:
+           buf_erase(pos + crlf_.size());
+           pos = buf_find(crlf_);
+         }
++        fprintf(stderr, "HIT TARGET\n");  // target
++        exit(0);
+         if (state_ != 3) { return true; }
+         break;
+       }

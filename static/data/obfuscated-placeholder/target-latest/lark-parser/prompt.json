@@ -1,0 +1,209 @@
+{
+ "harness_file": "harness.py",
+ "harness_name": "prog1.py",
+ "input_example": "This program requires two distinct input strings. Please provide these inputs, separated by a single blank line. If your generated input is as follows:\n```\ninput1\n\ninput2\\ninput3\n```\nWe will replace the `var3` variable with 'input1' and replace `var4` with 'input2\\ninput3' in the `TestOneInput()` function and the fuzzer will then run the `func1()` and `func2()` function on that input.",
+ "project": "project1",
+ "renamed": {
+  "ApplyTemplates": "Type3",
+  "EBNF_to_BNF": "Type7",
+  "ForestToParseTree": "Type10",
+  "ForestVisitor": "Type9",
+  "Grammar": "Type4",
+  "GrammarBuilder": "Type6",
+  "Lark": "func1",
+  "LarkError": "Type1",
+  "Scanner": "Type2",
+  "TerminalTreeToPattern": "Type5",
+  "TokenNode": "Type8",
+  "__eq__": "func14",
+  "__init__": "func3",
+  "_add_repeat_opt_rule": "func11",
+  "_build_mres": "func5",
+  "_create_unless": "func4",
+  "_generate_repeats": "func12",
+  "_ignore": "func10",
+  "_test_unicode_category": "func21",
+  "alias": "func9",
+  "c1": "var5",
+  "compile": "func6",
+  "data": "var1",
+  "do_import": "func19",
+  "exceptions": "var6",
+  "exp": "func13",
+  "fdp": "var2",
+  "grammar": "var3",
+  "lark": "module1",
+  "lark_parser": "project1",
+  "load_grammar": "func18",
+  "maybe": "func8",
+  "parse": "func2",
+  "resolve_term_references": "func7",
+  "text": "var4",
+  "transform_intermediate_node": "func17",
+  "transform_symbol_node": "func16",
+  "validate": "func20",
+  "visit": "func15"
+ },
+ "renamed_paths": {
+  "dir:lark": "dir1",
+  "dir:parsers": "dir2",
+  "file:earley_forest": "file4",
+  "file:lark": "file1",
+  "file:lexer": "file2",
+  "file:load_grammar": "file3",
+  "file:utils": "file5",
+  "prog:fuzzer": "prog1"
+ },
+ "targets": {
+  "easy": {
+   "lark:lark.py:365": {
+    "function": "func1::func3",
+    "path": "dir1/file1.py"
+   },
+   "lark:lark.py:376": {
+    "function": "func1::func3",
+    "path": "dir1/file1.py"
+   },
+   "lark:lark.py:395": {
+    "function": "func1::func3",
+    "path": "dir1/file1.py"
+   },
+   "lark:lexer.py:348": {
+    "function": "func4",
+    "path": "dir1/file2.py"
+   },
+   "lark:lexer.py:381": {
+    "function": "Type2::func5",
+    "path": "dir1/file2.py"
+   },
+   "lark:load_grammar.py:518": {
+    "function": "Type3::func3",
+    "path": "dir1/file3.py"
+   },
+   "lark:load_grammar.py:707": {
+    "function": "Type4::func6",
+    "path": "dir1/file3.py"
+   },
+   "lark:load_grammar.py:788": {
+    "function": "Type4::func6",
+    "path": "dir1/file3.py"
+   },
+   "lark:load_grammar.py:806": {
+    "function": "Type4::func6",
+    "path": "dir1/file3.py"
+   },
+   "lark:load_grammar.py:887": {
+    "function": "func7",
+    "path": "dir1/file3.py"
+   }
+  },
+  "extreme_hard": {
+   "lark:parsers:earley_forest.py:196": {
+    "function": "Type8::func14",
+    "path": "dir1/dir2/file4.py"
+   },
+   "lark:parsers:earley_forest.py:337": {
+    "function": "Type9::func15",
+    "path": "dir1/dir2/file4.py"
+   },
+   "lark:parsers:earley_forest.py:343": {
+    "function": "Type9::func15",
+    "path": "dir1/dir2/file4.py"
+   },
+   "lark:parsers:earley_forest.py:573": {
+    "function": "Type10::func16",
+    "path": "dir1/dir2/file4.py"
+   },
+   "lark:parsers:earley_forest.py:583": {
+    "function": "Type10::func17",
+    "path": "dir1/dir2/file4.py"
+   }
+  },
+  "hard": {
+   "lark:load_grammar.py:305": {
+    "function": "Type7::func11",
+    "path": "dir1/file3.py"
+   },
+   "lark:load_grammar.py:308": {
+    "function": "Type7::func11",
+    "path": "dir1/file3.py"
+   },
+   "lark:load_grammar.py:338": {
+    "function": "Type7::func12",
+    "path": "dir1/file3.py"
+   },
+   "lark:load_grammar.py:344": {
+    "function": "Type7::func12",
+    "path": "dir1/file3.py"
+   },
+   "lark:load_grammar.py:368": {
+    "function": "Type7::func13",
+    "path": "dir1/file3.py"
+   }
+  },
+  "medium": {
+   "lark:load_grammar.py:1167": {
+    "function": "Type6::func10",
+    "path": "dir1/file3.py"
+   },
+   "lark:load_grammar.py:1169": {
+    "function": "Type6::func10",
+    "path": "dir1/file3.py"
+   },
+   "lark:load_grammar.py:1170": {
+    "function": "Type6::func10",
+    "path": "dir1/file3.py"
+   },
+   "lark:load_grammar.py:658": {
+    "function": "Type5::func8",
+    "path": "dir1/file3.py"
+   },
+   "lark:load_grammar.py:661": {
+    "function": "Type5::func9",
+    "path": "dir1/file3.py"
+   },
+   "lark:load_grammar.py:777": {
+    "function": "Type4::func6",
+    "path": "dir1/file3.py"
+   },
+   "lark:load_grammar.py:778": {
+    "function": "Type4::func6",
+    "path": "dir1/file3.py"
+   },
+   "lark:load_grammar.py:780": {
+    "function": "Type4::func6",
+    "path": "dir1/file3.py"
+   },
+   "lark:load_grammar.py:785": {
+    "function": "Type4::func6",
+    "path": "dir1/file3.py"
+   },
+   "lark:utils.py:169": {
+    "function": "func21",
+    "path": "dir1/file5.py"
+   }
+  },
+  "unreachable": {
+   "lark:load_grammar.py:1269": {
+    "function": "Type6::func18",
+    "path": "dir1/file3.py"
+   },
+   "lark:load_grammar.py:1280": {
+    "function": "Type6::func18",
+    "path": "dir1/file3.py"
+   },
+   "lark:load_grammar.py:1314": {
+    "function": "Type6::func19",
+    "path": "dir1/file3.py"
+   },
+   "lark:load_grammar.py:1351": {
+    "function": "Type6::func20",
+    "path": "dir1/file3.py"
+   },
+   "lark:load_grammar.py:1369": {
+    "function": "Type6::func20",
+    "path": "dir1/file3.py"
+   }
+  }
+ }
+}

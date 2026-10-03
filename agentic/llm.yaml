@@ -1,0 +1,37 @@
+# LLM entries used by the reach agent (debug-gym reads the file named by $LLM_CONFIG_FILE_PATH,
+# else ~/.config/debug_gym/llm.yaml). Keys are never stored here: "${VAR}" values are read from
+# the environment, so only `export GEMINI_API_KEY=...` is needed.
+# gemini-3.1-pro is the model of the experiment configs; gemini-3.5-flash is a cheaper model for smoke tests.
+# Gemini is reached through its OpenAI-compatible endpoint; include_thoughts returns thought summaries.
+
+gemini-3.1-pro:
+  model: gemini-3.1-pro-preview
+  tokenizer: gpt-4o
+  endpoint: https://generativelanguage.googleapis.com/v1beta/openai/
+  api_key: "${GEMINI_API_KEY}"
+  tags: [gemini, openai, google]
+  context_limit: 500
+  system_prompt_support: true
+  generate_kwargs:
+    temperature: 0.5
+    max_tokens: 65536
+    extra_body:
+      extra_body:
+        google:
+          thinking_config: {include_thoughts: true}
+
+gemini-3.5-flash:
+  model: gemini-3.5-flash
+  tokenizer: gpt-4o
+  endpoint: https://generativelanguage.googleapis.com/v1beta/openai/
+  api_key: "${GEMINI_API_KEY}"
+  tags: [gemini, openai, google]
+  context_limit: 500
+  system_prompt_support: true
+  generate_kwargs:
+    temperature: 0.5
+    max_tokens: 65536
+    extra_body:
+      extra_body:
+        google:
+          thinking_config: {include_thoughts: false}

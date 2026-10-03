@@ -1,0 +1,23 @@
+diff --git a/bin/varnishd/cache/cache_esi_parse.c b/bin/varnishd/cache/cache_esi_parse.c
+index 5145b016c..1a31e535a 100644
+--- a/bin/varnishd/cache/cache_esi_parse.c
++++ b/bin/varnishd/cache/cache_esi_parse.c
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <stdlib.h>
+ /*-
+  * Copyright (c) 2011 Varnish Software AS
+  * All rights reserved.
+@@ -658,8 +660,11 @@ VEP_Parse(struct vep_state *vep, const char *p, size_t l)
+ 			vep_mark_skip(vep, p);
+ 			if (FEATURE(FEATURE_ESI_DISABLE_XML_CHECK))
+ 				vep->state = VEP_NEXTTAG;
+-			else
++			else {
++				fprintf(stderr, "HIT TARGET\n");  // target
++				exit(0);
+ 				vep->state = VEP_TESTXML;
++			}
+ 		} else if (vep->state == VEP_TESTXML) {
+ 			/*
+ 			 * If the first non-whitespace char is different

@@ -1,0 +1,13 @@
+diff --git a/bleach/html5lib_shim.py b/bleach/html5lib_shim.py
+index ca1cc8c..d5d3715 100644
+--- a/bleach/html5lib_shim.py
++++ b/bleach/html5lib_shim.py
+@@ -371,6 +371,8 @@ class BleachHTMLTokenizer(HTMLTokenizer):
+                 elif token["type"] == TAG_TOKEN_TYPE_PARSEERROR:
+                     # If the token is a parse error, then let the last_error_token
+                     # go, and make token the new last_error_token
++                    print("HIT TARGET") # target
++                    exit(0)
+                     yield last_error_token
+                     last_error_token = token
+ 

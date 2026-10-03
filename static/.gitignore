@@ -1,0 +1,28 @@
+**/__pycache__/
+**/crash-*
+**/*.egg-info/
+**/*.png
+out/**
+*_instrumented*
+**/exec-env*
+**/src_projects
+data/test
+**/*[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]_[0-9][0-9]-[0-9][0-9]-[0-9][0-9].txt
+**/*[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]_[0-9][0-9]-[0-9][0-9]-[0-9][0-9]-feedback.txt
+**/*.log
+**/*.log.*
+**/*.csv
+temp/
+**/prompt_*
+**/*.pdf
+.claude/
+CLAUDE.md
+**/.ipynb_checkpoints/
+* copy.*
+**/temp.tex
+
+
+# run outputs: the evaluation scripts, AFLGo, fuzzing_coverage/ (results/fht/) and retrieve_context/
+# write to results/; exp_gemini/, exp_claude/, exp_reach/ write to exp_results/
+/results/
+/exp_results/

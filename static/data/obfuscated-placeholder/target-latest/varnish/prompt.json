@@ -1,0 +1,212 @@
+{
+ "harness_file": "harness.c",
+ "harness_name": "prog1.c",
+ "input_example": "This program requires one input string. If your generated input is as follows:\n```\ninput\\ninput\n```\nWe will assign the value of `var21` to that input string 'input\\ninput' and assgin the value of `var22` to the length of that input string at the beginning of the `LLVMFuzzerTestOneInput()` function and the fuzzer will then run the function on that input.",
+ "project": "project1",
+ "renamed": {
+  "AN": "func6",
+  "BSET": "func7",
+  "FEATURE_ESI_DISABLE_XML_CHECK": "CONST3",
+  "FEATURE_ESI_IGNORE_HTTPS": "CONST2",
+  "FEATURE_ESI_IGNORE_OTHER_ELEMENTS": "CONST4",
+  "FEATURE_ESI_REMOVE_BOM": "CONST5",
+  "HTTP_HDR_URL": "CONST1",
+  "HTTP_MAGIC": "CONST6",
+  "INIT_OBJ": "func9",
+  "PAN__DumpStruct": "func1",
+  "TEST_DRIVER": "CONST9",
+  "VEP_Finish": "func12",
+  "VEP_Init": "func10",
+  "VEP_Parse": "func11",
+  "VFIL_readfile": "func15",
+  "VFP_CTX_MAGIC": "CONST8",
+  "VSB_destroy": "func13",
+  "VSC_C_main": "Type2",
+  "VSC_main": "Type1",
+  "VSL": "func2",
+  "VSL_tag_e": "Type3",
+  "VSLb": "func3",
+  "VSLb_ts": "func4",
+  "WORKER_MAGIC": "CONST7",
+  "WRK_Log": "func5",
+  "WS_Init": "func8",
+  "WS_Rollback": "func14",
+  "__VSC_C_main": "var23",
+  "__cache_param": "var24",
+  "argc": "var41",
+  "argv": "var42",
+  "b": "var38",
+  "block": "var4",
+  "buf": "var44",
+  "cache_param": "var2",
+  "data": "var21",
+  "event": "var16",
+  "feature_bits": "var40",
+  "first": "var18",
+  "fmt": "var9",
+  "hd": "var36",
+  "http": "var25",
+  "i": "var45",
+  "include_attr_src": "func19",
+  "l": "var15",
+  "len": "var43",
+  "magic": "var8",
+  "no": "var39",
+  "now": "var20",
+  "params": "var1",
+  "pprev": "var19",
+  "ptr": "var6",
+  "req": "var26",
+  "resp": "var27",
+  "size": "var22",
+  "smagic": "var7",
+  "tag": "var10",
+  "track": "var5",
+  "txt": "var35",
+  "varnish": "project1",
+  "vc": "var29",
+  "vep": "var34",
+  "vep_do_comment": "func18",
+  "vep_do_include": "func20",
+  "vep_emit_verbatim": "func16",
+  "vep_mark_common": "func17",
+  "vep_match": "func21",
+  "vep_state": "var33",
+  "vfp_ctx": "var28",
+  "vsb": "var3",
+  "vsl": "var14",
+  "vsl_log": "var13",
+  "vtim_real": "var17",
+  "vxid": "var12",
+  "vxid_t": "var11",
+  "worker": "var30",
+  "wrk": "var31",
+  "ws": "var32",
+  "ws_buf": "var37"
+ },
+ "renamed_paths": {
+  "dir:bin": "dir2",
+  "dir:cache": "dir1",
+  "dir:varnishd": "dir3",
+  "file:cache_esi": "file4",
+  "file:cache_esi_parse": "file7",
+  "file:cache_filter": "file5",
+  "file:cache_varnishd": "file2",
+  "file:cache_vgz": "file3",
+  "file:config": "file1",
+  "file:vfil": "file6",
+  "prog:fuzzer": "prog1"
+ },
+ "targets": {
+  "easy": {
+   "bin:varnishd:cache:cache_esi_parse.c:1008": {
+    "function": "func11",
+    "path": "dir2/dir3/dir1/file7.c"
+   },
+   "bin:varnishd:cache:cache_esi_parse.c:287": {
+    "function": "func16",
+    "path": "dir2/dir3/dir1/file7.c"
+   },
+   "bin:varnishd:cache:cache_esi_parse.c:347": {
+    "function": "func17",
+    "path": "dir2/dir3/dir1/file7.c"
+   },
+   "bin:varnishd:cache:cache_esi_parse.c:409": {
+    "function": "func18",
+    "path": "dir2/dir3/dir1/file7.c"
+   },
+   "bin:varnishd:cache:cache_esi_parse.c:450": {
+    "function": "func19",
+    "path": "dir2/dir3/dir1/file7.c"
+   },
+   "bin:varnishd:cache:cache_esi_parse.c:583": {
+    "function": "func20",
+    "path": "dir2/dir3/dir1/file7.c"
+   },
+   "bin:varnishd:cache:cache_esi_parse.c:774": {
+    "function": "func11",
+    "path": "dir2/dir3/dir1/file7.c"
+   },
+   "bin:varnishd:cache:cache_esi_parse.c:876": {
+    "function": "func11",
+    "path": "dir2/dir3/dir1/file7.c"
+   }
+  },
+  "extreme_hard": {
+   "bin:varnishd:cache:cache_esi_parse.c:695": {
+    "function": "func11",
+    "path": "dir2/dir3/dir1/file7.c"
+   }
+  },
+  "hard": {
+   "bin:varnishd:cache:cache_esi_parse.c:344": {
+    "function": "func17",
+    "path": "dir2/dir3/dir1/file7.c"
+   },
+   "bin:varnishd:cache:cache_esi_parse.c:557": {
+    "function": "func20",
+    "path": "dir2/dir3/dir1/file7.c"
+   },
+   "bin:varnishd:cache:cache_esi_parse.c:568": {
+    "function": "func20",
+    "path": "dir2/dir3/dir1/file7.c"
+   },
+   "bin:varnishd:cache:cache_esi_parse.c:662": {
+    "function": "func11",
+    "path": "dir2/dir3/dir1/file7.c"
+   },
+   "bin:varnishd:cache:cache_esi_parse.c:682": {
+    "function": "func11",
+    "path": "dir2/dir3/dir1/file7.c"
+   },
+   "bin:varnishd:cache:cache_esi_parse.c:709": {
+    "function": "func11",
+    "path": "dir2/dir3/dir1/file7.c"
+   },
+   "bin:varnishd:cache:cache_esi_parse.c:900": {
+    "function": "func11",
+    "path": "dir2/dir3/dir1/file7.c"
+   }
+  },
+  "medium": {
+   "bin:varnishd:cache:cache_esi_parse.c:1117": {
+    "function": "func12",
+    "path": "dir2/dir3/dir1/file7.c"
+   },
+   "bin:varnishd:cache:cache_esi_parse.c:240": {
+    "function": "func21",
+    "path": "dir2/dir3/dir1/file7.c"
+   },
+   "bin:varnishd:cache:cache_esi_parse.c:458": {
+    "function": "func19",
+    "path": "dir2/dir3/dir1/file7.c"
+   },
+   "bin:varnishd:cache:cache_esi_parse.c:536": {
+    "function": "func20",
+    "path": "dir2/dir3/dir1/file7.c"
+   },
+   "bin:varnishd:cache:cache_esi_parse.c:715": {
+    "function": "func11",
+    "path": "dir2/dir3/dir1/file7.c"
+   }
+  },
+  "unreachable": {
+   "bin:varnishd:cache:cache_esi_parse.c:672": {
+    "function": "func11",
+    "path": "dir2/dir3/dir1/file7.c"
+   },
+   "bin:varnishd:cache:cache_esi_parse.c:803": {
+    "function": "func11",
+    "path": "dir2/dir3/dir1/file7.c"
+   },
+   "bin:varnishd:cache:cache_esi_parse.c:856": {
+    "function": "func11",
+    "path": "dir2/dir3/dir1/file7.c"
+   },
+   "bin:varnishd:cache:cache_esi_parse.c:977": {
+    "function": "func11",
+    "path": "dir2/dir3/dir1/file7.c"
+   }
+  }
+ }
+}

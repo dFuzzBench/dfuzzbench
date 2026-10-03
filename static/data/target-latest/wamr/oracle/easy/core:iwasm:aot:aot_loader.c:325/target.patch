@@ -1,0 +1,19 @@
+diff --git a/core/iwasm/aot/aot_loader.c b/core/iwasm/aot/aot_loader.c
+index dd26bbee..7e71d576 100644
+--- a/core/iwasm/aot/aot_loader.c
++++ b/core/iwasm/aot/aot_loader.c
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <stdlib.h>
+ /*
+  * Copyright (C) 2019 Intel Corporation. All rights reserved.
+  * SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+@@ -322,6 +324,8 @@ loader_mmap(uint32 size, bool prot_exec, char *error_buf, uint32 error_buf_size)
+ #endif
+ #endif
+ 
++    fprintf(stderr, "HIT TARGET\n");  // target
++    exit(0);
+     map_flags = MMAP_MAP_NONE;
+     if (!(mem = os_mmap(NULL, size, map_prot, map_flags,
+                         os_get_invalid_handle()))) {

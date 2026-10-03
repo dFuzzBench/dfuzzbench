@@ -1,0 +1,27 @@
+You are annotating the trajectory of an autonomous software-analysis agent working in a sandbox on a C/C++ codebase. The agent works in TURNS; each turn may hold a short summary of its private reasoning, a note to itself, and one or more tool calls (a shell command, or `submit`, which runs a candidate input against the build). Classify ONLY the agent's PRIMARY activity per turn. You are not analysing the code and not judging whether the agent is correct.
+
+The central distinction is REACHABILITY -- getting execution from the program's input to a particular point, along a particular path -- versus everything else. Assign exactly ONE primary category per turn:
+
+1 Reachability -- any work on getting execution to a point and down the path that leads there:
+   - identifying entry points / attack surface (what input the harness feeds, how it is parsed);
+   - tracing the call chain from the entry point toward a target;
+   - reasoning about which branches / guard conditions / sizes / flags must hold for a path to be taken;
+   - CONSTRUCTING OR SHAPING AN INPUT (choosing bytes, field values, structure, sizes) so that      execution is driven down such a path. This is reachability work, NOT tooling, and it includes      the reasoning about what the input must contain and writing the bytes out;
+   - running the program specifically to observe which path executed or how far execution got.
+2 Bug/trigger semantics -- reasoning, ONCE a site is assumed reached, about why the code there is    faulty and what local condition makes the fault fire (e.g. a missing bounds check at this line,    which value overflows here). The "what breaks once we are there" half, independent of how    execution arrived.
+3 Code comprehension -- reading or summarising code to understand it generally, NOT tied to a    specific "how do we reach X / what path is taken" question.
+4 Pattern/API search -- grep/ripgrep/find for APIs, call sites, or patterns across the tree.
+5 Build/run/tooling -- MECHANICAL build/run only: compiling, invoking the harness, running an    ALREADY-DECIDED input, debuggers -- with NO path or input-shaping reasoning in the turn. If the    turn also reasons about what input to build to reach a path, it is category 1, not 5.
+6 Meta -- planning the overall approach, summarising progress, writing up the final result.
+
+Also set reachability_related (a broad superset): true whenever the turn serves the "can we get execution to the target, down the needed path" question, EVEN IF its primary category is 2-6 -- e.g. a grep to find a call site on the path (4), reading a function to see what guards a branch on the path (3), running the program to see the path taken (5). Set false for: bug semantics purely local to the site (2) with no path aspect; generic code reading unrelated to a path (3); pure mechanical build/run of an already-decided input (5); and final write-ups (6). Category-1 turns are always reachability_related=true.
+
+Examples:
+- thinking "I'm working out the binary header layout and writing a 135-byte input whose edge index   is 0xFFFFFFF0 so the vertex lookup runs past the array" + a shell that writes the file   -> category 1, reachability_related true (shaping input to drive a path).
+- thinking "there's no bounds check on this index here, so a large value overflows the buffer",   no path or input reasoning -> category 2, reachability_related false.
+- "make -j" or "./harness /tmp/x" with no reasoning in the turn -> category 5,   reachability_related false.
+- "grep -rn sc_pkcs15_decode_prkdf_entry src/" to find where the target is called from   -> category 4, reachability_related true.
+
+Respond with ONLY a JSON array of length N (N = number of turns given), in order, each element:
+{"turn": <int>, "category": <1-6>, "reachability_related": <bool>, "rationale": "<<=12 words>"}
+No prose, no code fences.

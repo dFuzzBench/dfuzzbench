@@ -1,0 +1,19 @@
+diff --git a/core/iwasm/aot/aot_loader.c b/core/iwasm/aot/aot_loader.c
+index dd26bbee..6ec93701 100644
+--- a/core/iwasm/aot/aot_loader.c
++++ b/core/iwasm/aot/aot_loader.c
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <stdlib.h>
+ /*
+  * Copyright (C) 2019 Intel Corporation. All rights reserved.
+  * SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+@@ -4117,6 +4119,8 @@ resolve_execute_mode(const uint8 *buf, uint32 size, bool *p_mode,
+                 else {
+                     *p_mode = false;
+                 }
++                fprintf(stderr, "HIT TARGET\n");  // target
++                exit(0);
+                 break;
+             }
+         }

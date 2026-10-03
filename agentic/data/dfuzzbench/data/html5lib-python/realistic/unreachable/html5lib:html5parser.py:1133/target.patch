@@ -1,0 +1,13 @@
+diff --git a/html5lib/html5parser.py b/html5lib/html5parser.py
+index b3c206d..807aec5 100644
+--- a/html5lib/html5parser.py
++++ b/html5lib/html5parser.py
+@@ -1130,6 +1130,8 @@ class InBodyPhase(Phase):
+     def startTagTable(self, token):
+         if self.parser.compatMode != "quirks":
+             if self.tree.elementInScope("p", variant="button"):
++                print("HIT TARGET") # target
++                exit(0)
+                 self.processEndTag(impliedTagToken("p"))
+         self.tree.insertElement(token)
+         self.parser.framesetOK = False

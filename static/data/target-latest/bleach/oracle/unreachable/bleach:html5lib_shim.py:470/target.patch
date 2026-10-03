@@ -1,0 +1,13 @@
+diff --git a/bleach/html5lib_shim.py b/bleach/html5lib_shim.py
+index ca1cc8c..41dd17e 100644
+--- a/bleach/html5lib_shim.py
++++ b/bleach/html5lib_shim.py
+@@ -467,6 +467,8 @@ class BleachHTMLTokenizer(HTMLTokenizer):
+                 # and this is a tag-like thing, we've lost some information.
+                 # So we go back through the stream to get the original
+                 # string and use that.
++                print("HIT TARGET") # target
++                exit(0)
+                 new_data = self.stream.get_tag()
+ 
+             new_token = {"type": TAG_TOKEN_TYPE_CHARACTERS, "data": new_data}

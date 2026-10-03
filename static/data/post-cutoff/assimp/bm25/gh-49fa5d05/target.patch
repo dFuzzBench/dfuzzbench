@@ -1,0 +1,18 @@
+diff --git a/code/AssetLib/MD5/MD5Loader.cpp b/code/AssetLib/MD5/MD5Loader.cpp
+index 8eddb8266..33b80941a 100644
+--- a/code/AssetLib/MD5/MD5Loader.cpp
++++ b/code/AssetLib/MD5/MD5Loader.cpp
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <cstdlib>
+ /*
+ ---------------------------------------------------------------------------
+ Open Asset Import Library (assimp)
+@@ -428,6 +430,7 @@ void MD5Importer::LoadMD5MeshFile() {
+                 MD5::WeightDesc &weightDesc = meshSrc.mWeights[w];
+                 /* FIX for some invalid exporters */
+                 if (!(weightDesc.mWeight < AI_MD5_WEIGHT_EPSILON && weightDesc.mWeight >= -AI_MD5_WEIGHT_EPSILON)) {
++                    fprintf(stderr, "HIT TARGET\n");  // target
+                     ++piCount[weightDesc.mBone];
+                 }
+             }

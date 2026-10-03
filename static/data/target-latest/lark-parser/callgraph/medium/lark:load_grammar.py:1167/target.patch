@@ -1,0 +1,13 @@
+diff --git a/lark/load_grammar.py b/lark/load_grammar.py
+index 362a845..00c578e 100644
+--- a/lark/load_grammar.py
++++ b/lark/load_grammar.py
+@@ -1164,6 +1164,8 @@ class GrammarBuilder:
+             t = exp_or_name
+             if t.data == 'expansions' and len(t.children) == 1:
+                 t2 ,= t.children
++                print("HIT TARGET") # target
++                exit(0)
+                 if t2.data=='expansion' and len(t2.children) == 1:
+                     item ,= t2.children
+                     if item.data == 'value':

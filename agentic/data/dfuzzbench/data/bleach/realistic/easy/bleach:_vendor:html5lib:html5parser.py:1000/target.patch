@@ -1,0 +1,13 @@
+diff --git a/bleach/_vendor/html5lib/html5parser.py b/bleach/_vendor/html5lib/html5parser.py
+index 74d829d..08fc101 100644
+--- a/bleach/_vendor/html5lib/html5parser.py
++++ b/bleach/_vendor/html5lib/html5parser.py
+@@ -997,6 +997,8 @@ def getPhases(debug):
+         def processCharacters(self, token):
+             if token["data"] == "\u0000":
+                 # The tokenizer should always emit null on its own
++                print("HIT TARGET") # target
++                exit(0)
+                 return
+             self.tree.reconstructActiveFormattingElements()
+             self.tree.insertText(token["data"])

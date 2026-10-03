@@ -1,0 +1,23 @@
+diff --git a/bin/varnishd/cache/cache_esi_parse.c b/bin/varnishd/cache/cache_esi_parse.c
+index 5145b016c..374bd86bd 100644
+--- a/bin/varnishd/cache/cache_esi_parse.c
++++ b/bin/varnishd/cache/cache_esi_parse.c
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <stdlib.h>
+ /*-
+  * Copyright (c) 2011 Varnish Software AS
+  * All rights reserved.
+@@ -872,8 +874,11 @@ VEP_Parse(struct vep_state *vep, const char *p, size_t l)
+ 				vep_mark_skip(vep, p);
+ 				vep->in_esi_tag = 0;
+ 				vep->state = VEP_NEXTTAG;
+-				if (vep->attr_vsb)
++				if (vep->attr_vsb) {
++					fprintf(stderr, "HIT TARGET\n");  // target
++					exit(0);
+ 					VSB_destroy(&vep->attr_vsb);
++				}
+ 			}
+ 
+ 		/******************************************************

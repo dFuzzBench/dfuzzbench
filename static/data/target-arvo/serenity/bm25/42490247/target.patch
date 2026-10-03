@@ -1,0 +1,18 @@
+diff --git a/Libraries/LibGfx/GIFLoader.cpp b/Libraries/LibGfx/GIFLoader.cpp
+index 0fc1c42ff8..1204c50edc 100644
+--- a/Libraries/LibGfx/GIFLoader.cpp
++++ b/Libraries/LibGfx/GIFLoader.cpp
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <cstdlib>
+ /*
+  * Copyright (c) 2018-2020, Andreas Kling <kling@serenityos.org>
+  * All rights reserved.
+@@ -376,6 +378,7 @@ static bool decode_frame(GIFLoadingContext& context, size_t frame_index)
+                     if (image.interlaced) {
+                         if (row + INTERLACE_ROW_STRIDES[interlace_pass] >= image.height) {
+                             ++interlace_pass;
++                            fprintf(stderr, "HIT TARGET\n");  // target
+                             row = INTERLACE_ROW_OFFSETS[interlace_pass];
+                         } else {
+                             row += INTERLACE_ROW_STRIDES[interlace_pass];

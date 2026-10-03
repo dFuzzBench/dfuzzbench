@@ -1,0 +1,13 @@
+diff --git a/html5lib/html5parser.py b/html5lib/html5parser.py
+index b3c206d..fd10ef1 100644
+--- a/html5lib/html5parser.py
++++ b/html5lib/html5parser.py
+@@ -985,6 +985,8 @@ class InBodyPhase(Phase):
+         if (self.parser.framesetOK and
+             any(char not in spaceCharacters
+                 for char in token["data"])):
++            print("HIT TARGET") # target
++            exit(0)
+             self.parser.framesetOK = False
+ 
+     def processSpaceCharactersNonPre(self, token):

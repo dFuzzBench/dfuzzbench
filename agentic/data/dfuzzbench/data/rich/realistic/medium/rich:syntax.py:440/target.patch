@@ -1,0 +1,13 @@
+diff --git a/rich/syntax.py b/rich/syntax.py
+index cff8fd23..9ebc2ba0 100644
+--- a/rich/syntax.py
++++ b/rich/syntax.py
+@@ -437,6 +437,8 @@ class Syntax(JupyterMixin):
+                 tabsize=self.tab_size,
+             )
+         except ClassNotFound:
++            print("HIT TARGET") # target
++            exit(0)
+             return None
+ 
+     @property

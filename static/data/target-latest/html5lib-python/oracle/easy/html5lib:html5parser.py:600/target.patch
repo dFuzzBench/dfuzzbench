@@ -1,0 +1,13 @@
+diff --git a/html5lib/html5parser.py b/html5lib/html5parser.py
+index b3c206d..abfbe8d 100644
+--- a/html5lib/html5parser.py
++++ b/html5lib/html5parser.py
+@@ -597,6 +597,8 @@ class InitialPhase(Phase):
+ 
+     def processEOF(self):
+         self.parser.parseError("expected-doctype-but-got-eof")
++        print("HIT TARGET") # target
++        exit(0)
+         self.anythingElse()
+         return True
+ 

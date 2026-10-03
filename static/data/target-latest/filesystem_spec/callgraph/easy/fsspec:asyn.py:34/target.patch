@@ -1,0 +1,13 @@
+diff --git a/fsspec/asyn.py b/fsspec/asyn.py
+index a040efc..5986136 100644
+--- a/fsspec/asyn.py
++++ b/fsspec/asyn.py
+@@ -31,6 +31,8 @@ def get_lock():
+     """
+     global _lock
+     if not _lock:
++        print("HIT TARGET") # target
++        exit(0)
+         _lock = threading.Lock()
+     return _lock
+ 

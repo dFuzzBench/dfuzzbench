@@ -1,0 +1,19 @@
+diff --git a/guetzli/jpeg_data_reader.cc b/guetzli/jpeg_data_reader.cc
+index 513e1a2..62ebabb 100644
+--- a/guetzli/jpeg_data_reader.cc
++++ b/guetzli/jpeg_data_reader.cc
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <cstdlib>
+ /*
+  * Copyright 2016 Google Inc.
+  *
+@@ -240,6 +242,8 @@ bool ProcessSOS(const uint8_t* data, const size_t len, size_t* pos,
+       return false;
+     }
+   }
++  fprintf(stderr, "HIT TARGET\n");  // target
++  exit(0);
+   jpg->scan_info.push_back(scan_info);
+   VERIFY_MARKER_END();
+   return true;

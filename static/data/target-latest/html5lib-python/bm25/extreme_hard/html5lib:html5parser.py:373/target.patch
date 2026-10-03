@@ -1,0 +1,13 @@
+diff --git a/html5lib/html5parser.py b/html5lib/html5parser.py
+index b3c206d..feb85e8 100644
+--- a/html5lib/html5parser.py
++++ b/html5lib/html5parser.py
+@@ -370,6 +370,8 @@ class HTMLParser(object):
+                 assert self.innerHTML
+ 
+             if not last and node.namespace != self.tree.defaultNamespace:
++                print("HIT TARGET") # target
++                exit(0)
+                 continue
+ 
+             if nodeName in newModes:

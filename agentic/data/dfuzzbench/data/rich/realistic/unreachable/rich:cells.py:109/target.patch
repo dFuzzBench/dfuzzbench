@@ -1,0 +1,13 @@
+diff --git a/rich/cells.py b/rich/cells.py
+index a8546227..c482c2f4 100644
+--- a/rich/cells.py
++++ b/rich/cells.py
+@@ -106,6 +106,8 @@ def set_cell_size(text: str, total: int) -> str:
+         return ""
+     cell_size = cell_len(text)
+     if cell_size == total:
++        print("HIT TARGET") # target
++        exit(0)
+         return text
+     if cell_size < total:
+         return text + " " * (total - cell_size)

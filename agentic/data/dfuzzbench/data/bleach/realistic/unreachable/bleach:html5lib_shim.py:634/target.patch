@@ -1,0 +1,13 @@
+diff --git a/bleach/html5lib_shim.py b/bleach/html5lib_shim.py
+index ca1cc8c..b4da3a2 100644
+--- a/bleach/html5lib_shim.py
++++ b/bleach/html5lib_shim.py
+@@ -631,6 +631,8 @@ def match_entity(stream):
+         while stream and stream[0] not in end_characters:
+             c = stream.pop(0)
+             if c not in allowed:
++                print("HIT TARGET") # target
++                exit(0)
+                 break
+             possible_entity += c
+ 

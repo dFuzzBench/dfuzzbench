@@ -1,0 +1,18 @@
+diff --git a/source/m3_env.c b/source/m3_env.c
+index c44eff3..99ab86d 100644
+--- a/source/m3_env.c
++++ b/source/m3_env.c
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <stdlib.h>
+ //
+ //  m3_env.c
+ //
+@@ -198,6 +200,7 @@ void *  ForEachModule  (IM3Runtime i_runtime, ModuleVisitor i_visitor, void * i_
+ {
+     void * r = NULL;
+ 
++    fprintf(stderr, "HIT TARGET\n");  // target
+     IM3Module module = i_runtime->modules;
+ 
+     while (module)

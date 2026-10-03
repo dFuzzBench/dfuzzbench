@@ -1,0 +1,18 @@
+diff --git a/codec/decoder/plus/src/welsDecoderExt.cpp b/codec/decoder/plus/src/welsDecoderExt.cpp
+index 81df55e5..fd295354 100644
+--- a/codec/decoder/plus/src/welsDecoderExt.cpp
++++ b/codec/decoder/plus/src/welsDecoderExt.cpp
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <cstdlib>
+ /*!
+  * \copy
+  *     Copyright (c)  2009-2013, Cisco Systems
+@@ -712,6 +714,7 @@ DECODING_STATE CWelsDecoder::DecodeFrame2WithCtx (PWelsDecoderContext pDecContex
+     const int kiSrcLen,
+     unsigned char** ppDst,
+     SBufferInfo* pDstInfo) {
++  fprintf(stderr, "HIT TARGET\n");  // target
+   if (pDecContext == NULL || pDecContext->pParam == NULL) {
+     if (m_pWelsTrace != NULL) {
+       WelsLog (&m_pWelsTrace->m_sLogCtx, WELS_LOG_ERROR, "Call DecodeFrame2 without Initialize.\n");

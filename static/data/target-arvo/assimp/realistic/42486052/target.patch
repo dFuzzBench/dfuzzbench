@@ -1,0 +1,18 @@
+diff --git a/contrib/openddlparser/code/OpenDDLParser.cpp b/contrib/openddlparser/code/OpenDDLParser.cpp
+index 91831ba27..a7c38dd6d 100644
+--- a/contrib/openddlparser/code/OpenDDLParser.cpp
++++ b/contrib/openddlparser/code/OpenDDLParser.cpp
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <cstdlib>
+ /*-----------------------------------------------------------------------------------------------
+ The MIT License (MIT)
+ 
+@@ -548,6 +550,7 @@ char *OpenDDLParser::parseIdentifier( char *in, char *end, Text **id ) {
+     // get size of id
+     size_t idLen( 0 );
+     char *start( in );
++    fprintf(stderr, "HIT TARGET\n");  // target
+     while( !isSeparator( *in ) && 
+             !isNewLine( *in ) && ( in != end ) && 
+             *in != Grammar::OpenPropertyToken[ 0 ] &&

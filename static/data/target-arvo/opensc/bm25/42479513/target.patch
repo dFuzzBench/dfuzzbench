@@ -1,0 +1,18 @@
+diff --git a/src/tests/fuzzing/fuzz_pkcs15_reader.c b/src/tests/fuzzing/fuzz_pkcs15_reader.c
+index 9bac1309f..7f487113c 100644
+--- a/src/tests/fuzzing/fuzz_pkcs15_reader.c
++++ b/src/tests/fuzzing/fuzz_pkcs15_reader.c
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <stdlib.h>
+ /*
+  * Copyright (C) 2019 Frank Morgner <frankmorgner@gmail.com>
+  *
+@@ -126,6 +128,7 @@ static int fuzz_reader_transmit(sc_reader_t *reader, sc_apdu_t *apdu)
+             apdu->resplen = chunk_size;
+ 
+         if (apdu->resplen != 0)
++            fprintf(stderr, "HIT TARGET\n");  // target
+             memcpy(apdu->resp, chunk, apdu->resplen);
+     } else {
+         apdu->sw1 = 0x6D;

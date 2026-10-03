@@ -1,0 +1,13 @@
+diff --git a/bleach/_vendor/html5lib/_tokenizer.py b/bleach/_vendor/html5lib/_tokenizer.py
+index 4748a19..e42f1f7 100644
+--- a/bleach/_vendor/html5lib/_tokenizer.py
++++ b/bleach/_vendor/html5lib/_tokenizer.py
+@@ -585,6 +585,8 @@ class HTMLTokenizer(object):
+             self.currentToken = {"type": tokenTypes["EndTag"],
+                                  "name": self.temporaryBuffer,
+                                  "data": [], "selfClosing": False}
++            print("HIT TARGET") # target
++            exit(0)
+             self.state = self.beforeAttributeNameState
+         elif data == "/" and appropriate:
+             self.currentToken = {"type": tokenTypes["EndTag"],

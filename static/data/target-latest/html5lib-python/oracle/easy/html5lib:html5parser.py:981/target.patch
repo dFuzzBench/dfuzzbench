@@ -1,0 +1,13 @@
+diff --git a/html5lib/html5parser.py b/html5lib/html5parser.py
+index b3c206d..c9dae85 100644
+--- a/html5lib/html5parser.py
++++ b/html5lib/html5parser.py
+@@ -978,6 +978,8 @@ class InBodyPhase(Phase):
+     def processCharacters(self, token):
+         if token["data"] == "\u0000":
+             # The tokenizer should always emit null on its own
++            print("HIT TARGET") # target
++            exit(0)
+             return
+         self.tree.reconstructActiveFormattingElements()
+         self.tree.insertText(token["data"])

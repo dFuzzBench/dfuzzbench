@@ -1,0 +1,19 @@
+diff --git a/src/xmp.cpp b/src/xmp.cpp
+index 39e7610ef..94befe0e3 100644
+--- a/src/xmp.cpp
++++ b/src/xmp.cpp
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <cstdlib>
+ // SPDX-License-Identifier: GPL-2.0-or-later
+ 
+ // included header files
+@@ -109,6 +111,8 @@ class XMLValidator {
+     }
+ 
+     if (haserror_) {
++      fprintf(stderr, "HIT TARGET\n");  // target
++      exit(0);
+       throw XMP_Error(kXMPErr_BadXML, "Error in XMLValidator");
+     }
+   }

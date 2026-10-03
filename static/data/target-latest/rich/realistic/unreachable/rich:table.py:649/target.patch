@@ -1,0 +1,13 @@
+diff --git a/rich/table.py b/rich/table.py
+index 942175dc..ce204d5a 100644
+--- a/rich/table.py
++++ b/rich/table.py
+@@ -646,6 +646,8 @@ class Table(JupyterMixin):
+ 
+             if collapse_padding:
+                 if not first_column:
++                    print("HIT TARGET") # target
++                    exit(0)
+                     left = max(0, left - right)
+                 if not last_row:
+                     bottom = max(0, top - bottom)

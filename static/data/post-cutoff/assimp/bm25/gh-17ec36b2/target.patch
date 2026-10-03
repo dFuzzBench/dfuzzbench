@@ -1,0 +1,18 @@
+diff --git a/code/AssetLib/MD2/MD2Loader.cpp b/code/AssetLib/MD2/MD2Loader.cpp
+index f7101560d..649b91482 100644
+--- a/code/AssetLib/MD2/MD2Loader.cpp
++++ b/code/AssetLib/MD2/MD2Loader.cpp
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <cstdlib>
+ /*
+ ---------------------------------------------------------------------------
+ Open Asset Import Library (assimp)
+@@ -323,6 +325,7 @@ void MD2Importer::InternReadFile( const std::string& pFile,
+         pcHelper->AddProperty<aiColor3D>(&clr, 1,AI_MATKEY_COLOR_AMBIENT);
+ 
+         const ai_uint32 MaxNameLength = AI_MAXLEN - 1; // one byte reserved for \0
++        fprintf(stderr, "HIT TARGET\n");  // target
+         ai_uint32 iLen = static_cast<ai_uint32>(::strlen(pcSkins->name));
+         bool nameTooLong = iLen > MaxNameLength;
+ 

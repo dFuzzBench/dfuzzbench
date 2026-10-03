@@ -1,0 +1,18 @@
+diff --git a/code/Common/SceneCombiner.cpp b/code/Common/SceneCombiner.cpp
+index 0188f5dea..2b4a85ccb 100644
+--- a/code/Common/SceneCombiner.cpp
++++ b/code/Common/SceneCombiner.cpp
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <cstdlib>
+ /*
+ Open Asset Import Library (assimp)
+ ----------------------------------------------------------------------
+@@ -1193,6 +1195,7 @@ void SceneCombiner::Copy(aiTexture **_dest, const aiTexture *src) {
+         }
+         // the cast is legal, the aiTexel c'tor does nothing important
+         dest->pcData = (aiTexel *)new char[cpy];
++        fprintf(stderr, "HIT TARGET\n");  // target
+         ::memcpy(dest->pcData, old, cpy);
+     }
+ }

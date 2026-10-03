@@ -1,0 +1,190 @@
+base:
+    # Environment configs
+    output_path: "exps/dfuzzbench"
+    benchmark: "dfuzzbench"
+    # The 143 Python T1-T5 targets of the dataset built by data/dfuzzbench/build_dataset.py (C/C++ targets need lldb: config_dfuzzbench_gemini_c.yaml).
+    problems: [
+        # lark-parser
+        'lark-parser::lark:lark.py:365',
+        'lark-parser::lark:lark.py:376',
+        'lark-parser::lark:lark.py:395',
+        'lark-parser::lark:lexer.py:348',
+        'lark-parser::lark:lexer.py:381',
+        'lark-parser::lark:load_grammar.py:518',
+        'lark-parser::lark:load_grammar.py:707',
+        'lark-parser::lark:load_grammar.py:788',
+        'lark-parser::lark:load_grammar.py:806',
+        'lark-parser::lark:load_grammar.py:887',
+        'lark-parser::lark:load_grammar.py:658',
+        'lark-parser::lark:load_grammar.py:661',
+        'lark-parser::lark:load_grammar.py:777',
+        'lark-parser::lark:load_grammar.py:778',
+        'lark-parser::lark:load_grammar.py:780',
+        'lark-parser::lark:load_grammar.py:785',
+        'lark-parser::lark:load_grammar.py:1167',
+        'lark-parser::lark:load_grammar.py:1169',
+        'lark-parser::lark:load_grammar.py:1170',
+        'lark-parser::lark:utils.py:169',
+        'lark-parser::lark:load_grammar.py:305',
+        'lark-parser::lark:load_grammar.py:308',
+        'lark-parser::lark:load_grammar.py:338',
+        'lark-parser::lark:load_grammar.py:344',
+        'lark-parser::lark:load_grammar.py:368',
+        'lark-parser::lark:parsers:earley_forest.py:196',
+        'lark-parser::lark:parsers:earley_forest.py:337',
+        'lark-parser::lark:parsers:earley_forest.py:343',
+        'lark-parser::lark:parsers:earley_forest.py:573',
+        'lark-parser::lark:parsers:earley_forest.py:583',
+        'lark-parser::lark:load_grammar.py:1269',
+        'lark-parser::lark:load_grammar.py:1280',
+        'lark-parser::lark:load_grammar.py:1314',
+        'lark-parser::lark:load_grammar.py:1351',
+        'lark-parser::lark:load_grammar.py:1369',
+
+        # bleach
+        'bleach::bleach:_vendor:html5lib:_tokenizer.py:247',
+        'bleach::bleach:_vendor:html5lib:_tokenizer.py:263',
+        'bleach::bleach:_vendor:html5lib:_tokenizer.py:397',
+        'bleach::bleach:_vendor:html5lib:html5parser.py:216',
+        'bleach::bleach:_vendor:html5lib:html5parser.py:318',
+        'bleach::bleach:_vendor:html5lib:html5parser.py:462',
+        'bleach::bleach:_vendor:html5lib:html5parser.py:970',
+        'bleach::bleach:_vendor:html5lib:html5parser.py:980',
+        'bleach::bleach:_vendor:html5lib:html5parser.py:1000',
+        'bleach::bleach:html5lib_shim.py:374',
+        'bleach::bleach:_vendor:html5lib:_tokenizer.py:1205',
+        'bleach::bleach:_vendor:html5lib:_tokenizer.py:1247',
+        'bleach::bleach:_vendor:html5lib:_tokenizer.py:1266',
+        'bleach::bleach:_vendor:html5lib:_tokenizer.py:1333',
+        'bleach::bleach:_vendor:html5lib:_tokenizer.py:1358',
+        'bleach::bleach:_vendor:html5lib:_tokenizer.py:1416',
+        'bleach::bleach:_vendor:html5lib:html5parser.py:1544',
+        'bleach::bleach:_vendor:html5lib:html5parser.py:1779',
+        'bleach::bleach:_vendor:html5lib:_tokenizer.py:588',
+        'bleach::bleach:_vendor:html5lib:_tokenizer.py:826',
+        'bleach::bleach:_vendor:html5lib:_tokenizer.py:1434',
+        'bleach::bleach:_vendor:html5lib:html5parser.py:1591',
+        'bleach::bleach:html5lib_shim.py:580',
+        'bleach::bleach:_vendor:html5lib:_tokenizer.py:1482',
+        'bleach::bleach:_vendor:html5lib:_tokenizer.py:1608',
+        'bleach::bleach:_vendor:html5lib:_tokenizer.py:1635',
+        'bleach::bleach:_vendor:html5lib:_tokenizer.py:250',
+        'bleach::bleach:_vendor:html5lib:html5parser.py:966',
+        'bleach::bleach:_vendor:html5lib:html5parser.py:1378',
+        'bleach::bleach:html5lib_shim.py:470',
+        'bleach::bleach:html5lib_shim.py:544',
+        'bleach::bleach:html5lib_shim.py:588',
+        'bleach::bleach:html5lib_shim.py:634',
+
+        # html5lib-python
+        'html5lib-python::html5lib:_tokenizer.py:67',
+        'html5lib-python::html5lib:_tokenizer.py:150',
+        'html5lib-python::html5lib:_tokenizer.py:263',
+        'html5lib-python::html5lib:_tokenizer.py:393',
+        'html5lib-python::html5lib:html5parser.py:209',
+        'html5lib-python::html5lib:html5parser.py:600',
+        'html5lib-python::html5lib:html5parser.py:981',
+        'html5lib-python::html5lib:html5parser.py:254',
+        'html5lib-python::html5lib:html5parser.py:635',
+        'html5lib-python::html5lib:html5parser.py:1052',
+        'html5lib-python::html5lib:html5parser.py:1054',
+        'html5lib-python::html5lib:html5parser.py:1073',
+        'html5lib-python::html5lib:html5parser.py:1076',
+        'html5lib-python::html5lib:html5parser.py:1086',
+        'html5lib-python::html5lib:html5parser.py:1249',
+        'html5lib-python::html5lib:html5parser.py:1297',
+        'html5lib-python::html5lib:html5parser.py:1572',
+        'html5lib-python::html5lib:html5parser.py:248',
+        'html5lib-python::html5lib:html5parser.py:1029',
+        'html5lib-python::html5lib:html5parser.py:1125',
+        'html5lib-python::html5lib:html5parser.py:1329',
+        'html5lib-python::html5lib:html5parser.py:1334',
+        'html5lib-python::html5lib:_tokenizer.py:1582',
+        'html5lib-python::html5lib:_tokenizer.py:1631',
+        'html5lib-python::html5lib:_tokenizer.py:1635',
+        'html5lib-python::html5lib:html5parser.py:373',
+        'html5lib-python::html5lib:html5parser.py:1099',
+        'html5lib-python::html5lib:html5parser.py:490',
+        'html5lib-python::html5lib:html5parser.py:988',
+        'html5lib-python::html5lib:html5parser.py:1133',
+        'html5lib-python::html5lib:html5parser.py:1349',
+        'html5lib-python::html5lib:html5parser.py:1512',
+        'html5lib-python::html5lib:html5parser.py:1783',
+        'html5lib-python::html5lib:html5parser.py:1904',
+        'html5lib-python::html5lib:html5parser.py:2240',
+
+        # filesystem_spec
+        'filesystem_spec::fsspec:asyn.py:34',
+        'filesystem_spec::fsspec:asyn.py:92',
+        'filesystem_spec::fsspec:asyn.py:930',
+        'filesystem_spec::fsspec:asyn.py:940',
+        'filesystem_spec::fsspec:implementations:http.py:124',
+        'filesystem_spec::fsspec:implementations:http.py:137',
+        'filesystem_spec::fsspec:spec.py:77',
+        'filesystem_spec::fsspec:spec.py:86',
+        'filesystem_spec::fsspec:asyn.py:96',
+        'filesystem_spec::fsspec:asyn.py:101',
+        'filesystem_spec::fsspec:implementations:http.py:127',
+        'filesystem_spec::fsspec:implementations:http.py:131',
+        'filesystem_spec::fsspec:spec.py:307',
+
+        # rich
+        'rich::rich:cells.py:89',
+        'rich::rich:console.py:1029',
+        'rich::rich:console.py:1036',
+        'rich::rich:console.py:1568',
+        'rich::rich:console.py:2057',
+        'rich::rich:markdown.py:352',
+        'rich::rich:markdown.py:613',
+        'rich::rich:segment.py:351',
+        'rich::rich:style.py:400',
+        'rich::rich:syntax.py:483',
+        'rich::rich:syntax.py:841',
+        'rich::rich:text.py:413',
+        'rich::rich:style.py:362',
+        'rich::rich:syntax.py:440',
+        'rich::rich:syntax.py:445',
+        'rich::rich:text.py:583',
+        'rich::rich:text.py:796',
+        'rich::rich:text.py:1156',
+        'rich::rich:text.py:1162',
+        'rich::rich:syntax.py:160',
+        'rich::rich:syntax.py:162',
+        'rich::rich:cells.py:106',
+        'rich::rich:cells.py:109',
+        'rich::rich:table.py:649',
+        'rich::rich:table.py:655',
+        'rich::rich:table.py:661',
+        'rich::rich:text.py:480',
+    ]
+
+    env_kwargs: {
+        "dir_tree_depth": 1,
+        "run_timeout": 60,
+        "dataset_id": "data/dfuzzbench/dataset",  # built by data/dfuzzbench/build_dataset.py --out-dir data/dfuzzbench/dataset
+        "provide_call_paths": False,  # False: get_callpaths reports that no call path was found; True exposes the dataset's call paths.
+        # shortcut features
+        "auto_eval_on_rewrite": False,  # If True, the environment will automatically call the Eval tool after a successful rewrite. If this is set to True, the agent does not need to call the Eval tool itself.
+        "show_current_breakpoints": False,  # If True, the environment will automatically show the current breakpoints at every step in the system prompt.
+        "show_directory_tree": True,  # If set to True, the environment will show the directory tree in the system prompt.
+        "persistent_breakpoints": True,  # If True, the environemnt will keep a set of breakpoint states across PDB sessions. When a new PDB session is started, the environment will automatically load the breakpoints from the previous session.
+        "auto_list": True,  # If True, the environment will automatically call `list .` via the PDB tool after every pdb tool call, which will show the code around the current frame.
+    }
+    terminal: {
+        type: "docker",
+    }
+
+    # LLM configs (an entry of llm.yaml)
+    llm_name: "gemini-3.1-pro"
+
+    # Agent configs
+    random_seed: 42
+    max_steps: 50
+    max_propose_steps: 15
+    max_rewrite_steps: 50
+    memory_size: 15
+    save_patch: True
+    reset_prompt_history_after_rewrite: True
+
+reach_agent:
+    tools: ["pdb", "view", "listdir", "propose", "plan", "callpath", "grep", "context"]

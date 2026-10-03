@@ -1,0 +1,13 @@
+diff --git a/lark/load_grammar.py b/lark/load_grammar.py
+index 362a845..12f3347 100644
+--- a/lark/load_grammar.py
++++ b/lark/load_grammar.py
+@@ -1266,6 +1266,8 @@ class GrammarBuilder:
+             elif stmt.data == 'ignore':
+                 # if mangle is not None, we shouldn't apply ignore, since we aren't in a toplevel grammar
+                 if mangle is None:
++                    print("HIT TARGET") # target
++                    exit(0)
+                     self._ignore(*stmt.children)
+             elif stmt.data == 'declare':
+                 for symbol in stmt.children:

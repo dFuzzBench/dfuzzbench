@@ -1,0 +1,13 @@
+diff --git a/rich/console.py b/rich/console.py
+index 6725e405..369ebff9 100644
+--- a/rich/console.py
++++ b/rich/console.py
+@@ -1033,6 +1033,8 @@ class Console:
+             width = int(columns)
+         lines = self._environ.get("LINES")
+         if lines is not None and lines.isdigit():
++            print("HIT TARGET") # target
++            exit(0)
+             height = int(lines)
+ 
+         # get_terminal_size can report 0, 0 if run from pseudo-terminal

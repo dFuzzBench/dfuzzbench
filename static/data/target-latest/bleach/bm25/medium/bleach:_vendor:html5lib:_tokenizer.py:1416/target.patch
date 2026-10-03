@@ -1,0 +1,13 @@
+diff --git a/bleach/_vendor/html5lib/_tokenizer.py b/bleach/_vendor/html5lib/_tokenizer.py
+index 4748a19..2ecc1b0 100644
+--- a/bleach/_vendor/html5lib/_tokenizer.py
++++ b/bleach/_vendor/html5lib/_tokenizer.py
+@@ -1413,6 +1413,8 @@ class HTMLTokenizer(object):
+             # discarded; only the latest character might be '>' or EOF
+             # and needs to be ungetted
+             self.stream.unget(data)
++            print("HIT TARGET") # target
++            exit(0)
+             self.tokenQueue.append({"type": tokenTypes["ParseError"], "data":
+                                     "expected-space-or-right-bracket-in-doctype", "datavars":
+                                     {"data": data}})

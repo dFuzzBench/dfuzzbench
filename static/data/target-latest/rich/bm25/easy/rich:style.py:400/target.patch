@@ -1,0 +1,13 @@
+diff --git a/rich/style.py b/rich/style.py
+index 835d06f3..896c7bd2 100644
+--- a/rich/style.py
++++ b/rich/style.py
+@@ -397,6 +397,8 @@ class Style:
+         """Pick first non-None style."""
+         for value in values:
+             if value is not None:
++                print("HIT TARGET") # target
++                exit(0)
+                 return value
+         raise ValueError("expected at least one non-None style")
+ 

@@ -1,0 +1,13 @@
+diff --git a/lark/load_grammar.py b/lark/load_grammar.py
+index 362a845..410f090 100644
+--- a/lark/load_grammar.py
++++ b/lark/load_grammar.py
+@@ -785,6 +785,8 @@ class Grammar:
+                     assert len({(r.alias, r.order, r.options) for r in dups}) == len(dups)
+ 
+             # Remove duplicates
++            print("HIT TARGET") # target
++            exit(0)
+             compiled_rules = list(OrderedSet(compiled_rules))
+ 
+         # Filter out unused rules

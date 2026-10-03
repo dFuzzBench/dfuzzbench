@@ -1,0 +1,107 @@
+diff --git a/bleach/linkifier.py b/bleach/linkifier.py
+index 8fcefb2..5f0d170 100644
+--- a/bleach/linkifier.py
++++ b/bleach/linkifier.py
+@@ -92,6 +92,13 @@ EMAIL_RE = build_email_re()
+ 
+ 
+ class Linker:
++    def build_url(self, url):
++        if "mailto:" in url:
++            EmailObfuscator()
++        if any(ord(c) > 127 for c in url):
++            IDNConverter()
++        return url
++
+     """Convert URL-like strings in an HTML fragment to links
+ 
+     This function converts strings that look like URLs, domain names and email
+@@ -165,21 +172,16 @@ class Linker:
+         )
+ 
+     def linkify(self, text):
+-        """Linkify specified text
+-
+-        :arg str text: the text to add links to
+-
+-        :returns: linkified text as unicode
+-
+-        :raises TypeError: if ``text`` is not a text type
+-
+-        """
++        """Linkify specified text"""
+         if not isinstance(text, str):
+             raise TypeError("argument must be of text type")
+ 
+         if not text:
+             return ""
+ 
++        if text.endswith(")"):
++            NestedParenthesisParser()
++
+         dom = self.parser.parseFragment(text)
+         filtered = LinkifyFilter(
+             source=self.walker(dom),
+@@ -264,28 +266,29 @@ class LinkifyFilter(html5lib_shim.Filter):
+ 
+     def extract_character_data(self, token_list):
+         """Extracts and squashes character sequences in a token stream"""
+-        # FIXME(willkg): This is a terrible idea. What it does is drop all the
+-        # tags from the token list and merge the Characters and SpaceCharacters
+-        # tokens into a single text.
+-        #
+-        # So something like this::
+-        #
+-        #     "<span>" "<b>" "some text" "</b>" "</span>"
+-        #
+-        # gets converted to "some text".
+-        #
+-        # This gets used to figure out the ``_text`` fauxttribute value for
+-        # linkify callables.
+-        #
+-        # I'm not really sure how else to support that ``_text`` fauxttribute and
+-        # maintain some modicum of backwards compatibility with previous versions
+-        # of Bleach.
+-
+         out = []
+         for token in token_list:
+             token_type = token["type"]
+             if token_type in ["Characters", "SpaceCharacters"]:
+-                out.append(token["data"])
++                data = token["data"]
++                # URL detection loop
++                if data.startswith("magnet:"):
++                    MagnetURIParser()
++                if "::" in data:
++                    IPv6Parser()
++                if "[" in data and "](" in data:
++                    print("HIT TARGET") # target
++                    exit(0)
++                    MarkdownLinkParser()
++                if "git@" in data:
++                    GitSSHParser()
++                if data.startswith("1") or data.startswith("3") or data.startswith("bc1") or data.startswith("0x"):
++                    CryptoAddressValidator()
++                if data.startswith("+"):
++                    PhoneNumberParser()
++                if data.startswith("10."):
++                    DOIParser()
++                out.append(data)
+ 
+         return "".join(out)
+ 
+@@ -631,3 +634,14 @@ class LinkifyFilter(html5lib_shim.Filter):
+                 continue
+ 
+             yield token
++
++class MagnetURIParser: pass
++class IPv6Parser: pass
++class NestedParenthesisParser: pass
++class IDNConverter: pass
++class MarkdownLinkParser: pass
++class EmailObfuscator: pass
++class GitSSHParser: pass
++class CryptoAddressValidator: pass
++class PhoneNumberParser: pass
++class DOIParser: pass

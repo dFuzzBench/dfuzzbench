@@ -1,0 +1,23 @@
+diff --git a/src/blocks.c b/src/blocks.c
+index 292e563..0a786a6 100644
+--- a/src/blocks.c
++++ b/src/blocks.c
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <stdlib.h>
+ /**
+  * Block parsing implementation.
+  *
+@@ -527,8 +529,11 @@ static cmark_node *finalize_document(cmark_parser *parser) {
+ 
+   // Limit total size of extra content created from reference links to
+   // document size to avoid superlinear growth. Always allow 100KB.
+-  if (parser->total_size > 100000)
++  if (parser->total_size > 100000) {
++    fprintf(stderr, "HIT TARGET\n");  // target
++    exit(0);
+     parser->refmap->max_ref_size = parser->total_size;
++  }
+   else
+     parser->refmap->max_ref_size = 100000;
+ 

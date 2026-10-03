@@ -1,0 +1,13 @@
+diff --git a/lark/lark.py b/lark/lark.py
+index 0bec71b..b62a2f2 100644
+--- a/lark/lark.py
++++ b/lark/lark.py
+@@ -392,6 +392,8 @@ class Lark(Serialize):
+             self.options.priority = 'normal'
+ 
+         if self.options.priority not in _VALID_PRIORITY_OPTIONS:
++            print("HIT TARGET") # target
++            exit(0)
+             raise ConfigurationError("invalid priority option: %r. Must be one of %r" % (self.options.priority, _VALID_PRIORITY_OPTIONS))
+         if self.options.ambiguity not in _VALID_AMBIGUITY_OPTIONS:
+             raise ConfigurationError("invalid ambiguity option: %r. Must be one of %r" % (self.options.ambiguity, _VALID_AMBIGUITY_OPTIONS))

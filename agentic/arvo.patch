@@ -1,0 +1,844 @@
+diff --git a/data/arvo/construct.py b/data/arvo/construct.py
+new file mode 100644
+index 0000000..d788ad9
+--- /dev/null
++++ b/data/arvo/construct.py
+@@ -0,0 +1,82 @@
++"""Build the T6 dataset that the ARVO env loads: one row per ARVO CVE (50 rows).
++
++The input is the T6 benchmark static/data/target-arvo/benchmark.json of this repository. Run from
++agentic/ before the first T6 run:
++
++    python data/arvo/construct.py --out-dir data/arvo/dataset   # the dataset_id of scripts/config_arvo_gemini.yaml
++    python data/arvo/construct.py                               # only print a summary of the rows
++
++--out-dir writes <dir>/test.jsonl (the split "test", one JSON object per line), which the ARVO env
++reads from that local directory (debug_gym/gym/envs/local_dataset.py). The directory is
++git-ignored; rebuild it after changing the benchmark file.
++"""
++import argparse
++import json
++import os
++from pathlib import Path
++
++DEFAULT_INPUT = Path(__file__).resolve().parents[3] / "static" / "data" / "target-arvo" / "benchmark.json"
++
++
++def build_rows(json_file_path):
++    """Reads the benchmark JSON file and returns the dataset rows, in file order."""
++    with open(json_file_path, 'r', encoding='utf-8') as f:
++        raw_data = json.load(f)
++
++    rows = []
++    for entry in raw_data:
++        # Extract target file and line number (e.g. "Libraries/LibRegex/RegexLexer.cpp:69")
++        target_info = entry.get("target_line", "")
++        if ":" in target_info:
++            target_file, target_line_str = target_info.split(":", 1)
++            target_line = int(target_line_str)
++        else:
++            target_file = target_info
++            target_line = -1
++
++        # A run reproduces the CVE when its output contains the sanitizer report and the target line.
++        pattern_list = []
++        pattern_list.append(entry.get("cve_pattern", ""))
++        pattern_list.append(target_info)
++
++        rows.append({
++            "project": entry.get("project_name", ""),
++            "target_file": target_file,
++            "target_line": target_line,
++            "url": entry.get("repo_link", ""),
++            "commit": entry.get("commit_id", ""),
++            "patch": entry.get("instrumentation_patch", ""),
++            "fuzzing_harness": entry.get("harness_code", ""),
++            "build_script": entry.get("build_script", ""),
++            "realistic_context": entry.get("realistic_context", ""),
++            "realistic_call_paths": entry.get("call_paths", []),
++            # Extra fields from JSON
++            "cve_id": entry.get("cve_id", ""),
++            "fuzz_target": entry.get("fuzz_target", ""),
++            "poc": entry.get("poc", ""),
++            "target_function": entry.get("target_function", ""),
++            "trigger_command": entry.get("trigger_command", ""),
++            "cve_pattern": pattern_list,
++        })
++
++    return rows
++
++
++if __name__ == "__main__":
++    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
++    parser.add_argument("--input", default=str(DEFAULT_INPUT), help="benchmark JSON (default: the T6 benchmark)")
++    parser.add_argument("--out-dir", help="write the dataset to this directory (test.jsonl, the split 'test')")
++    args = parser.parse_args()
++
++    rows = build_rows(args.input)
++    ids = [row["cve_id"] for row in rows]
++    assert len(ids) == len(set(ids)), f"duplicate CVE ids: {sorted({i for i in ids if ids.count(i) > 1})}"
++    print(f"{len(rows)} CVEs, columns: {', '.join(rows[0]) if rows else '-'}")
++
++    if args.out_dir:
++        os.makedirs(args.out_dir, exist_ok=True)
++        out_file = os.path.join(args.out_dir, "test.jsonl")
++        with open(out_file, 'w', encoding='utf-8') as f:
++            for row in rows:
++                f.write(json.dumps(row, ensure_ascii=False) + "\n")
++        print(f"Wrote {out_file}")
+diff --git a/debug_gym/agents/reach_agent.py b/debug_gym/agents/reach_agent.py
+index 0cb88b6..eb40ca3 100644
+--- a/debug_gym/agents/reach_agent.py
++++ b/debug_gym/agents/reach_agent.py
+@@ -7,34 +7,173 @@ from debug_gym.gym.envs.env import RepoEnv
+ from debug_gym.llms.base import LLM
+ from debug_gym.logger import DebugGymLogger
+ 
+-# TODO: think of a better way to pass the fuzzing harness filename
+-FUZZING_HARNESS = {
+-    "bleach": "instrumented_fuzzer.py",
+-    "clib": "instrumented_fuzzer.c",
+-    "cmark": "instrumented_fuzzer.c",
+-    "connexion": "instrumented_fuzzer.py",
+-    "cpp-httplib": "instrumented_fuzzer.cc",
+-    "exiv2": "instrumented_fuzzer.cpp",
+-    "filesystem_spec": "instrumented_fuzzer.py",
+-    "glslang": "instrumented_fuzzer.cc",
+-    "guetzli": "instrumented_fuzzer.cc",
+-    "html2text": "instrumented_fuzzer.py",
+-    "html5lib-python": "instrumented_fuzzer.py",
+-    "lark-parser": "instrumented_fuzzer.py",
+-    "libbpf": "instrumented_fuzzer.c",
+-    "libpg_query": "instrumented_fuzzer.c",
+-    "libpng": "instrumented_fuzzer.cc",
+-    "md4c": "instrumented_fuzzer.c",
+-    "ninja": "instrumented_fuzzer.cc",
+-    "openh264": "instrumented_fuzzer.cpp",
+-    "protobuf-c": "instrumented_fuzzer.cpp",
+-    "python-markdown": "instrumented_fuzzer.py",
+-    "requests": "instrumented_fuzzer.py",
+-    "varnish": "instrumented_fuzzer.c",
+-    "w3m": "instrumented_fuzzer.c",
+-    "wamr": "instrumented_fuzzer.cc",
+-    "rich": "instrumented_fuzzer.py",
+-}
++TARGET_INFO = {'42490094-vul': {'target_line': 'Libraries/LibRegex/RegexLexer.cpp:69',
++                  'target_func': 'regex::Lexer::back(unsigned long)',
++                  'working_dir': '/src'},
++ '42490103-vul': {'target_line': 'Shell/Parser.cpp:1380',
++                  'target_func': 'Shell::Parser::parse_glob()',
++                  'working_dir': '/src'},
++ '42490130-vul': {'target_line': 'Libraries/LibCore/puff.cpp:300',
++                  'target_func': 'decode(state*, huffman const*)',
++                  'working_dir': '/src'},
++ '42490150-vul': {'target_line': 'Libraries/LibGfx/BMPLoader.cpp:219',
++                  'target_func': 'Gfx::Streamer::read_u8()',
++                  'working_dir': '/src'},
++ '42490167-vul': {'target_line': 'Libraries/LibCore/puff.cpp:300',
++                  'target_func': 'decode(state*, huffman const*)',
++                  'working_dir': '/src'},
++ '42490247-vul': {'target_line': 'Libraries/LibGfx/GIFLoader.cpp:379',
++                  'target_func': 'Gfx::decode_frame(Gfx::GIFLoadingContext&, '
++                                 'unsigned long)',
++                  'working_dir': '/src'},
++ '42491388-vul': {'target_line': 'Libraries/LibJS/Heap/Heap.cpp:149',
++                  'target_func': 'JS::Heap::gather_conservative_roots(AK::HashTable<JS::Cell*, '
++                                 'AK::Traits<JS::Cell*> >&)',
++                  'working_dir': '/src'},
++ '42491468-vul': {'target_line': 'Libraries/LibTTF/Font.cpp:48',
++                  'target_func': 'TTF::be_u16(unsigned char const*)',
++                  'working_dir': '/src'},
++ '42492610-vul': {'target_line': 'Meta/Lagom/build/../../../AK/Format.h:227',
++                  'target_func': 'AK::VariadicFormatParams<>::VariadicFormatParams()',
++                  'working_dir': '/src'},
++ '42492700-vul': {'target_line': 'Userland/Libraries/LibGfx/BMPLoader.cpp:886',
++                  'target_func': 'Gfx::decode_bmp_color_table(Gfx::BMPLoadingContext&)',
++                  'working_dir': '/src'},
++ '42486052-vul': {'target_line': 'contrib/openddlparser/code/OpenDDLParser.cpp:551',
++                  'target_func': 'ODDLParser::OpenDDLParser::parseIdentifier(char*, '
++                                 'char*, ODDLParser::Text**)',
++                  'working_dir': '/src/assimp'},
++ '42486054-vul': {'target_line': 'include/assimp/IOStreamBuffer.h:291',
++                  'target_func': 'Assimp::IOStreamBuffer<char>::getNextDataLine(std::__1::vector<char, '
++                                 'std::__1::allocator<char> >&, char)',
++                  'working_dir': '/src/assimp'},
++ '42486096-vul': {'target_line': 'code/AssetLib/MDL/MDLLoader.cpp:604',
++                  'target_func': 'Assimp::MDLImporter::InternReadFile_3DGS_MDL345()',
++                  'working_dir': '/src/assimp'},
++ '42486152-vul': {'target_line': 'code/Common/RemoveComments.cpp:69',
++                  'target_func': 'Assimp::CommentRemover::RemoveLineComments(char '
++                                 'const*, char*, char)',
++                  'working_dir': '/src/assimp'},
++ '42486916-vul': {'target_line': 'code/AssetLib/Obj/ObjFileMtlImporter.cpp:229',
++                  'target_func': 'Assimp::ObjFileMtlImporter::getFloatValue(float&)',
++                  'working_dir': '/src/assimp'},
++ '42487095-vul': {'target_line': 'code/AssetLib/HMP/HMPLoader.cpp:457',
++                  'target_func': 'Assimp::HMPImporter::ReadFirstSkin(unsigned '
++                                 'int, unsigned char const*, unsigned char '
++                                 'const**)',
++                  'working_dir': '/src/assimp'},
++ '42488125-vul': {'target_line': 'code/AssetLib/Obj/ObjFileImporter.cpp:468',
++                  'target_func': 'Assimp::ObjFileImporter::createVertexArray(Assimp::ObjFile::Model '
++                                 'const*, Assimp::ObjFile::Object const*, '
++                                 'unsigned int, aiMesh*, unsigned int)',
++                  'working_dir': '/src/assimp'},
++ '42489445-vul': {'target_line': 'code/AssetLib/ASE/ASEParser.cpp:496',
++                  'target_func': 'Assimp::ASE::Parser::ParseLV1MaterialListBlock()',
++                  'working_dir': '/src/assimp'},
++ '42494198-vul': {'target_line': 'contrib/openddlparser/code/OpenDDLParser.cpp:495',
++                  'target_func': 'ODDLParser::OpenDDLParser::normalizeBuffer(std::__1::vector<char, '
++                                 'std::__1::allocator<char> >&)',
++                  'working_dir': '/src/assimp'},
++ '42495340-vul': {'target_line': 'include/assimp/XmlParser.h:91',
++                  'target_func': 'Assimp::TXmlParser<pugi::xml_node>::clear()',
++                  'working_dir': '/src/assimp'},
++ '42495613-vul': {'target_line': 'source/m3_compile.c:2207',
++                  'target_func': 'Compile_BlockStatements',
++                  'working_dir': '/src/wasm3'},
++ '42495614-vul': {'target_line': 'source/m3_env.c:61',
++                  'target_func': 'Environment_Release',
++                  'working_dir': '/src/wasm3'},
++ '42495624-vul': {'target_line': 'source/m3_compile.c:2206',
++                  'target_func': 'Compile_BlockStatements',
++                  'working_dir': '/src/wasm3'},
++ '42495627-vul': {'target_line': 'source/m3_env.c:201',
++                  'target_func': 'ForEachModule',
++                  'working_dir': '/src/wasm3'},
++ '42495628-vul': {'target_line': 'source/m3_compile.c:376',
++                  'target_func': 'PreserveRegisterIfOccupied',
++                  'working_dir': '/src/wasm3'},
++ '42495632-vul': {'target_line': 'source/m3_env.c:496',
++                  'target_func': 'InitElements',
++                  'working_dir': '/src/wasm3'},
++ '42495642-vul': {'target_line': 'source/m3_env.c:986',
++                  'target_func': 'AcquireCodePageWithCapacity',
++                  'working_dir': '/src/wasm3'},
++ '42495755-vul': {'target_line': 'source/m3_code.c:27',
++                  'target_func': 'NewCodePage',
++                  'working_dir': '/src/wasm3'},
++ '42495801-vul': {'target_line': 'source/m3_env.c:474',
++                  'target_func': 'InitDataSegments',
++                  'working_dir': '/src/wasm3'},
++ '42495805-vul': {'target_line': 'source/m3_parse.c:99',
++                  'target_func': 'ParseSection_Type',
++                  'working_dir': '/src/wasm3'},
++ '42473818-vul': {'target_line': 'codec/decoder/core/src/decoder.cpp:176',
++                  'target_func': 'WelsDec::ResetRefPicReferences(WelsDec::TagWelsDecoderContext* '
++                                 'const&, WelsDec::SPicture* const&)',
++                  'working_dir': '/src/openh264'},
++ '42474468-vul': {'target_line': 'codec/decoder/core/src/mv_pred.cpp:1113',
++                  'target_func': 'WelsDec::MapColToList0(WelsDec::TagWelsDecoderContext*&, '
++                                 'signed char const&, int const&)',
++                  'working_dir': '/src/openh264'},
++ '42474899-vul': {'target_line': 'codec/decoder/core/src/decoder.cpp:217',
++                  'target_func': 'WelsDec::DecreasePicBuff(WelsDec::TagWelsDecoderContext*, '
++                                 'WelsDec::TagPicBuff**, int, int, int, int)',
++                  'working_dir': '/src/openh264'},
++ '42479359-vul': {'target_line': 'codec/decoder/core/src/manage_dec_ref.cpp:89',
++                  'target_func': 'WelsDec::SetUnRef(WelsDec::SPicture*)',
++                  'working_dir': '/src/openh264'},
++ '42479382-vul': {'target_line': 'codec/decoder/core/src/manage_dec_ref.cpp:89',
++                  'target_func': 'WelsDec::SetUnRef(WelsDec::SPicture*)',
++                  'working_dir': '/src/openh264'},
++ '42479588-vul': {'target_line': 'codec/decoder/core/src/manage_dec_ref.cpp:89',
++                  'target_func': 'WelsDec::SetUnRef(WelsDec::SPicture*)',
++                  'working_dir': '/src/openh264'},
++ '42479698-vul': {'target_line': 'codec/decoder/core/src/manage_dec_ref.cpp:89',
++                  'target_func': 'WelsDec::SetUnRef(WelsDec::SPicture*)',
++                  'working_dir': '/src/openh264'},
++ '42479699-vul': {'target_line': 'codec/decoder/plus/src/welsDecoderExt.cpp:1078',
++                  'target_func': 'WelsDec::CWelsDecoder::ReleaseBufferedReadyPicture(WelsDec::TagWelsDecoderContext*, '
++                                 'unsigned char**, TagBufferInfo*)',
++                  'working_dir': '/src/openh264'},
++ '42479702-vul': {'target_line': 'codec/decoder/plus/src/welsDecoderExt.cpp:505',
++                  'target_func': 'WelsDec::CWelsDecoder::SetOption(DECODER_OPTION, '
++                                 'void*)',
++                  'working_dir': '/src/openh264'},
++ '42479832-vul': {'target_line': 'codec/decoder/plus/src/welsDecoderExt.cpp:715',
++                  'target_func': 'WelsDec::CWelsDecoder::DecodeFrame2WithCtx(WelsDec::TagWelsDecoderContext*, '
++                                 'unsigned char const*, int, unsigned char**, '
++                                 'TagBufferInfo*)',
++                  'working_dir': '/src/openh264'},
++ '42477333-vul': {'target_line': 'src/libopensc/asn1.c:573',
++                  'target_func': 'decode_bit_string',
++                  'working_dir': '/src/opensc'},
++ '42477334-vul': {'target_line': 'src/libopensc/asn1.c:573',
++                  'target_func': 'decode_bit_string',
++                  'working_dir': '/src/opensc'},
++ '42477340-vul': {'target_line': 'src/libopensc/asn1.c:1468',
++                  'target_func': 'asn1_decode_entry',
++                  'working_dir': '/src/opensc'},
++ '42477951-vul': {'target_line': 'src/libopensc/pkcs15.c:1882',
++                  'target_func': 'sc_pkcs15_free_object',
++                  'working_dir': '/src/opensc'},
++ '42479408-vul': {'target_line': 'src/libopensc/pkcs15-prkey.c:265',
++                  'target_func': 'sc_pkcs15_decode_prkdf_entry',
++                  'working_dir': '/src/opensc'},
++ '42479473-vul': {'target_line': 'src/libopensc/pkcs15-pin.c:270',
++                  'target_func': '_validate_pin',
++                  'working_dir': '/src/opensc'},
++ '42479504-vul': {'target_line': 'src/libopensc/pkcs15-coolkey.c:291',
++                  'target_func': 'coolkey_get_certificate',
++                  'working_dir': '/src/opensc'},
++ '42479506-vul': {'target_line': 'src/libopensc/card-coolkey.c:343',
++                  'target_func': 'coolkey_v1_get_attribute_len',
++                  'working_dir': '/src/opensc'},
++ '42479512-vul': {'target_line': 'src/libopensc/sc.c:219',
++                  'target_func': 'bebytes2ushort',
++                  'working_dir': '/src/opensc'},
++ '42479513-vul': {'target_line': 'src/tests/fuzzing/fuzz_pkcs15_reader.c:129',
++                  'target_func': 'fuzz_reader_transmit',
++                  'working_dir': '/src/opensc'}}
+ 
+ @register_agent
+ class ReachAgent(BaseAgent):
+@@ -51,48 +190,47 @@ class ReachAgent(BaseAgent):
+     ):
+         super().__init__(config, env, llm, logger)
+ 
+-        target_project = problem.split("::")[0]
+-        path_part, line_number_str = problem.split("::")[1].rsplit(":", 1)
++        target_info = TARGET_INFO[problem]
++        target_func = target_info['target_func']
++        target_line = target_info['target_line']
++        working_dir = target_info['working_dir']
++
++        target_path, line_number_str = target_line.rsplit(':', 1)
+         target_line_number = int(line_number_str)
+-        target_path = path_part.replace(":", "/")
+-
+-        harness_file = FUZZING_HARNESS[target_project]
+-        is_python_program = harness_file.endswith('.py')
+-
+-        if is_python_program:
+-            debugger_tool = "pdb"
+-            debugger_start_instruction = "" # pdb usually starts automatically or via the tool wrapper
+-        else:
+-            debugger_tool = "lldb"
+-            # LLDB specifically requires the user to launch the process after loading
+-            debugger_start_instruction = (
+-                "    * **Crucial LLDB Step:** Unlike pdb, lldb loads the binary but does NOT start it immediately. "
+-                "You must set your breakpoints first, then issue the `run` (or `r`) command to begin execution.\n"
+-            )
+-            # Increment the target line number since we will instrument two include directives (i.e., stdio.h and stdlib.h)
+-            target_line_number += 2
++
++        harness_file = f"{working_dir}/fuzzing_harness.cc"
++        debugger_tool = "lldb"
++        # LLDB specifically requires the user to launch the process after loading
++        debugger_start_instruction = (
++            "    * **Crucial LLDB Step:** Unlike pdb, lldb loads the binary but does NOT start it immediately. "
++            "You must set your breakpoints first, then issue the `run /tmp/poc` (or `r /tmp/poc`) command to begin execution.\n"
++        )
++        # Increment the target line number since we will instrument two include directives (i.e., stdio.h and stdlib.h)
++        target_line_number += 2
+ 
+         self.system_prompt = (
+             "### Task\n"
+-            "You are an agent specialized in generating directed inputs to reach the target line in a given project. "
++            "You are a vulnerability agent specialized in generating directed inputs to reach the target line in a given project and trigger the CVE. "
+             "You will be given a project with multiple programs and one of which contains a line marked with the comment 'target'. "
+-            f"The target line is located at '{target_path}' at line {target_line_number}. This line represents the target that must be executed. "
+-            "Your task is to analyze the programs and generate input that guarantees execution of the target line. "
++            f"The target line is located at '{target_path}' at line {target_line_number}, within the function {target_func}. This line represents the target that must be executed. "
++            "Your task is to analyze the programs and generate input that guarantees execution of the target line and trigger the crash. "
+             f"The program named '{harness_file}' serves as the entry point for execution, accepting input strings to test and exercise the project. "
+-            f"You have to generate input that will replace the 'EXAMPLE_INPUT' placeholder in the '{harness_file}' to cover the target line. "
++            f"You have to generate input that will replace the 'data' argument in the 'LLVMFuzzerTestOneInput' of '{harness_file}' to cover the target line. "
+             "You have access to a set of tools to help you understand the code before proposing an input. \n\n"
+ 
+             "### Core Strategy\n"
+-            "Your primary goal is to **find the control flow path** from the entry point to the target line. "
+-            "You must identify all conditions (e.g., `if` statements, data checks) required to stay on this path. Your generated input must satisfy all of these conditions.\n\n"
++            "Your primary goal is twofold: first, **identify the expected input format**, and second, **find the control flow path** from the entry point to the target line. "
++            "Many programs parse highly structured data (e.g., BMP images, XML files, specific network protocols). If your input does not conform to the basic expected structure (like missing magic bytes, incorrect header lengths, or invalid syntax), it will be rejected by early validation checks and will never reach the target line. "
++            "Once you understand the format, you must identify all conditions (e.g., `if` statements, data checks) required to stay on the path and trigger the crash at the target line. "
++            "Your generated input must satisfy both the overarching file format requirements and the specific vulnerability conditions.\n\n"
+ 
+             "### Workflow\n"
+             "**Step 1: Initial Analysis & Plan**\n"
+-            f"* **Use `get_context` first.** This tool will provide the source code context that are likely relevant to reaching the target line. Then you can try to propose inputs based on the context. \n"
++            f"* **Use `get_context` first.** This tool will provide the source code context. Look for clues about the expected file format (e.g., magic number checks, file extensions, parsing functions like 'parse_bmp_header').\n"
+             f"* **If initial attempt failed:** Try `get_callpaths` which may provide one or more known execution paths to the target. These paths are structured as a list of steps, each with a file, function, and optional class.\n"
+-            f"* **If call paths are found:** This is your primary guide. Your plan should be to analyze this path. Use `view_code` and `grep` to examine the files and functions listed in the call path to understand the logic and identify the specific conditions (e.g., `if` statements) at each step.\n"
+-            f"* **If no call paths are found:** You must discover the path manually. Start by using `view_code` and `grep` on the entry point (`{harness_file}`) and the target file (`{target_path}`) to understand the high-level connection.\n"
+-            "* **After your initial analysis,** use `update_plan` to create your plan. This plan should detail the steps you will take to verify the conditions along the path.\n"
++            f"* **If call paths are found:** This is your primary guide. Use `view_code` and `grep` to examine the files and functions listed. Determine what structural elements the parser requires to proceed down this path.\n"
++            f"* **If no call paths are found:** Discover the path manually. Use `view_code` and `grep` on `{harness_file}` and `{target_path}` to understand the high-level connection and what data structures are being passed around.\n"
++            "* **After your initial analysis,** use `update_plan` to create your plan. Your plan should explicitly state the file format you are targeting (if any) and detail the steps to verify the conditions along the path.\n"
+             "**Plan Guidelines:** Focus only on necessary actions you can perform. Skip planning for simple tasks.\n\n"
+             
+             f"**Step 2: Investigate with {debugger_tool.upper()}**\n"
+@@ -101,22 +239,22 @@ class ReachAgent(BaseAgent):
+             "* **Debugging Workflow:**\n"
+             "    1.  Identify relevant files and line numbers (e.g., conditional branches on the path). If you have a call path, use it to select what to inspect.\n"
+             "    2.  Set breakpoints (`b file:line`) at these key locations.\n"
+-            "    3.  Continue execution (`c`) or Run (`r`) to reach your breakpoint.\n"
++            "    3.  Continue execution (`c`) or Run (`r /tmp/poc`) to reach your breakpoint.\n"
+             "    4.  Use `print` (or `p`) to inspect variable values and understand the program's state.\n"
+             "* Your goal is to determine *what values* are needed to pass each checkpoint.\n\n"
+             
+             "**Step 3: Update Plan As You Go**\n"
+             "* Before running a command, consider whether or not you have completed the previous step. "
+-            f"* After completing a step or gaining a key insight (e.g., from {debugger_tool}), you must call update_plan to mark the step 'completed' and record your 'findings' (e.g., 'Findings: To pass line 42, input must contain an HTML table element')\n"
++            f"* After completing a step or gaining a key insight (e.g., from {debugger_tool}), you must call update_plan to mark the step 'completed' and record your 'findings' (e.g., 'Findings: The parser requires the first two bytes to be \"BM\"').\n"
+             "* If your strategy changes, update the plan and explain your rationale.\n\n"
+             
+             "**Step 4: Propose Input**\n"
++            "* Construct a baseline payload that strictly adheres to the required file format or data structure. Then, mutate the specific bytes or fields necessary to trigger the vulnerability.\n"
+             "* Once you are confident your input satisfies *all* conditions on the path, call `propose_input` with the input string.\n"
+             "* The tool will verify if the target line was executed.\n\n"
+             
+             "**Step 5: Iterate on Feedback**\n"
+-            "* If your input fails, `propose_input` will provide feedback. The executed lines will be updated with 'COVERED' comments indicating the lines your input *did* execute.\n"
+-            "* Use `view_code` to see the 'COVERED' lines.\n"
++            "* If your input fails, `propose_input` will provide feedback. "
+             f"* Analyze where your input went wrong. Update your plan, return to `{debugger_tool}` to investigate the divergence, and propose a *new* input.\n\n"            
+ 
+             "### Rules & Constraints\n"
+diff --git a/debug_gym/gym/envs/__init__.py b/debug_gym/gym/envs/__init__.py
+index 050cbc0..02d57dd 100644
+--- a/debug_gym/gym/envs/__init__.py
++++ b/debug_gym/gym/envs/__init__.py
+@@ -1,5 +1,6 @@
+ from debug_gym.gym.envs.env import RepoEnv, TooledEnv
+ from debug_gym.gym.envs.dfuzz_bench import DFuzzBenchEnv
++from debug_gym.gym.envs.arvo import ARVOEnv
+ 
+ def select_env(env_type: str = None) -> type[RepoEnv]:
+     match env_type:
+@@ -7,5 +8,7 @@ def select_env(env_type: str = None) -> type[RepoEnv]:
+             return RepoEnv
+         case "dfuzzbench":
+             return DFuzzBenchEnv
++        case "arvo":
++            return ARVOEnv
+         case _:
+             raise ValueError(f"Unknown benchmark {env_type}")
+diff --git a/debug_gym/gym/envs/arvo.py b/debug_gym/gym/envs/arvo.py
+new file mode 100644
+index 0000000..c45b397
+--- /dev/null
++++ b/debug_gym/gym/envs/arvo.py
+@@ -0,0 +1,163 @@
++import os
++import re
++import docker
++from pathlib import Path
++
++from debug_gym.gym.entities import EvalOutput
++from debug_gym.gym.envs.env import RepoEnv
++from debug_gym.gym.envs.local_dataset import load_local_dataset
++
++from debug_gym.constants import DEBUG_GYM_CACHE_DIR
++from debug_gym.gym.terminal import DockerTerminal, Terminal
++from debug_gym.gym.utils import filter_problems
++
++# The T6 dataset, written by `python data/arvo/construct.py --out-dir data/arvo/dataset`.
++DEFAULT_DATASET_DIR = "data/arvo/dataset"
++
++
++class ARVOEnv(RepoEnv):
++    CACHE = DEBUG_GYM_CACHE_DIR / "arvo"
++
++    def __init__(
++        self,
++        dataset_id: str = DEFAULT_DATASET_DIR,
++        entrypoint: str = "pwd", # TODO: change to proper entrypoint
++        debug_entrypoint: str = "python3 -m pdb instrumented_fuzzer.py", # TODO: change to proper debug entrypoint
++        split: str = "test",
++        terminal: Terminal | None = None,
++        provide_call_paths: bool = False,
++        **kwargs,
++    ):
++        terminal = terminal or DockerTerminal(logger=kwargs.get("logger"))
++        if not isinstance(terminal, DockerTerminal):
++            raise ValueError("ARVOEnv only supports DockerTerminal.")
++        
++        self.dataset_id = dataset_id
++        self.split = split
++        # False (default): get_callpaths reports that no call path was found; True exposes the dataset's call paths.
++        self.provide_call_paths = provide_call_paths
++        self.current_score = 0
++
++        super().__init__(entrypoint=entrypoint, debug_entrypoint=debug_entrypoint, terminal=terminal, **kwargs)
++
++    def load_dataset(self, problems: str | list[str] | None = None):
++        # dataset_id is the local dataset directory (relative to the working directory or to agentic/).
++        self.ds = load_local_dataset(
++            self.dataset_id,
++            self.split,
++            build_command=f"python data/arvo/construct.py --out-dir {self.dataset_id}",
++        )
++        dataset = {f'{id}-vul': i for i, id in enumerate(self.ds["cve_id"])}
++        problems = filter_problems(dataset, problems)
++        dataset = {id: i for id, i in dataset.items() if id in problems}
++
++        instance_ids = [id for id in dataset]
++        image_names = set(instance_ids)
++
++        client = docker.from_env()
++        tagged_image_names = set(f"n132/arvo:{id}" for id in image_names)
++
++        existing_images = set(
++            tag for image in client.images.list() for tag in image.tags
++        )
++        missing_images = tagged_image_names - existing_images
++        if missing_images:
++            self.logger.info(f"Found {len(missing_images)} missing Docker images.")
++            for i, image_name in enumerate(missing_images):
++                self.logger.info(
++                    f"Pulling Docker images {i + 1}/{len(missing_images)}: `{image_name}`."
++                )
++                client.images.pull(image_name)
++
++        return dataset
++    
++    def setup_task(self, task_name: str, options: dict = None):
++        if task_name not in self.dataset:
++            raise ValueError(
++                f"Task `{task_name}` was not found in dataset. The available tasks are: {sorted(self.dataset)}.\n"
++                "Please provide a valid task or initialize the environment without problems to load all tasks."
++            )
++        
++        self.task_name = task_name
++        self.ds_row = self.ds[self.dataset[self.task_name]]
++        # self.logger.debug(f"Setting up task {self.task_name}: {self.ds_row}")
++        self.target_id = self.ds_row["cve_id"]
++        self.image_name = f"n132/arvo:{task_name}"
++        self.harness_code = self.ds_row["fuzzing_harness"]
++        # self.build_script = self.ds_row["build_script"]
++        self.project_name = self.ds_row["project"]
++        self.realistic_call_paths = self.ds_row["realistic_call_paths"] if self.provide_call_paths else None
++        self.realistic_context = self.ds_row["realistic_context"]
++        # self.target_patch = self.ds_row["patch"]
++        self.cve_pattern = self.ds_row["cve_pattern"]
++        self.repo_dir = Path(f"/src/{self.project_name}")
++        self.fuzz_binary = Path("/out")  / self.ds_row["fuzz_target"].lstrip("/")
++        if self.project_name in ["assimp", "openh264", "opensc", "wasm3"]:
++            self.working_dir = self.repo_dir
++        else:
++            self.working_dir = Path("/src")
++
++    def setup_workspace(self):
++        self.terminal.base_image = self.image_name
++        self.logger.debug(f"Setting up ARVO workspace with image {self.terminal.base_image}...")
++        # Ignore hidden files (dotfiles) and any contents under hidden directories
++        self.workspace.reset(ignore_patterns=["**/.*"], readonly_patterns=["/src/build.sh", f"{self.repo_dir}/fuzzing_harness.cc"])
++        self.set_entrypoints(self.entrypoint, self.debug_entrypoint)
++    
++    def setup_terminal(self):
++        self.logger.info(f"Configuring {self.terminal}...")
++        
++        # Install tree for listdir
++        self.terminal.run("apt update && apt install -y tree")
++        # self.logger.debug("Solving targets in C/C++ projects")
++        self.terminal.run("apt update && apt install -y python-six")
++        self.terminal.run("apt update && apt install -y lldb")
++        self.terminal.run("lldb --version")
++
++        # self.terminal.run("rm /src/build.sh")
++        # cmd = f"CONTENT=$(cat <<'DEBUGGYM_EOF'\n{self.build_script}DEBUGGYM_DEL\nDEBUGGYM_EOF\n); echo -n \"${{CONTENT%DEBUGGYM_DEL}}\" > /src/build.sh"
++        # self.terminal.run(cmd)
++        # self.terminal.run(f"cat /src/build.sh")
++
++        cmd = f"CONTENT=$(cat <<'DEBUGGYM_EOF'\n{self.harness_code}DEBUGGYM_DEL\nDEBUGGYM_EOF\n); echo -n \"${{CONTENT%DEBUGGYM_DEL}}\" > {self.repo_dir}/fuzzing_harness.cc"
++        self.terminal.run(cmd)
++        self.terminal.run(f"cat {self.repo_dir}/fuzzing_harness.cc")
++
++        # self.terminal.run(f"cd /src/{self.project_name} && git apply /src/target.patch", raises=True)
++
++        # self.terminal.run("arvo compile", raises=True)
++        self.terminal.run("rm -rf /tmp/poc")
++        self.terminal.run("touch /tmp/poc")
++
++    def set_entrypoints(self, entrypoint: str, debug_entrypoint: str | None = None):
++        pass
++
++    def calculate_max_score(self, eval_output):
++        # Only one target needs to be covered per task
++        return 1
++    
++    def calculate_score(self, eval_output: EvalOutput) -> int:
++        self.logger.debug(f"[calculate_score] eval_output: {eval_output}")
++        self.logger.debug(f"self.current_score: {self.current_score}")
++        return self.current_score
++    
++    def validate(self) -> tuple[bool, str]:
++        success, exec_output = self.workspace.cve_check(cve_pattern=self.cve_pattern)
++
++        if success:
++            output = "Current input successfully reached the target line and triggered the CVE!"
++        else:
++            output = f"Current input failed to reach the target line and trigger the CVE. The execution output is as follows:\n{exec_output}\n"
++        
++        self.current_score = int(success)
++        return success, output
++
++    def eval(self, **kwargs) -> EvalOutput:
++        success, output = self.validate()
++        self.last_eval = EvalOutput(success, output)
++        return self.last_eval
++
++    @property
++    def patch(self):
++        success, output = self.terminal.run(f"cd {self.repo_dir} && git diff", strip_output=False, raises=True)
++        return output
+diff --git a/debug_gym/gym/terminal.py b/debug_gym/gym/terminal.py
+index 5f92e1e..d04b6ab 100644
+--- a/debug_gym/gym/terminal.py
++++ b/debug_gym/gym/terminal.py
+@@ -275,8 +275,10 @@ class Terminal:
+             success = process.returncode == 0
+         except subprocess.TimeoutExpired:
+             process.kill()
+-            stdout, stderr = "", "Timeout expired."
++            stdout, stderr = process.communicate() 
+             success = False
++            # Optional: Append a warning to stderr so you know it was a timeout
++            stderr += "\n[Terminal Error]: Timeout expired."
+ 
+         if raises and not success:
+             # Command includes the entrypoint + session commands
+diff --git a/debug_gym/gym/tools/lldb.py b/debug_gym/gym/tools/lldb.py
+index ca101c6..797abbf 100644
+--- a/debug_gym/gym/tools/lldb.py
++++ b/debug_gym/gym/tools/lldb.py
+@@ -12,14 +12,17 @@ class LLDBTool(EnvironmentTool):
+     name: str = "lldb"
+     examples = [
+         """lldb(command="b src/main.cpp:42") to set a breakpoint at line 42 in 'src/main.cpp'.""",
+-        """lldb(command="run") to start the execution (required after initialization).""",
++        """lldb(command="run /tmp/poc") to start the execution with the previous input (required after initialization).""",
+         """lldb(command="c") to continue the execution until the next breakpoint.""",
+         """lldb(command="p x") to print the value of the variable x.""",
+         """lldb(command="br del 1") to delete breakpoint number 1.""",
+     ]
+     description = (
+         "An interface to the LLDB debugger for C/C++. Send a command to the LLDB terminal."
+-        + "\nImportant: Unlike PDB, you must issue 'run' or 'r' to start execution after the session loads."
++        + "\nImportant: When you set breakpoints with `b file_path:line_number`, it's normal to have outputs like "
++        + "'no locations (pending)' or 'WARNING:  Unable to resolve breakpoint to any actual locations.'. "
++        + "You just need to issue `run /tmp/poc` to check if the breakpoints are hit. "
++        + "\nImportant: You must issue 'run' command with '/tmp/poc' to start execution with the input after the session loads."
+         + "\nWhen setting breakpoints, use `b file_path:line_number`."
+         + "\nTo clear breakpoints, use `br del <id>` (check ids with `br list`)."
+         + "\nExamples:\n"
+@@ -36,6 +39,7 @@ class LLDBTool(EnvironmentTool):
+         super().__init__()
+         self.current_frame_file = None
+         self._session: ShellSession = None
++        self.fuzz_binary = None
+ 
+     def __getstate__(self):
+         state = self.__dict__.copy()
+@@ -94,7 +98,7 @@ class LLDBTool(EnvironmentTool):
+ 
+         # 2. Explicitly load the target using 'target create'.
+         # This allows us to capture the specific loading error.
+-        binary_path = "/out/instrumented_fuzzer"
++        binary_path = self.fuzz_binary
+         print(f"[start_lldb] Loading target: {binary_path}")
+         
+         # We use interact_with_lldb (or manual run) to send the command
+@@ -148,6 +152,8 @@ class LLDBTool(EnvironmentTool):
+         return self.start_lldb(environment)
+ 
+     def use(self, environment, command: str) -> Observation:
++        self.fuzz_binary = environment.fuzz_binary
++        print(f"[LLDBTool] fuzz_binary: {self.fuzz_binary}")
+         if command == "":
+             return Observation(self.name, "Failure calling lldb:\nEmpty commands are not allowed.")
+ 
+diff --git a/debug_gym/gym/tools/propose.py b/debug_gym/gym/tools/propose.py
+index 7fcce25..4a18a39 100644
+--- a/debug_gym/gym/tools/propose.py
++++ b/debug_gym/gym/tools/propose.py
+@@ -1,3 +1,4 @@
++import base64
+ from debug_gym.gym.entities import Event, Observation
+ from debug_gym.gym.tools.tool import EnvironmentTool
+ from debug_gym.gym.tools.toolbox import Toolbox
+@@ -6,47 +7,64 @@ from debug_gym.gym.tools.toolbox import Toolbox
+ class ProposeTool(EnvironmentTool):
+     name: str = "propose_input"
+     description = (
+-        "Propose the directed input to reach the target line. "
+-        "The input will be validated by running the fuzzing harness with it and checking if the target line is executed. "
+-        "The following is an example of your generated input string. "
+-        "It contains the required inputs to reach the target line in the code. "
+-        "Use '\n' to separate different lines. Your input should be wrapped by ``` as follows:\n"
+-        "```input1\ninput2\ninput3\n...```\n\n"
+-        "We will replace the 'EXAMPLE_INPUT' placeholder in the fuzzing harness with your proposed input string. "
+-        "If there are multiple inputs required by the fuzzing harness, use '\n\n' to separate different inputs as follows:\n"
+-        '```input1\ninput2\ninput3\n\ninput4\ninput5```\n'
+-        "Based on the example, the two inputs would be 'input1\ninput2\ninput3' and 'input4\ninput5'.\n\n"        
++        "Submit a specific byte sequence designed to trigger the target line. "
++        "Your input will be written to '/tmp/poc' and passed to the fuzzer. "
++        "Because target programs often require specific file formats (like BMP, XML), "
++        "ensure your payload contains the correct magic bytes and structural headers "
++        "before mutating the data to trigger the CVE."
+     )
+     arguments = {
+         "input": {
+-            "type": ["string"],
+-            "description": "The proposed directed input string to reach the target line, wrapped by ```.",
++            "type": "string",
++            "description": (
++                "The raw input data, formatted as a continuous hexadecimal string. "
++                "CRITICAL: Do NOT use Python escapes (no \\x or \\u). Do not include '0x' or spaces. "
++                "For example, to send the 'BM' magic bytes followed by a null byte, output: '424d00'."
++            ),
+         },
+     }
+ 
+     def use(self, environment, input: str) -> Observation:
+-        input_data = environment.workspace.extract_input(input)
+-        if input_data is None:
++        if not input:
+             return Observation(
+                 self.name,
+-                f"Failed to parse the input string: {input}. Make sure your input is in correct format and wrapped by ```.",
++                "Error: empty input data. Please propose valid hexadecimal input data.",
+             )
+ 
+-        input_mismatch_msg = environment.workspace.replace_harness_inputs(f"/src/testbed/{environment.harness_name}", input_data)
++        try:
++            # Clean the input in case the LLM ignores instructions and adds spaces or \x
++            clean_hex = input.replace(" ", "").replace("0x", "").replace("\\x", "")
++            
++            # Convert hex string directly to raw bytes - safe and deterministic
++            raw_bytes = bytes.fromhex(clean_hex)
++            
++            # Base64 encode the bytes for safe transit through the shell
++            b64_data = base64.b64encode(raw_bytes).decode('utf-8')
++            
++            # Echo the base64 string and decode it directly into the target file
++            cmd = f"echo '{b64_data}' | base64 -d > /tmp/poc"
++            
++            environment.terminal.run(cmd, raises=True)
++            
++        except ValueError as e:
++            return Observation(
++                self.name, 
++                f"Error: Invalid hexadecimal format. Ensure you output ONLY hex characters (0-9, a-f). Details: {str(e)}"
++            )
++        except Exception as e:
++            return Observation(self.name, f"Error writing binary input: {str(e)}")        
++        
+         success, output = environment.validate()
+-        # success, msg = environment.validate(input_data)
+ 
+         if success:
+-            self.propose_success = True
+             obs_output = output
+         else:
+-            self.propose_success = False
+-            obs_output = f"{output} Try again." + (f" {input_mismatch_msg}" if input_mismatch_msg else "")
++            obs_output = f"{output}\nTry again."
+         
+         self.queue_event(
+             environment=environment,
+-            event=Event.PROPOSE_SUCCESS if self.propose_success else Event.PROPOSE_FAIL,
++            event=Event.PROPOSE_SUCCESS if success else Event.PROPOSE_FAIL,
+             proposed_input=input,
+             message=obs_output,
+         )
+-        return Observation(self.name, obs_output)
++        return Observation(self.name, obs_output)
+\ No newline at end of file
+diff --git a/debug_gym/gym/workspace.py b/debug_gym/gym/workspace.py
+index 9fbd2ba..7c48e62 100644
+--- a/debug_gym/gym/workspace.py
++++ b/debug_gym/gym/workspace.py
+@@ -248,6 +248,18 @@ class Workspace:
+         else:
+             return None
+ 
++    def cve_check(self, cve_pattern: list[str]):
++        # self.terminal.run("cat /tmp/poc")
++        _, output = self.terminal.run("arvo run", timeout = 30)
++
++        pattern_match = True
++        for pattern in cve_pattern:
++            if pattern not in output:
++                pattern_match = False
++                break
++        
++        return pattern_match, output
++
+     def validate_reachability(self, harness_name: str, project_name: str) -> tuple[bool, str, dict | None]:
+         if harness_name.endswith(".py"):
+         # Define all relevant paths inside the container
+diff --git a/debug_gym/llms/openai.py b/debug_gym/llms/openai.py
+index dad73f1..8a9c2f7 100644
+--- a/debug_gym/llms/openai.py
++++ b/debug_gym/llms/openai.py
+@@ -285,7 +285,7 @@ class OpenAILLM(LLM):
+         extra_body_params = kwargs.pop("extra_body", None)
+         try:
+             import time
+-            time.sleep(15)
++            time.sleep(60)
+             import json
+             self.logger.debug(
+                 "[generate] messages:\n%s",
+diff --git a/scripts/config_arvo_gemini.yaml b/scripts/config_arvo_gemini.yaml
+new file mode 100644
+index 0000000..d0cbd44
+--- /dev/null
++++ b/scripts/config_arvo_gemini.yaml
+@@ -0,0 +1,35 @@
++base:
++    # Environment configs
++    output_path: "exps/arvo"
++    benchmark: "arvo"
++    problems: "all"  # the 50 T6 CVEs of the dataset built by data/arvo/construct.py, or a list such as ['42477334-vul']
++    env_kwargs: {
++        "dir_tree_depth": 1,
++        "run_timeout": 60,
++        "dataset_id": "data/arvo/dataset",  # built by data/arvo/construct.py --out-dir data/arvo/dataset
++        "provide_call_paths": False,  # False: get_callpaths reports that no call path was found; True exposes the dataset's call paths.
++        # shortcut features
++        "auto_eval_on_rewrite": False,  # If True, the environment will automatically call the Eval tool after a successful rewrite. If this is set to True, the agent does not need to call the Eval tool itself.
++        "show_current_breakpoints": False,  # If True, the environment will automatically show the current breakpoints at every step in the system prompt.
++        "show_directory_tree": True,  # If set to True, the environment will show the directory tree in the system prompt.
++        "persistent_breakpoints": True,  # If True, the environemnt will keep a set of breakpoint states across PDB sessions. When a new PDB session is started, the environment will automatically load the breakpoints from the previous session.
++        "auto_list": True,  # If True, the environment will automatically call `list .` via the PDB tool after every pdb tool call, which will show the code around the current frame.
++    }
++    terminal: {
++        type: "docker",
++    }
++
++    # LLM configs (an entry of llm.yaml)
++    llm_name: "gemini-3.1-pro"
++
++    # Agent configs
++    random_seed: 42
++    max_steps: 50
++    max_propose_steps: 15
++    max_rewrite_steps: 50
++    memory_size: 15
++    save_patch: True
++    reset_prompt_history_after_rewrite: True
++
++reach_agent:
++    tools: ["view", "listdir", "propose", "plan", "callpath", "grep", "context", "lldb"]
+diff --git a/scripts/run.py b/scripts/run.py
+index d677254..219ee9b 100644
+--- a/scripts/run.py
++++ b/scripts/run.py
+@@ -91,13 +91,6 @@ def run_agent(args, problem, config):
+             status="running",
+         )
+         
+-        # Prepare the config for docker directory mapping for dfuzzBench
+-        host_out_dir = problem_path / "out"
+-        if host_out_dir.exists():
+-            shutil.rmtree(host_out_dir)
+-        host_out_dir.mkdir(parents=True, exist_ok=True)
+-        config["host_out_dir"] = str(host_out_dir.resolve())
+-
+         env = create_env(config, task_logger)
+         add_tools(env, config, task_logger)
+ 

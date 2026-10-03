@@ -1,0 +1,13 @@
+diff --git a/rich/text.py b/rich/text.py
+index b57d77c2..f81fa15d 100644
+--- a/rich/text.py
++++ b/rich/text.py
+@@ -410,6 +410,8 @@ class Text(JupyterMixin):
+     def plain(self, new_text: str) -> None:
+         """Set the text to a new value."""
+         if new_text != self.plain:
++            print("HIT TARGET") # target
++            exit(0)
+             sanitized_text = strip_control_codes(new_text)
+             self._text[:] = [sanitized_text]
+             old_length = self._length

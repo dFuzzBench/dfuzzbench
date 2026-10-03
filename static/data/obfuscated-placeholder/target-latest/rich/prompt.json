@@ -1,0 +1,180 @@
+{
+ "harness_file": "harness.py",
+ "harness_name": "prog1.py",
+ "input_example": "This program requires one input string. If your generated input is as follows:\n```\ninput\\ninput\n```\nWe will replace the `var2` variable with that string in the `TestOneInput()` function and the fuzzer will then run with that input.",
+ "project": "project1",
+ "renamed": {
+  "Console": "func1",
+  "ListElement": "Type6",
+  "Markdown": "func2",
+  "PygmentsSyntaxTheme": "Type4",
+  "Segment": "Type7",
+  "Style": "Type1",
+  "Syntax": "Type2",
+  "Table": "Type5",
+  "Text": "Type3",
+  "__rich_console__": "func7",
+  "_get_cells": "func18",
+  "_get_code_index_for_syntax_position": "func10",
+  "_make_ansi_codes": "func11",
+  "_write_buffer": "func6",
+  "adjust_line_length": "func21",
+  "check_text": "func5",
+  "color_system": "var8",
+  "console": "var1",
+  "data": "var3",
+  "default_lexer": "func13",
+  "divide": "func15",
+  "extend_style": "func23",
+  "fdp": "var4",
+  "file": "var7",
+  "get_character_cell_size": "func20",
+  "get_style_for_token": "func16",
+  "highlight": "func9",
+  "join": "func14",
+  "lexer": "func12",
+  "markdown": "var2",
+  "parsed": "var5",
+  "pick_first": "func8",
+  "plain": "func22",
+  "print": "func3",
+  "rich": "project1",
+  "set_cell_size": "func17",
+  "size": "func4",
+  "stylize": "func19",
+  "truecolor": "var9",
+  "width": "var6"
+ },
+ "renamed_paths": {
+  "dir:rich": "dir1",
+  "file:cells": "file6",
+  "file:console": "file1",
+  "file:markdown": "file2",
+  "file:segment": "file8",
+  "file:style": "file3",
+  "file:syntax": "file4",
+  "file:table": "file7",
+  "file:text": "file5",
+  "prog:fuzzer": "prog1"
+ },
+ "targets": {
+  "easy": {
+   "rich:cells.py:89": {
+    "function": "func20",
+    "path": "dir1/file6.py"
+   },
+   "rich:console.py:1029": {
+    "function": "func1::func4",
+    "path": "dir1/file1.py"
+   },
+   "rich:console.py:1036": {
+    "function": "func1::func4",
+    "path": "dir1/file1.py"
+   },
+   "rich:console.py:1568": {
+    "function": "func1::func5",
+    "path": "dir1/file1.py"
+   },
+   "rich:console.py:2057": {
+    "function": "func1::func6",
+    "path": "dir1/file1.py"
+   },
+   "rich:markdown.py:352": {
+    "function": "Type6.func7",
+    "path": "dir1/file2.py"
+   },
+   "rich:markdown.py:613": {
+    "function": "func2.func7",
+    "path": "dir1/file2.py"
+   },
+   "rich:segment.py:351": {
+    "function": "Type7.func21",
+    "path": "dir1/file8.py"
+   },
+   "rich:style.py:400": {
+    "function": "Type1.func8",
+    "path": "dir1/file3.py"
+   },
+   "rich:syntax.py:483": {
+    "function": "Type2.func9",
+    "path": "dir1/file4.py"
+   },
+   "rich:syntax.py:841": {
+    "function": "Type2.func10",
+    "path": "dir1/file4.py"
+   },
+   "rich:text.py:413": {
+    "function": "Type3.func22",
+    "path": "dir1/file5.py"
+   }
+  },
+  "extreme_hard": {
+   "rich:cells.py:106": {
+    "function": "func17",
+    "path": "dir1/file6.py"
+   }
+  },
+  "hard": {
+   "rich:syntax.py:160": {
+    "function": "Type4::func16",
+    "path": "dir1/file4.py"
+   }
+  },
+  "medium": {
+   "rich:style.py:362": {
+    "function": "Type1.func11",
+    "path": "dir1/file3.py"
+   },
+   "rich:syntax.py:162": {
+    "function": "Type4::func16",
+    "path": "dir1/file4.py"
+   },
+   "rich:syntax.py:440": {
+    "function": "Type2::func12",
+    "path": "dir1/file4.py"
+   },
+   "rich:syntax.py:445": {
+    "function": "Type2::func13",
+    "path": "dir1/file4.py"
+   },
+   "rich:text.py:1156": {
+    "function": "Type3.func15",
+    "path": "dir1/file5.py"
+   },
+   "rich:text.py:1162": {
+    "function": "Type3::func15",
+    "path": "dir1/file5.py"
+   },
+   "rich:text.py:583": {
+    "function": "Type3.func23",
+    "path": "dir1/file5.py"
+   },
+   "rich:text.py:796": {
+    "function": "Type3::func14",
+    "path": "dir1/file5.py"
+   }
+  },
+  "unreachable": {
+   "rich:cells.py:109": {
+    "function": "func17",
+    "path": "dir1/file6.py"
+   },
+   "rich:table.py:649": {
+    "function": "Type5.func18",
+    "path": "dir1/file7.py"
+   },
+   "rich:table.py:655": {
+    "function": "Type5.func18",
+    "path": "dir1/file7.py"
+   },
+   "rich:table.py:661": {
+    "function": "Type5.func18",
+    "path": "dir1/file7.py"
+   },
+   "rich:text.py:480": {
+    "function": "Type3::func19",
+    "path": "dir1/file5.py"
+   }
+  }
+ }
+}

@@ -1,0 +1,19 @@
+diff --git a/src/md4c-html.c b/src/md4c-html.c
+index 5229de5..01e95f0 100644
+--- a/src/md4c-html.c
++++ b/src/md4c-html.c
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <stdlib.h>
+ /*
+  * MD4C: Markdown parser for C
+  * (http://github.com/mity/md4c)
+@@ -350,6 +352,8 @@ static void
+ render_close_img_span(MD_HTML* r, const MD_SPAN_IMG_DETAIL* det)
+ {
+     if(det->title.text != NULL) {
++        fprintf(stderr, "HIT TARGET\n");  // target
++        exit(0);
+         RENDER_VERBATIM(r, "\" title=\"");
+         render_attribute(r, &det->title, render_html_escaped);
+     }

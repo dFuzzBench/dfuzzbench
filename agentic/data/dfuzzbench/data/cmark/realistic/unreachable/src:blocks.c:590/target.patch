@@ -1,0 +1,19 @@
+diff --git a/src/blocks.c b/src/blocks.c
+index 292e563..71c0ad8 100644
+--- a/src/blocks.c
++++ b/src/blocks.c
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <stdlib.h>
+ /**
+  * Block parsing implementation.
+  *
+@@ -587,6 +589,8 @@ static void S_parser_feed(cmark_parser *parser, const unsigned char *buffer,
+   if (parser->line_number == 0 && parser->column == 0 && len >= 3 &&
+       *buffer == 0xEF && *(buffer + 1) == 0xBB &&
+       *(buffer + 2) == 0xBF) {
++    fprintf(stderr, "HIT TARGET\n");  // target
++    exit(0);
+     buffer += 3;
+   } else if (parser->last_buffer_ended_with_cr && *buffer == '\n') {
+     // skip NL if last buffer ended with CR ; see #117

@@ -1,0 +1,19 @@
+diff --git a/src/xmp.cpp b/src/xmp.cpp
+index 39e7610ef..e82aa1325 100644
+--- a/src/xmp.cpp
++++ b/src/xmp.cpp
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <cstdlib>
+ // SPDX-License-Identifier: GPL-2.0-or-later
+ 
+ // included header files
+@@ -870,6 +872,8 @@ int XmpParser::encode(std::string& xmpPacket, const XmpData& xmpData, uint16_t f
+           printNode(ns, xmp.tagName(), "", options);
+           meta.SetProperty(ns.c_str(), xmp.tagName().c_str(), nullptr, options);
+         } else {
++          fprintf(stderr, "HIT TARGET\n");  // target
++          exit(0);
+           printNode(ns, xmp.tagName(), xmp.toString(0), options);
+           meta.SetProperty(ns.c_str(), xmp.tagName().c_str(), xmp.toString(0).c_str(), options);
+         }

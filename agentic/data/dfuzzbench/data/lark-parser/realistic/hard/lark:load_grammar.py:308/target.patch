@@ -1,0 +1,13 @@
+diff --git a/lark/load_grammar.py b/lark/load_grammar.py
+index 362a845..d4e94e8 100644
+--- a/lark/load_grammar.py
++++ b/lark/load_grammar.py
+@@ -305,6 +305,8 @@ class EBNF_to_BNF(Transformer_InPlace):
+             return self.rules_cache[key]
+         except KeyError:
+             new_name = self._name_rule('repeat_a%d_b%d_opt' % (a, b))
++            print("HIT TARGET") # target
++            exit(0)
+             tree = ST('expansions', [
+                 ST('expansion', [target]*i + [target_opt]) for i in range(a)
+             ] + [

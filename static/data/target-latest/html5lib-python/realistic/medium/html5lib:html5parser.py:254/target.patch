@@ -1,0 +1,13 @@
+diff --git a/html5lib/html5parser.py b/html5lib/html5parser.py
+index b3c206d..2a2d5d3 100644
+--- a/html5lib/html5parser.py
++++ b/html5lib/html5parser.py
+@@ -251,6 +251,8 @@ class HTMLParser(object):
+ 
+             if (type == StartTagToken and prev_token["selfClosing"] and
+                     not prev_token["selfClosingAcknowledged"]):
++                print("HIT TARGET") # target
++                exit(0)
+                 self.parseError("non-void-element-with-trailing-solidus",
+                                 {"name": prev_token["name"]})
+ 

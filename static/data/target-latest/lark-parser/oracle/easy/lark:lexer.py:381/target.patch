@@ -1,0 +1,13 @@
+diff --git a/lark/lexer.py b/lark/lexer.py
+index 9061d60..cf0f009 100644
+--- a/lark/lexer.py
++++ b/lark/lexer.py
+@@ -378,6 +378,8 @@ class Scanner:
+             try:
+                 mre = self.re_.compile(pattern, self.g_regex_flags)
+             except AssertionError:  # Yes, this is what Python provides us.. :/
++                print("HIT TARGET") # target
++                exit(0)
+                 return self._build_mres(terminals, max_size // 2)
+ 
+             mres.append(mre)

@@ -1,0 +1,13 @@
+diff --git a/bleach/_vendor/html5lib/_tokenizer.py b/bleach/_vendor/html5lib/_tokenizer.py
+index 4748a19..10fb7e9 100644
+--- a/bleach/_vendor/html5lib/_tokenizer.py
++++ b/bleach/_vendor/html5lib/_tokenizer.py
+@@ -247,6 +247,8 @@ class HTMLTokenizer(object):
+                     self.tokenQueue.append({"type": tokenTypes["ParseError"],
+                                             "data": "attributes-in-end-tag"})
+                 if token["selfClosing"]:
++                    print("HIT TARGET") # target
++                    exit(0)
+                     self.tokenQueue.append({"type": tokenTypes["ParseError"],
+                                             "data": "self-closing-flag-on-end-tag"})
+         self.tokenQueue.append(token)

@@ -1,0 +1,18 @@
+diff --git a/source/m3_code.c b/source/m3_code.c
+index 8d52ac2..b868d34 100644
+--- a/source/m3_code.c
++++ b/source/m3_code.c
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <stdlib.h>
+ //
+ //  m3_code.c
+ //
+@@ -24,6 +26,7 @@ IM3CodePage  NewCodePage  (u32 i_minNumLines)
+ 
+     if (page)
+     {
++        fprintf(stderr, "HIT TARGET\n");  // target
+         page->info.sequence = ++s_sequence;
+         page->info.numLines = (pageSize - sizeof (M3CodePageHeader)) / sizeof (code_t);
+ 

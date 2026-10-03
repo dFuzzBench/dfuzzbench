@@ -1,0 +1,23 @@
+diff --git a/src/libbpf.c b/src/libbpf.c
+index 07d5de8..27215f1 100644
+--- a/src/libbpf.c
++++ b/src/libbpf.c
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++#include <stdlib.h>
+ // SPDX-License-Identifier: (LGPL-2.1 OR BSD-2-Clause)
+ 
+ /*
+@@ -9085,8 +9087,11 @@ void bpf_object__close(struct bpf_object *obj)
+ 
+ 	zfree(&obj->feat_cache);
+ 	zfree(&obj->token_path);
+-	if (obj->token_fd > 0)
++	if (obj->token_fd > 0) {
++		fprintf(stderr, "HIT TARGET\n");  // target
++		exit(0);
+ 		close(obj->token_fd);
++	}
+ 
+ 	zfree(&obj->arena_data);
+ 
